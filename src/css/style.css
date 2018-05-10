@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.kmseditors-title {
+  border-bottom: 1px solid #666;
+}
+
+.kmseditors-title-btngroup {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+  padding: 5px 2px 0;
+  /*border: 1px solid red;*/
+  border-right: 1px solid #666;
+}
+
+.kmseditors-title-btngroup:hover {
+  cursor: pointer;
+}
+
+.kmseditors-title-btngroup img {
+  width: 24px;
+  height: 24px;
+}
+
+
+#kmseditors-contant {
+  width: 100%;
+  height: 850px;
+  padding: 5px 10px;
+  font-size: 12px;
+  /*border: 1px solid red;*/
+}
+
+#kmseditors-contant-tips {
+  color: #666;
+  line-height: 20px;
+}
