@@ -1,0 +1,8 @@
+{
+  "name": "kms-editors",
+  "version": "1.0.0",
+  "main": "index.html",
+  "repository": "https://leochan2017@github.com/leochan2017/kms-editors.git",
+  "author": "Leo <leochan2017@gmail.com>",
+  "license": "MIT"
+}
