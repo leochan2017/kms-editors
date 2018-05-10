@@ -13,9 +13,9 @@
   display: inline-block;
   text-align: center;
   font-size: 14px;
-  padding: 5px 2px 0;
-  /*border: 1px solid red;*/
+  padding: 9px 2px 0;
   border-right: 1px solid #666;
+  /*border: 1px solid red;*/
 }
 
 .kmseditors-title-btngroup:hover {
