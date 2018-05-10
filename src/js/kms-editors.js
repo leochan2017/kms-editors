@@ -63,10 +63,16 @@
             $('#kmseditors-contant-tips').hide()
         })
 
-        // 隐藏退出全屏按钮
         var $exitfullscreenbtn = $('#exitfullscreenbtn')
-        $exitfullscreenbtn.hide()
+        $exitfullscreenbtn.hide() // 隐藏退出全屏按钮
 
+        // 退出全屏按钮点击处理
+        $exitfullscreenbtn.click(function() {
+            _cancelFullScreen()
+            $exitfullscreenbtn.hide()
+            $fullscreenbtn.show()
+        })
+        
         // 全屏按钮点击处理
         var $fullscreenbtn = $('#fullscreenbtn')
         $fullscreenbtn.click(function() {
@@ -75,12 +81,6 @@
             $exitfullscreenbtn.show()
         })
 
-        // 窗口按钮点击处理
-        $exitfullscreenbtn.click(function() {
-            _cancelFullScreen()
-            $exitfullscreenbtn.hide()
-            $fullscreenbtn.show()
-        })
     })
 
 
