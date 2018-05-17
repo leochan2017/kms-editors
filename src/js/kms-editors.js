@@ -1,3 +1,5 @@
+
+
 (function($w) {
     var __NAME__ = 'kmseditors'
     var _noop = function() {}
@@ -57,6 +59,23 @@
         }
     }
 
+    // 锚点
+    function _sketchHandle() {
+        var $contant = $(this).parent().find('#kmseditors-contant')
+        // console.log($contant)
+        // return
+        var _link_conrainer = $contant.find('.link-conrainer');
+        console.log(_link_conrainer)
+        var _position_conrainer = $contant.find('.position-conrainer');
+        var index = _link_conrainer.find('.map-link').length +1;
+        var image = $contant.find('img[ref=imageMaps]').attr('name');
+        image = (image == '' ? '' : '['+ image + ']');
+        _link_conrainer.append('<p ref="'+index+'" class="map-link"><span class="link-number-text">Link '+index+'</span>: <input type="text" size="60" name="link'+image+'[]" value="" /><input type="hidden" class="rect-value" name="rect'+image+'[]" value="10,10,100,40" /></p>');
+        _position_conrainer.append('<div ref="'+index+'" class="map-position" style="left:10px;top:10px;width:90px;height:30px;"><div class="map-position-bg"></div><span class="link-number-text">Link '+index+'</span><span class="delete">X</span><span class="resize"></span></div>');
+        bind_map_event();
+        define_css();
+    }
+
     $(function() {
         // 内容区点击隐藏提示文字
         $('#kmseditors-contant').click(function() {
@@ -81,6 +100,14 @@
             $exitfullscreenbtn.show()
         })
 
+
+        // 锚点按钮点击处理
+        var $sketchbtn = $('#sketchbtn')
+        $sketchbtn.click(_sketchHandle)
+
+        $('#kmseditors-contant').imageMaps()
+
+        // _sketchHandle()
     })
 
 
