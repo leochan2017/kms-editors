@@ -16,6 +16,8 @@
     }
   }
 
+  var $contextmenu = '' // 右键菜单
+
   var kmseditors = { options: {}, isInit: false, $container: '', $position: '' }
 
   kmseditors.init = function(options) {
@@ -44,22 +46,55 @@
 
   function _bind_map_event() {
     var conrainer = kmseditors.$position
-    // 拖动
+    // 拖动处理
     kmseditors.$position.find('.map-position-bg').each(function() {
       var map_position_bg = $(this)
+      var isContextmenu = false
+      // 右键菜单
+      map_position_bg.off('contextmenu', _noop).on('contextmenu', function(e) {
+        console.log('右键拉拉拉拉', e)
+        isContextmenu = true
+        e.preventDefault();
+        // if (!kmsjsmap.editable) return;
+        $contextmenu.show().css({
+          left: e.pageX,
+          top: e.pageY
+        })
+
+        map_position_bg.data('mousedown', false)
+        map_position_bg.css('cursor', 'default')
+
+        // 判断右键时间已过，flag复位
+        setTimeout(function() {
+          isContextmenu = false
+        }, 100)
+      })
+
       // var conrainer = $(this).parent().parent()
+      // 锚点框内
       map_position_bg.unbind('mousedown').mousedown(function(event) {
-        map_position_bg.data('mousedown', true)
-        map_position_bg.data('pageX', event.pageX)
-        map_position_bg.data('pageY', event.pageY)
-        map_position_bg.css('cursor', 'move')
-        return false
+        // console.log('map_position_bg 1 mousedown')
+        // 因为右键事件没mousedown那么快触发，
+        // 所以，先等一等看看用户是不是要右键，再继续处理
+        return setTimeout(function() {
+          if (isContextmenu) return false
+          // console.log('map_position_bg 2 mousedown')
+          $contextmenu.hide()
+          map_position_bg.data('mousedown', true)
+          map_position_bg.data('pageX', event.pageX)
+          map_position_bg.data('pageY', event.pageY)
+          map_position_bg.css('cursor', 'move')
+          return false
+        }, 50)
       }).unbind('mouseup').mouseup(function(event) {
+        console.log('map_position_bg mouseup')
         map_position_bg.data('mousedown', false)
         map_position_bg.css('cursor', 'default')
         return false
       })
+
       conrainer.mousemove(function(event) {
+        // console.log('conrainer mousemove')
         if (!map_position_bg.data('mousedown')) return false
         var dx = event.pageX - map_position_bg.data('pageX')
         var dy = event.pageY - map_position_bg.data('pageY')
@@ -89,9 +124,11 @@
 
         bottom = top + map_position.height()
         right = left + map_position.width()
-        $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
+        // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
+        // console.log('conrainer mouseup')
+        $contextmenu.hide()
         map_position_bg.data('mousedown', false)
         map_position_bg.css('cursor', 'default')
         return false
@@ -141,7 +178,7 @@
 
         bottom = top + map_position.height()
         right = left + map_position.width()
-        $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
+        // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
         map_position_resize.data('mousedown', false)
@@ -166,6 +203,20 @@
         // .find('.link-number-text').html('Link ' + index)
         index++
       })
+    })
+
+    // // 右键菜单
+    // kmseditors.$position.find('.map-position').off('contextmenu', _noop).on('contextmenu', _conTextMenuEvenHandle)
+  }
+
+  // 右键处理
+  function _conTextMenuEvenHandle(e) {
+    console.log('右键拉拉拉拉', e)
+    e.preventDefault();
+    // if (!kmsjsmap.editable) return;
+    $contextmenu.show().css({
+      left: e.pageX,
+      top: e.pageY
     })
   }
 
@@ -200,7 +251,7 @@
   function _sketchHandle() {
     var index = kmseditors.$position.find('.map-position[ref]').length + 1
     // var index = 1 // leo: 测试开发，先写死
-    
+
     kmseditors.$position.append('<div ref="' + index + '" class="map-position"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="delete">X</span><span class="resize"></span></div>')
 
     _bind_map_event()
@@ -236,6 +287,12 @@
     $sketchbtn.click(_sketchHandle)
 
     // $('#kmseditors-contant').imageMaps()
+
+    // 这里需要跑一个初始化，插入内容到body的方法
+
+    // 然后
+    $contextmenu = $('#kmseditors-contextmenu')
+    $contextmenu.hide()
 
     $('#kmseditors-contant').click()
     $sketchbtn.click()
