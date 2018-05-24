@@ -16,7 +16,8 @@
     }
   }
 
-  var $contextmenu = '' // 右键菜单
+  var $contextmenu = '' // 右键菜单ele
+  var $currSketch = '' // 当前操作的锚点元素(弹出了右键菜单)
 
   var kmseditors = { options: {}, isInit: false, $container: '', $position: '' }
 
@@ -51,14 +52,15 @@
       var map_position_bg = $(this)
       var isContextmenu = false
       // 右键菜单
-      map_position_bg.off('contextmenu', _noop).on('contextmenu', function(e) {
-        console.log('右键拉拉拉拉', e)
+      map_position_bg.off('contextmenu', _noop).on('contextmenu', function(event) {
+        // console.log('右键拉拉拉拉', event)
         isContextmenu = true
-        e.preventDefault();
+        $currSketch = $(event.target).parent()
+        event.preventDefault();
         // if (!kmsjsmap.editable) return;
         $contextmenu.show().css({
-          left: e.pageX,
-          top: e.pageY
+          left: event.pageX,
+          top: event.pageY
         })
 
         map_position_bg.data('mousedown', false)
@@ -73,7 +75,7 @@
       // var conrainer = $(this).parent().parent()
       // 锚点框内
       map_position_bg.unbind('mousedown').mousedown(function(event) {
-        // console.log('map_position_bg 1 mousedown')
+        // console.log('map_position_bg 1 mousedown', event)
         // 因为右键事件没mousedown那么快触发，
         // 所以，先等一等看看用户是不是要右键，再继续处理
         return setTimeout(function() {
@@ -87,7 +89,7 @@
           return false
         }, 50)
       }).unbind('mouseup').mouseup(function(event) {
-        console.log('map_position_bg mouseup')
+        // console.log('map_position_bg mouseup')
         map_position_bg.data('mousedown', false)
         map_position_bg.css('cursor', 'default')
         return false
@@ -204,21 +206,18 @@
         index++
       })
     })
-
-    // // 右键菜单
-    // kmseditors.$position.find('.map-position').off('contextmenu', _noop).on('contextmenu', _conTextMenuEvenHandle)
   }
 
   // 右键处理
-  function _conTextMenuEvenHandle(e) {
-    console.log('右键拉拉拉拉', e)
-    e.preventDefault();
-    // if (!kmsjsmap.editable) return;
-    $contextmenu.show().css({
-      left: e.pageX,
-      top: e.pageY
-    })
-  }
+  // function _conTextMenuEvenHandle(e) {
+  //   console.log('右键拉拉拉拉', e)
+  //   e.preventDefault();
+  //   // if (!kmsjsmap.editable) return;
+  //   $contextmenu.show().css({
+  //     left: e.pageX,
+  //     top: e.pageY
+  //   })
+  // }
 
   // 全屏
   function _launchFullScreen() {
@@ -257,6 +256,33 @@
     _bind_map_event()
   }
 
+  // 关联
+  function _relationHandle() {
+    $contextmenu.hide()
+    console.log($currSketch)
+  }
+
+
+  // 删除
+  function _deleteHandle() {
+    $contextmenu.hide()
+    $currSketch.remove() // 最简单的写法
+    // var ref = $currSketch.attr('ref')
+    // console.log(ref)
+
+    // kmseditors.$position.find('.map-position[ref=' + ref + ']').remove()
+    
+
+    // 重新给其余的调整ref ? 不知道又没作用
+    return
+    // var index = 1
+    // kmseditors.$position.find('.map-position').each(function() {
+    //   $(this).attr('ref', index)
+    //   // .find('.link-number-text').html('Link ' + index)
+    //   index++
+    // })
+  }
+
   $(function() {
     // 内容区点击隐藏提示文字
     $('#kmseditors-contant').click(function() {
@@ -280,6 +306,12 @@
       $fullscreenbtn.hide()
       $exitfullscreenbtn.show()
     })
+
+
+    // 右键菜单 - 关联
+    $('#kmseditors-contextmenu-relation').on('click', _relationHandle)
+    // 右键菜单 - 删除
+    $('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
 
 
     // 锚点按钮点击处理
