@@ -6,6 +6,7 @@
 
 
 
+
 /*顶部工具栏*/
 
 .kmseditors-title {
@@ -34,6 +35,7 @@
 
 
 
+
 /*内容区域*/
 
 #kmseditors-contant {
@@ -48,6 +50,7 @@
   color: #666;
   line-height: 20px;
 }
+
 
 
 
@@ -91,6 +94,7 @@
 
 
 
+
 /*内容区*/
 
 #kmseditors-contant {
@@ -100,12 +104,13 @@
 
 
 
+
 /*内容区 - 背景图片区域*/
 
 #kmseditors-contant .position-conrainer {
   position: absolute;
   border: 1px solid transparent;
-  /*border: 1px solid red;*/ 
+  /*border: 1px solid red;*/
 }
 
 #kmseditors-contant .position-conrainer .map-position {
@@ -139,6 +144,7 @@
   cursor: nw-resize;
   background: #000;
 }
+
 
 /*#kmseditors-contant .position-conrainer .map-position .delete {
   display: block;

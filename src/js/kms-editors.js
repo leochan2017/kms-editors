@@ -72,8 +72,8 @@
     for (var i = 0; i < $arr.length; i++) {
       var item = $arr[i]
       arr.push(_objHandle($(item)))
-    } 
-    return arr     
+    }
+    return arr
   }
 
   // 绑定事件处理函数
