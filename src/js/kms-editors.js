@@ -187,37 +187,7 @@
         return false
       })
     })
-
-    // 删除
-    kmseditors.$position.find('.delete').unbind('click').click(function() {
-      var ref = $(this).parent().attr('ref')
-      // var _link_conrainer = $(this).parent().parent().parent().find('.link-conrainer')
-      // _link_conrainer.find('.map-link[ref=' + ref + ']').remove()
-      kmseditors.$position.find('.map-position[ref=' + ref + ']').remove()
-      // _link_conrainer.find('.map-link').each(function() {
-      //   $(this).attr('ref', index).find('.link-number-text').html('Link ' + index)
-      //   index++
-      // })
-      // 重新给其余的调整ref ? 不知道又没作用
-      var index = 1
-      kmseditors.$position.find('.map-position').each(function() {
-        $(this).attr('ref', index)
-        // .find('.link-number-text').html('Link ' + index)
-        index++
-      })
-    })
   }
-
-  // 右键处理
-  // function _conTextMenuEvenHandle(e) {
-  //   console.log('右键拉拉拉拉', e)
-  //   e.preventDefault();
-  //   // if (!kmsjsmap.editable) return;
-  //   $contextmenu.show().css({
-  //     left: e.pageX,
-  //     top: e.pageY
-  //   })
-  // }
 
   // 全屏
   function _launchFullScreen() {
@@ -251,7 +221,8 @@
     var index = kmseditors.$position.find('.map-position[ref]').length + 1
     // var index = 1 // leo: 测试开发，先写死
 
-    kmseditors.$position.append('<div ref="' + index + '" class="map-position"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="delete">X</span><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" class="map-position"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
+    // <span class="delete">X</span>
 
     _bind_map_event()
   }
