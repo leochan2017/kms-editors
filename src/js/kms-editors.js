@@ -1,3 +1,5 @@
+
+
 (function($w) {
   var __NAME__ = 'kmseditors'
   var _noop = function() {}
@@ -291,6 +293,13 @@
     // })
   }
 
+
+  // 颜色
+  function _colorHandle() {
+    $contextmenu.hide()
+  }
+
+
   $(function() {
     // 内容区点击隐藏提示文字
     $('#kmseditors-contant').click(function() {
@@ -318,9 +327,10 @@
 
     // 右键菜单 - 关联
     $('#kmseditors-contextmenu-relation').on('click', _relationHandle)
+    // 右键菜单 - 颜色
+    $('#kmseditors-contextmenu-color').on('click', _colorHandle)
     // 右键菜单 - 删除
     $('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
-
 
     // 锚点按钮点击处理
     var $sketchbtn = $('#sketchbtn')

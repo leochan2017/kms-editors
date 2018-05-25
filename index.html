@@ -44,7 +44,7 @@
                 <div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group">
                     <img src="./src/images/c1.png" alt="">
                 </div>
-                <div class="kmseditors-contextmenu-group">
+                <div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group">
                     <img src="./src/images/c2.png" alt="">
                 </div>
                 <div class="kmseditors-contextmenu-group">
@@ -66,6 +66,7 @@
     <script>
     kmseditors.init({
         container: 'container',
+        editable: true,
         onRelation: function(item) {
             console.log('index.html 啦啦啦啦', item)
         }
