@@ -21,6 +21,7 @@
 
   var kmseditors = { options: {}, isInit: false, $container: '', $position: '' }
 
+  // 初始化函数
   kmseditors.init = function(options) {
     // console.log('init:', options)
     if (!options || Object.keys(options).length === 0) {
@@ -45,6 +46,37 @@
     })
   }
 
+  // 获取当前视图的数据
+  // node 传入则获取具体的一个
+  kmseditors.getData = function(node) {
+    function _objHandle(item) {
+      var context = item.context
+      var width = typeof item.width === 'number' ? item.width : context.offsetWidth
+      var height = typeof item.height === 'number' ? item.height : context.offsetHeight
+      return {
+        ref: item.attr('ref'),
+        top: item.top || context.offsetTop,
+        left: item.left || context.offsetLeft,
+        width: width,
+        height: height
+      }
+    }
+
+    // 获取具体的node的数据
+    if (typeof node !== 'undefined') return _objHandle(node)
+
+    // 获取所有node的数据集合
+    var $arr = kmseditors.$position.find('.map-position[ref]')
+    if ($arr.length <= 0) return []
+    var arr = []
+    for (var i = 0; i < $arr.length; i++) {
+      var item = $arr[i]
+      arr.push(_objHandle($(item)))
+    } 
+    return arr     
+  }
+
+  // 绑定事件处理函数
   function _bind_map_event() {
     var conrainer = kmseditors.$position
     // 拖动处理
@@ -56,6 +88,10 @@
         // console.log('右键拉拉拉拉', event)
         isContextmenu = true
         $currSketch = $(event.target).parent()
+        $currSketch.top = event.pageY
+        $currSketch.left = event.pageX
+        $currSketch.width = $($currSketch).width()
+        $currSketch.height = $($currSketch).height()
         event.preventDefault();
         // if (!kmsjsmap.editable) return;
         $contextmenu.show().css({
@@ -219,10 +255,9 @@
   // 锚点
   function _sketchHandle() {
     var index = kmseditors.$position.find('.map-position[ref]').length + 1
-    // var index = 1 // leo: 测试开发，先写死
 
-    kmseditors.$position.append('<div ref="' + index + '" class="map-position"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
-    // <span class="delete">X</span>
+    // 在这里写style是为了初始化就有值
+    kmseditors.$position.append('<div ref="' + index + '" class="map-position" style="top:10px;left:10px;width:90px;height:30px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
 
     _bind_map_event()
   }
@@ -230,7 +265,9 @@
   // 关联
   function _relationHandle() {
     $contextmenu.hide()
-    console.log($currSketch)
+    // console.log($currSketch)
+    var onRelation = kmseditors.options.onRelation || _noop
+    onRelation(kmseditors.getData($currSketch))
   }
 
 
@@ -242,7 +279,7 @@
     // console.log(ref)
 
     // kmseditors.$position.find('.map-position[ref=' + ref + ']').remove()
-    
+
 
     // 重新给其余的调整ref ? 不知道又没作用
     return

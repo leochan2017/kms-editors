@@ -56,14 +56,25 @@
             </div>
         </div>
     </div>
+    <button id="saveBtn">保存</button>
+    <br />
+    <br />
     <script src="./lib/jquery-1.11.0.min.js"></script>
     <!-- <script src="./lib/jquery-1.4.2.min.js"></script> -->
     <script src="./lib/jquery.contextmenu.r2.js"></script>
     <script src="./src/js/kms-editors.js"></script>
     <script>
-        kmseditors.init({
-          container: 'container'  
-        })
+    kmseditors.init({
+        container: 'container',
+        onRelation: function(item) {
+            console.log('index.html 啦啦啦啦', item)
+        }
+    })
+
+    $('#saveBtn').on('click', function() {
+        var res = kmseditors.getData()
+        console.log('index.html res: ', res)
+    })
     </script>
 </body>
 

@@ -112,10 +112,11 @@
   position: absolute;
   border: 1px solid #000;
   font-weight: bold;
-  left: 10px;
-  top: 10px;
-  width: 90px;
-  height: 30px;
+  /*下面几个值写到了js里，为了初始化就有值*/
+  /*left: 10px;*/
+  /*top: 10px;*/
+  /*width: 90px;*/
+  /*height: 30px;*/
 }
 
 #kmseditors-contant .position-conrainer .map-position .map-position-bg {
