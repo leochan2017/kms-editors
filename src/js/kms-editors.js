@@ -286,7 +286,14 @@
     _bind_map_event()
   }
 
-  // 关联
+
+  // 上传图片
+  function _uploadImgHandle() {
+    console.log(1)
+  }
+
+
+  // 右键菜单 - 关联
   function _relationHandle() {
     $contextmenu.hide()
     // console.log($currSketch)
@@ -295,7 +302,7 @@
   }
 
 
-  // 删除
+  // 右键菜单 - 删除
   function _deleteHandle() {
     $contextmenu.hide()
     $currSketch.remove() // 最简单的写法
@@ -315,56 +322,68 @@
     // })
   }
 
+  // 右键菜单 - 编辑
+  function _editHandle() {
+    $contextmenu.hide()
+  }
 
-  // 颜色
+
+  // 右键菜单 - 颜色
   function _colorHandle() {
     $contextmenu.hide()
   }
 
 
+  // 初始化各种按钮绑定
   $(function() {
     // 内容区点击隐藏提示文字
-    $('#kmseditors-contant').click(function() {
+    $('#kmseditors-contant').on('click', function() {
       $('#kmseditors-contant-tips').hide()
     })
 
-    var $exitfullscreenbtn = $('#exitfullscreenbtn')
+    // 退出全屏
+    var $exitfullscreenbtn = $('#kmseditors-exitfullscreen')
     $exitfullscreenbtn.hide() // 隐藏退出全屏按钮
 
     // 退出全屏按钮点击处理
-    $exitfullscreenbtn.click(function() {
+    $exitfullscreenbtn.on('click', function() {
       _cancelFullScreen()
       $exitfullscreenbtn.hide()
       $fullscreenbtn.show()
     })
 
     // 全屏按钮点击处理
-    var $fullscreenbtn = $('#fullscreenbtn')
-    $fullscreenbtn.click(function() {
+    var $fullscreenbtn = $('#kmseditors-fullscreen')
+    $fullscreenbtn.on('click', function() {
       _launchFullScreen()
       $fullscreenbtn.hide()
       $exitfullscreenbtn.show()
     })
 
-
-    // 右键菜单 - 关联
-    $('#kmseditors-contextmenu-relation').on('click', _relationHandle)
-    // 右键菜单 - 颜色
-    $('#kmseditors-contextmenu-color').on('click', _colorHandle)
-    // 右键菜单 - 删除
-    $('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
-
     // 锚点按钮点击处理
-    var $sketchbtn = $('#sketchbtn')
-    $sketchbtn.click(_sketchHandle)
+    var $sketchbtn = $('#kmseditors-sketch')
+    $sketchbtn.on('click', _sketchHandle)
 
-    // $('#kmseditors-contant').imageMaps()
+    // 上传图片按钮点击处理
+    var $uploadImgBtn = $('#kmseditors-uploadimg')
+    $uploadImgBtn.on('click', _uploadImgHandle)
+
 
     // 这里需要跑一个初始化，插入内容到body的方法
 
     // 然后
     $contextmenu = $('#kmseditors-contextmenu')
     $contextmenu.hide()
+
+    // 右键菜单 - 关联
+    $contextmenu.find('#kmseditors-contextmenu-relation').on('click', _relationHandle)
+    // 右键菜单 - 颜色
+    $contextmenu.find('#kmseditors-contextmenu-color').on('click', _colorHandle)
+    // 右键菜单 - 编辑
+    $contextmenu.find('#kmseditors-contextmenu-edit').on('click', _editHandle)
+    // 右键菜单 - 删除
+    $contextmenu.find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
+
 
     // dev code - 正式上线时去掉
     $('#kmseditors-contant').click()
