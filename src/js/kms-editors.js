@@ -1,5 +1,3 @@
-
-
 (function($w) {
   var __NAME__ = 'kmseditors'
   var _noop = function() {}
