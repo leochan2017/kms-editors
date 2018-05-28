@@ -87,10 +87,10 @@
       var isContextmenu = false
       // 右键菜单
       map_position_bg.off('contextmenu', _noop).on('contextmenu', function(event) {
-        console.log('右键拉拉拉拉', event)
+        // console.log('右键拉拉拉拉', event)
         isContextmenu = true
         $currSketch = $(event.target).parent()
-        console.log('ref', $currSketch.attr('ref'))
+        // console.log('ref', $currSketch.attr('ref'))
         $currSketch.top = event.pageY
         $currSketch.left = event.pageX
         $currSketch.width = $($currSketch).width()
@@ -358,6 +358,7 @@
     $contextmenu = $('#kmseditors-contextmenu')
     $contextmenu.hide()
 
+    // dev code - 正式上线时去掉
     $('#kmseditors-contant').click()
     $sketchbtn.click()
   })
