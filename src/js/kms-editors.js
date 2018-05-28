@@ -87,14 +87,28 @@
       var isContextmenu = false
       // 右键菜单
       map_position_bg.off('contextmenu', _noop).on('contextmenu', function(event) {
-        // console.log('右键拉拉拉拉', event)
+        console.log('右键拉拉拉拉', event)
         isContextmenu = true
         $currSketch = $(event.target).parent()
+        console.log('ref', $currSketch.attr('ref'))
         $currSketch.top = event.pageY
         $currSketch.left = event.pageX
         $currSketch.width = $($currSketch).width()
         $currSketch.height = $($currSketch).height()
-        event.preventDefault();
+        event.preventDefault()
+
+        var dtype = parseInt($currSketch.attr('dtype'))
+        var $colorConBtn = $('#kmseditors-contextmenu-color')
+        var $editConBtn = $('#kmseditors-contextmenu-edit')
+
+        if (dtype === 0) { // 锚点
+          $colorConBtn.hide()
+          $editConBtn.hide()
+        } else if (dtype === 1) { // 文字
+          $colorConBtn.show()
+          $editConBtn.show()
+        }
+
         // if (!kmsjsmap.editable) return;
         $contextmenu.show().css({
           left: event.pageX,
@@ -259,7 +273,7 @@
     var index = kmseditors.$position.find('.map-position[ref]').length + 1
 
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" class="map-position" style="top:10px;left:10px;width:90px;height:30px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:10px;left:10px;width:90px;height:30px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
 
     _bind_map_event()
   }
