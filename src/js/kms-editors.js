@@ -34,9 +34,14 @@
     this.isInit = true
     this.$container = $('#' + options.container)
     this.options = options
+
     var $images = this.$container.find('img[ref=imageMaps]')
     $images.after('<div class="position-conrainer"></div>')
     this.$position = this.$container.find('.position-conrainer')
+
+    // 非编辑模式下隐藏工具栏
+    if (!options.editable) _unEditable()
+
     var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
     var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
     // console.log(this.$kmseditors_contant)
@@ -76,6 +81,11 @@
       arr.push(_objHandle($(item)))
     }
     return arr
+  }
+
+  // 处理非编辑模式
+  function _unEditable() {
+    $('#kmseditors-title').hide()
   }
 
   // 绑定事件处理函数
