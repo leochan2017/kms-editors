@@ -63,10 +63,10 @@
   position: absolute;
   top: 300px;
   left: 200px;
-  width: 164px;
+  /*width: 164px;*/
   /*height: 30px;*/
   background-color: #999;
-  border: 1px solid #000;
+  border: 1px solid #666;
 }
 
 .kmseditors-contextmenu-group {
@@ -74,7 +74,7 @@
   width: 30px;
   height: 30px;
   padding: 8px 3px 3px 3px;
-  border-right: 1px solid #000;
+  border-right: 1px solid #666;
   text-align: center;
   line-height: 30px;
   vertical-align: middle;
