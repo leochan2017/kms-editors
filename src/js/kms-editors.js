@@ -459,20 +459,7 @@
   function _deleteHandle() {
     $contextmenu.hide()
     $currSketch.remove() // 最简单的写法
-    // var ref = $currSketch.attr('ref')
-    // console.log(ref)
-
-    // kmseditors.$position.find('.map-position[ref=' + ref + ']').remove()
-
-
-    // 重新给其余的调整ref ? 不知道又没作用
     return
-    // var index = 1
-    // kmseditors.$position.find('.map-position').each(function() {
-    //   $(this).attr('ref', index)
-    //   // .find('.link-number-text').html('Link ' + index)
-    //   index++
-    // })
   }
 
   // 右键菜单 - 编辑
