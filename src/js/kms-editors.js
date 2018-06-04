@@ -19,7 +19,7 @@
   var $contextmenu = '' // 右键菜单ele
   var $currSketch = '' // 当前操作的锚点元素(弹出了右键菜单)
 
-  var kmseditors = { options: {}, isInit: false, $container: '', $position: '' }
+  var kmseditors = { options: {}, isInit: false, isUploadImage: false, $container: '', $position: '' }
 
   // 初始化函数
   kmseditors.init = function(options) {
@@ -33,22 +33,8 @@
     this.$container = $('#' + options.container)
     this.options = options
 
-    var $images = this.$container.find('img[ref=imageMaps]')
-    $images.after('<div class="position-conrainer"></div>')
-    this.$position = this.$container.find('.position-conrainer')
-
     // 非编辑模式下隐藏工具栏
     if (!options.editable) _unEditable()
-
-    var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
-    var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
-    // console.log(this.$kmseditors_contant)
-    this.$position.css({
-      top: $kmseditors_contant.offset().top - $tips_div.height() - 5,
-      left: this.$position.offset().left,
-      width: $images.width(),
-      height: $images.height()
-    })
   }
 
   // 获取当前视图的数据
@@ -83,7 +69,7 @@
 
   // 处理非编辑模式
   function _unEditable() {
-    $('#kmseditors-title').hide()
+    kmseditors.$container.find('#kmseditors-title').hide()
   }
 
   // 绑定事件处理函数
@@ -278,6 +264,10 @@
 
   // 锚点
   function _sketchHandle() {
+    if (!kmseditors.isUploadImage) return alert('请先上传背景图片')
+
+    _hideTips()
+
     var index = kmseditors.$position.find('.map-position[ref]').length + 1
 
     // 在这里写style是为了初始化就有值
@@ -299,6 +289,38 @@
     }
 
     return nums
+  }
+
+
+  // 图片上传完成后 - 初始化编辑区域
+  function _initPositionConrainer() {
+    kmseditors.isUploadImage = true
+
+    var $images = kmseditors.$container.find('img[ref=imageMaps]')
+    window.w = $images
+    $images.after('<div class="position-conrainer"></div>')
+    kmseditors.$position = kmseditors.$container.find('.position-conrainer')
+
+    var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
+    var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
+    // console.log(kmseditors.$kmseditors_contant)
+    // 不知为何，不延时一下，width和height取不到
+    setTimeout(function() {
+      var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
+      var left = kmseditors.$position.offset().left
+      var width = $images.width()
+      var height = $images.height()
+      // console.log('top', top)
+      // console.log('left', left)
+      // console.log('width', width)
+      // console.log('height', height)
+      kmseditors.$position.css({
+        top: top,
+        left: left,
+        width: width,
+        height: height
+      })
+    }, 50)
   }
 
 
@@ -329,15 +351,15 @@
     })
 
     // 去掉被插件强奸的样式
-    $('#kmseditors-uploadimg').removeClass('webuploader-container')
-    $('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
+    kmseditors.$container.find('#kmseditors-uploadimg').removeClass('webuploader-container')
+    kmseditors.$container.find('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
 
 
     // 监听fileQueued事件，通过uploader.makeThumb来创建图片预览图。
     // PS: 这里得到的是Data URL数据，IE6、IE7不支持直接预览。可以借助FLASH或者服务端来完成预览。
     // 当有文件添加进来的时候
     uploader.on('fileQueued', function(file) {
-      return 
+      return
       var $li = $(
           '<div id="' + file.id + '" class="file-item thumbnail">' +
           '<img>' +
@@ -349,7 +371,7 @@
 
       // $list为容器jQuery实例
       // $list.append($li);
-      $('#kmseditors-contant').append($li)
+      kmseditors.$container.find('#kmseditors-contant').append($li)
 
       // 创建缩略图
       // 如果为非图片文件，可以不用调用此方法。
@@ -364,6 +386,16 @@
         $img.attr('src', src);
       }, thumbnailWidth, thumbnailHeight);
     });
+
+    // 当文件被加入队列之前触发，此事件的handler返回值为false，则此文件不会被添加进入队列。
+    uploader.on('beforeFileQueued', function(file) {
+      var $images = kmseditors.$container.find('img[ref=imageMaps]')
+      if ($images.length > 0 && !confirm('再次上传将会覆盖原来的背景图片，是否继续？')) {
+        return uploader.cancelFile(file)
+      }
+      // 默认清空已有内容
+      $images.remove()
+    })
 
 
     // 然后剩下的就是上传状态提示了，当文件上传过程中, 上传成功，上传失败，上传完成都分别对应uploadProgress, uploadSuccess, uploadError, uploadComplete事件。
@@ -388,8 +420,9 @@
       var raw = response._raw
       if (!raw) return console.log('_raw error', raw)
       var imgSrc = kmseditors.options.host + raw
-      var htmlStr = '<img src="'+ imgSrc +'" ref="imageMaps">'
-      $('#kmseditors-contant').append(htmlStr)
+      var htmlStr = '<img src="' + imgSrc + '" ref="imageMaps">'
+      kmseditors.$container.find('#kmseditors-contant').append(htmlStr)
+      _initPositionConrainer()
       // $('#' + file.id).addClass('upload-state-done');
     });
 
@@ -454,12 +487,16 @@
   }
 
 
+  // 隐藏tips
+  function _hideTips() {
+    kmseditors.$container.find('#kmseditors-contant-tips').hide()
+  }
+
+
   // 初始化各种按钮绑定
   $(function() {
     // 内容编辑区点击隐藏提示文字
-    $('#kmseditors-contant').on('click', function() {
-      $('#kmseditors-contant-tips').hide()
-    })
+    $('#kmseditors-contant').on('click', _hideTips)
 
     // 退出全屏
     var $exitfullscreenbtn = $('#kmseditors-exitfullscreen')
@@ -467,6 +504,7 @@
 
     // 退出全屏按钮点击处理
     $exitfullscreenbtn.on('click', function() {
+      _hideTips()
       _cancelFullScreen()
       $exitfullscreenbtn.hide()
       $fullscreenbtn.show()
@@ -475,6 +513,7 @@
     // 全屏按钮点击处理
     var $fullscreenbtn = $('#kmseditors-fullscreen')
     $fullscreenbtn.on('click', function() {
+      _hideTips()
       _launchFullScreen()
       $fullscreenbtn.hide()
       $exitfullscreenbtn.show()
@@ -485,8 +524,8 @@
     $sketchbtn.on('click', _sketchHandle)
 
     // 上传图片按钮点击处理
-    // var $uploadImgBtn = $('#kmseditors-uploadimg')
-    // $uploadImgBtn.on('click', _uploadImgHandle)
+    var $uploadImgBtn = $('#kmseditors-uploadimg')
+    $uploadImgBtn.on('click', _hideTips)
 
     // 初始化上传图片
     _initImgUpload()
@@ -494,7 +533,7 @@
 
     // 这里需要跑一个初始化，插入内容到body的方法
 
-    // 然后
+    // 然后把右键菜单隐藏掉
     $contextmenu = $('#kmseditors-contextmenu')
     $contextmenu.hide()
 
