@@ -165,3 +165,8 @@
   cursor: pointer;
   opacity: 1;
 }*/
+
+/*覆盖原来的hover强奸*/
+.webuploader-pick-hover {
+  background-color: inherit!important;
+}

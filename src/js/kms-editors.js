@@ -266,13 +266,13 @@
   // 退出全屏
   function _cancelFullScreen() {
     if (document.exitFullscreen) {
-      document.exitFullscreen();
+      document.exitFullscreen()
     } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
+      document.msExitFullscreen()
     } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
+      document.mozCancelFullScreen()
     } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
+      document.webkitExitFullscreen()
     }
   }
 
@@ -287,9 +287,129 @@
   }
 
 
-  // 上传图片
-  function _uploadImgHandle() {
-    console.log(1)
+  // 产生随机32位ID
+  function _generateId() {
+    var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+    var nums = ''
+
+    for (var i = 0; i < 32; i++) {
+      var id = parseInt(Math.random() * 61)
+      nums += chars[id]
+    }
+
+    return nums
+  }
+
+
+  // 初始化上传图片
+  function _initImgUpload() {
+    var BASE_URL = '../../lib/webuploader-0.1.5/'
+
+    var serverURL = kmseditors.options.uploadImgUrl += '&fdModelId=' + _generateId()
+
+    // 创建Web Uploader实例
+    var uploader = WebUploader.create({
+      // 选完文件后，是否自动上传。
+      auto: true,
+      // swf文件路径
+      swf: BASE_URL + 'Uploader.swf',
+      // 文件接收服务端。
+      server: serverURL,
+      // 选择文件的按钮。可选。
+      // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+      pick: '#kmseditors-uploadimg',
+      sendAsBinary: true,
+      // 只允许选择图片文件。
+      accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+      }
+    })
+
+    // 去掉被插件强奸的样式
+    $('#kmseditors-uploadimg').removeClass('webuploader-container')
+    $('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
+
+
+    // 监听fileQueued事件，通过uploader.makeThumb来创建图片预览图。
+    // PS: 这里得到的是Data URL数据，IE6、IE7不支持直接预览。可以借助FLASH或者服务端来完成预览。
+    // 当有文件添加进来的时候
+    uploader.on('fileQueued', function(file) {
+      return 
+      var $li = $(
+          '<div id="' + file.id + '" class="file-item thumbnail">' +
+          '<img>' +
+          '<div class="info">' + file.name + '</div>' +
+          '</div>'
+        ),
+        $img = $li.find('img')
+
+
+      // $list为容器jQuery实例
+      // $list.append($li);
+      $('#kmseditors-contant').append($li)
+
+      // 创建缩略图
+      // 如果为非图片文件，可以不用调用此方法。
+      // thumbnailWidth x thumbnailHeight 为 100 x 100
+      var thumbnailWidth = thumbnailHeight = 100
+      uploader.makeThumb(file, function(error, src) {
+        if (error) {
+          $img.replaceWith('<span>不能预览</span>');
+          return;
+        }
+
+        $img.attr('src', src);
+      }, thumbnailWidth, thumbnailHeight);
+    });
+
+
+    // 然后剩下的就是上传状态提示了，当文件上传过程中, 上传成功，上传失败，上传完成都分别对应uploadProgress, uploadSuccess, uploadError, uploadComplete事件。
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function(file, percentage) {
+      var $li = $('#' + file.id),
+        $percent = $li.find('.progress span');
+
+      // 避免重复创建
+      if (!$percent.length) {
+        $percent = $('<p class="progress"><span></span></p>')
+          .appendTo($li)
+          .find('span');
+      }
+
+      $percent.css('width', percentage * 100 + '%');
+    });
+
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    uploader.on('uploadSuccess', function(file, response) {
+      // console.log(response)
+      var raw = response._raw
+      if (!raw) return console.log('_raw error', raw)
+      var imgSrc = kmseditors.options.host + raw
+      var htmlStr = '<img src="'+ imgSrc +'" ref="imageMaps">'
+      $('#kmseditors-contant').append(htmlStr)
+      // $('#' + file.id).addClass('upload-state-done');
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on('uploadError', function(file) {
+      var $li = $('#' + file.id),
+        $error = $li.find('div.error');
+
+      // 避免重复创建
+      if (!$error.length) {
+        $error = $('<div class="error"></div>').appendTo($li);
+      }
+
+      $error.text('上传失败');
+    });
+
+    // 完成上传完了，成功或者失败，先删除进度条。
+    uploader.on('uploadComplete', function(file) {
+      $('#' + file.id).find('.progress').remove();
+    });
   }
 
 
@@ -336,7 +456,7 @@
 
   // 初始化各种按钮绑定
   $(function() {
-    // 内容区点击隐藏提示文字
+    // 内容编辑区点击隐藏提示文字
     $('#kmseditors-contant').on('click', function() {
       $('#kmseditors-contant-tips').hide()
     })
@@ -365,8 +485,11 @@
     $sketchbtn.on('click', _sketchHandle)
 
     // 上传图片按钮点击处理
-    var $uploadImgBtn = $('#kmseditors-uploadimg')
-    $uploadImgBtn.on('click', _uploadImgHandle)
+    // var $uploadImgBtn = $('#kmseditors-uploadimg')
+    // $uploadImgBtn.on('click', _uploadImgHandle)
+
+    // 初始化上传图片
+    _initImgUpload()
 
 
     // 这里需要跑一个初始化，插入内容到body的方法
@@ -386,8 +509,8 @@
 
 
     // dev code - 正式上线时去掉
-    $('#kmseditors-contant').click()
-    $sketchbtn.click()
+    // $('#kmseditors-contant').click()
+    // $sketchbtn.click()
   })
 
 
