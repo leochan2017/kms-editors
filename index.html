@@ -10,7 +10,7 @@
 
 <body>
     <div id="container">
-        <div class="kmseditors">
+        <!-- <div class="kmseditors">
             <div id="kmseditors-title" class="kmseditors-title">
                 <div id="kmseditors-fullscreen" class="kmseditors-title-btngroup">
                     <img src="./src/images/btn1.png" alt="">
@@ -39,7 +39,6 @@
                     <p>2、第二步：根据需求，添加文字 或者 锚点 或者边框</p>
                     <p>3、第三步：根据需求，可增加关联信息</p>
                 </div>
-                <!-- <img src="./src/images/ft.jpg" ref="imageMaps"> -->
             </div>
             <div id="kmseditors-contextmenu">
                 <div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group">
@@ -55,7 +54,7 @@
                     <img src="./src/images/c4.png" alt="">
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <button id="saveBtn">保存</button>
     <br />
@@ -70,16 +69,19 @@
         container: 'container',
         editable: true,
         onRelation: function(item) {
-            console.log('index.html 啦啦啦啦', item)
+            console.log('index.html onRelation: ', item)
         },
         host: 'http://192.168.2.207:8080/ekp/',
-        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading'
-        // uploadImgUrl: 'http://192.168.6.40:8080/kms/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading'
+        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
+        data: {
+            backgroundUrl: './src/images/ft.jpg',
+            sketchList: []
+        }
     })
 
     $('#saveBtn').on('click', function() {
         var res = kmseditors.getData()
-        console.log('index.html res: ', res)
+        console.log('index.html save: ', res)
     })
     </script>
 </body>

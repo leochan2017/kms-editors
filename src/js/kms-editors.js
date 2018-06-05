@@ -19,27 +19,66 @@
   var $contextmenu = '' // 右键菜单ele
   var $currSketch = '' // 当前操作的锚点元素(弹出了右键菜单)
 
-  var kmseditors = { options: {}, isInit: false, isUploadImage: false, $container: '', $position: '' }
+  var kmseditors = { options: {}, isInit: false, $container: '', $position: '' }
 
   // 初始化函数
   kmseditors.init = function(options) {
+    var errMsg = ''
     // console.log('init:', options)
     if (!options || Object.keys(options).length === 0) {
       logger.warn('请对' + __NAME__ + '.init()传入必要的参数')
       return
     }
+
     if (this.isInit) return
+
+    if (!options.container) return logger.warn('container 不能为空')
+
     this.isInit = true
     this.$container = $('#' + options.container)
     this.options = options
 
-    // 非编辑模式下隐藏工具栏
-    if (!options.editable) _unEditable()
+    _initElement()
+
+    // 距离初始化等待一点时间好
+    setTimeout(function() {
+      // 非编辑模式下隐藏工具栏
+      if (!options.editable) _unEditable()
+
+      // 如果有传入图片 则跑初始化函数
+      var data = options.data
+      if (data) {
+        var bgUrl = data.backgroundUrl
+        var sketchList = data.sketchList
+        var sLen = sketchList.length
+
+        if (bgUrl) {
+          _hideTips()
+          _initPositionConrainer(bgUrl)
+          
+          if (sLen > 0) {
+            for (var i = 0; i < sLen; i++) {
+              var item = sketchList[i]
+              _sketchHandle(item)
+            }
+            
+          }
+
+        }
+
+      }
+    }, 100)
+
   }
 
   // 获取当前视图的数据
   // node 传入则获取具体的一个
   kmseditors.getData = function(node) {
+    var dataObj = {
+      backgroundUrl: '',
+      sketchList: []
+    }
+
     function _objHandle(item) {
       var context = item.context
       var width = typeof item.width === 'number' ? item.width : context.offsetWidth
@@ -53,18 +92,96 @@
       }
     }
 
+    // 获取背景图片的url
+    var $images = kmseditors.$container.find('img[ref=imageMaps]')
+    if ($images.length > 0) dataObj.backgroundUrl = $images.attr('src')
+
     // 获取具体的node的数据
-    if (typeof node !== 'undefined') return _objHandle(node)
+    if (typeof node !== 'undefined') {
+      dataObj.sketchList = _objHandle(node)
+      return dataObj
+    }
 
     // 获取所有node的数据集合
-    var $arr = kmseditors.$position.find('.map-position[ref]')
-    if ($arr.length <= 0) return []
+    var $p = this.$position
+
+    if (!$p) return dataObj
+
+    var $arr = $p.find('.map-position[ref]')
+    if ($arr.length <= 0) return dataObj
+
     var arr = []
     for (var i = 0; i < $arr.length; i++) {
       var item = $arr[i]
       arr.push(_objHandle($(item)))
     }
-    return arr
+
+    dataObj.sketchList = arr
+    return dataObj
+  }
+
+  // 初始化编辑器元素 
+  function _initElement() {
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><img src="./src/images/btn1.png" alt=""><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><img src="./src/images/btn5.png" alt=""><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><img src="./src/images/btn2.png" alt=""><p>锚点</p></div><div class="kmseditors-title-btngroup"><img src="./src/images/btn3.png" alt=""><p>文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><img src="./src/images/btn4.png" alt=""><p>上传图片</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>1、第一步：插入背景图</p><p>2、第二步：根据需求，添加文字 或者 锚点 或者边框</p><p>3、第三步：根据需求，可增加关联信息</p></div></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group"><img src="./src/images/c1.png" alt=""></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group"><img src="./src/images/c2.png" alt=""></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group"><img src="./src/images/c3.png" alt=""></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group"><img src="./src/images/c4.png" alt=""></div></div></div>'
+
+    // 初始化各种按钮绑定
+    $(function() {
+      kmseditors.$container.append(htmlStr)
+
+      // 内容编辑区点击隐藏提示文字
+      $('#kmseditors-contant').on('click', _hideTips)
+
+      // 退出全屏
+      var $exitfullscreenbtn = $('#kmseditors-exitfullscreen')
+      $exitfullscreenbtn.hide() // 隐藏退出全屏按钮
+
+      // 退出全屏按钮点击处理
+      $exitfullscreenbtn.on('click', function() {
+        _hideTips()
+        _cancelFullScreen()
+        $exitfullscreenbtn.hide()
+        $fullscreenbtn.show()
+      })
+
+      // 全屏按钮点击处理
+      var $fullscreenbtn = $('#kmseditors-fullscreen')
+      $fullscreenbtn.on('click', function() {
+        _hideTips()
+        _launchFullScreen()
+        $fullscreenbtn.hide()
+        $exitfullscreenbtn.show()
+      })
+
+      // 锚点按钮点击处理
+      var $sketchbtn = $('#kmseditors-sketch')
+      $sketchbtn.on('click', _sketchHandle)
+
+      // 上传图片按钮点击处理
+      var $uploadImgBtn = $('#kmseditors-uploadimg')
+      $uploadImgBtn.on('click', _hideTips)
+
+      // 初始化上传图片
+      _initImgUpload()
+
+      // 把右键菜单隐藏掉
+      $contextmenu = $('#kmseditors-contextmenu')
+      $contextmenu.hide()
+
+      // 右键菜单 - 关联
+      $contextmenu.find('#kmseditors-contextmenu-relation').on('click', _relationHandle)
+      // 右键菜单 - 颜色
+      $contextmenu.find('#kmseditors-contextmenu-color').on('click', _colorHandle)
+      // 右键菜单 - 编辑
+      $contextmenu.find('#kmseditors-contextmenu-edit').on('click', _editHandle)
+      // 右键菜单 - 删除
+      $contextmenu.find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
+
+
+      // dev code - 正式上线时去掉
+      // $('#kmseditors-contant').click()
+      // $sketchbtn.click()
+    })
+
   }
 
   // 处理非编辑模式
@@ -263,15 +380,29 @@
   }
 
   // 锚点
-  function _sketchHandle() {
-    if (!kmseditors.isUploadImage) return alert('请先上传背景图片')
+  function _sketchHandle(obj) {
+    var $images = kmseditors.$container.find('img[ref=imageMaps]')
+    if ($images.length === 0) return alert('请先上传背景图片')
 
     _hideTips()
 
-    var index = kmseditors.$position.find('.map-position[ref]').length + 1
+    var top = '10'
+    var left = '10'
+    var width = '90'
+    var heigth = '30'
+    var len = kmseditors.$container.find('div.map-position[dtype="0"]').length
+    var index = len + 1
+
+    if (obj && typeof obj === 'pbject') {
+      top = obj.top
+      left = obj.left
+      width = obj.width
+      height = obj.height
+      index = obj.ref
+    }
 
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:10px;left:10px;width:90px;height:30px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:'+ top +'px;left:'+ left +'px;width:'+ width +'px;height:'+ heigth +'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
 
     _bind_map_event()
   }
@@ -293,19 +424,20 @@
 
 
   // 图片上传完成后 - 初始化编辑区域
-  function _initPositionConrainer() {
-    kmseditors.isUploadImage = true
+  function _initPositionConrainer(imgSrc) {
+    if (!imgSrc) return
+
+    var htmlStr = '<img src="' + imgSrc + '" ref="imageMaps">'
+    kmseditors.$container.find('#kmseditors-contant').append(htmlStr)
 
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
-    window.w = $images
     $images.after('<div class="position-conrainer"></div>')
-    kmseditors.$position = kmseditors.$container.find('.position-conrainer')
 
-    var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
-    var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
-    // console.log(kmseditors.$kmseditors_contant)
-    // 不知为何，不延时一下，width和height取不到
+    // 不延时执行的话，就取不到width和height
     setTimeout(function() {
+      kmseditors.$position = kmseditors.$container.find('.position-conrainer')
+      var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
+      var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
       var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
       var left = kmseditors.$position.offset().left
       var width = $images.width()
@@ -320,7 +452,7 @@
         width: width,
         height: height
       })
-    }, 50)
+    }, 100)
   }
 
 
@@ -420,9 +552,7 @@
       var raw = response._raw
       if (!raw) return console.log('_raw error', raw)
       var imgSrc = kmseditors.options.host + raw
-      var htmlStr = '<img src="' + imgSrc + '" ref="imageMaps">'
-      kmseditors.$container.find('#kmseditors-contant').append(htmlStr)
-      _initPositionConrainer()
+      _initPositionConrainer(imgSrcimgSrc)
       // $('#' + file.id).addClass('upload-state-done');
     });
 
@@ -478,66 +608,6 @@
   function _hideTips() {
     kmseditors.$container.find('#kmseditors-contant-tips').hide()
   }
-
-
-  // 初始化各种按钮绑定
-  $(function() {
-    // 内容编辑区点击隐藏提示文字
-    $('#kmseditors-contant').on('click', _hideTips)
-
-    // 退出全屏
-    var $exitfullscreenbtn = $('#kmseditors-exitfullscreen')
-    $exitfullscreenbtn.hide() // 隐藏退出全屏按钮
-
-    // 退出全屏按钮点击处理
-    $exitfullscreenbtn.on('click', function() {
-      _hideTips()
-      _cancelFullScreen()
-      $exitfullscreenbtn.hide()
-      $fullscreenbtn.show()
-    })
-
-    // 全屏按钮点击处理
-    var $fullscreenbtn = $('#kmseditors-fullscreen')
-    $fullscreenbtn.on('click', function() {
-      _hideTips()
-      _launchFullScreen()
-      $fullscreenbtn.hide()
-      $exitfullscreenbtn.show()
-    })
-
-    // 锚点按钮点击处理
-    var $sketchbtn = $('#kmseditors-sketch')
-    $sketchbtn.on('click', _sketchHandle)
-
-    // 上传图片按钮点击处理
-    var $uploadImgBtn = $('#kmseditors-uploadimg')
-    $uploadImgBtn.on('click', _hideTips)
-
-    // 初始化上传图片
-    _initImgUpload()
-
-
-    // 这里需要跑一个初始化，插入内容到body的方法
-
-    // 然后把右键菜单隐藏掉
-    $contextmenu = $('#kmseditors-contextmenu')
-    $contextmenu.hide()
-
-    // 右键菜单 - 关联
-    $contextmenu.find('#kmseditors-contextmenu-relation').on('click', _relationHandle)
-    // 右键菜单 - 颜色
-    $contextmenu.find('#kmseditors-contextmenu-color').on('click', _colorHandle)
-    // 右键菜单 - 编辑
-    $contextmenu.find('#kmseditors-contextmenu-edit').on('click', _editHandle)
-    // 右键菜单 - 删除
-    $contextmenu.find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
-
-
-    // dev code - 正式上线时去掉
-    // $('#kmseditors-contant').click()
-    // $sketchbtn.click()
-  })
 
 
   if (typeof module !== 'undefined' && typeof exports === 'object') {
