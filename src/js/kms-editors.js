@@ -50,19 +50,20 @@
       if (data) {
         var bgUrl = data.backgroundUrl
         var sketchList = data.sketchList
-        var sLen = sketchList.length
 
         if (bgUrl) {
           _hideTips()
           _initPositionConrainer(bgUrl)
-          
-          if (sLen > 0) {
-            for (var i = 0; i < sLen; i++) {
-              var item = sketchList[i]
-              _sketchHandle(item)
+
+          setTimeout(function() {
+            var sLen = sketchList.length
+            if (sLen > 0) {
+              for (var i = 0; i < sLen; i++) {
+                var item = sketchList[i]
+                _sketchHandle(item)
+              }
             }
-            
-          }
+          }, 200)
 
         }
 
@@ -395,7 +396,7 @@
     var len = kmseditors.$container.find('div.map-position[dtype="0"]').length
     var index = len + 1
 
-    if (obj && typeof obj === 'pbject') {
+    if (obj && typeof obj === 'object') {
       top = obj.top
       left = obj.left
       width = obj.width
@@ -404,7 +405,7 @@
     }
 
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:'+ top +'px;left:'+ left +'px;width:'+ width +'px;height:'+ heigth +'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
 
     _bind_map_event()
   }
