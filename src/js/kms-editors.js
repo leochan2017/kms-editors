@@ -478,6 +478,8 @@
 
   // 初始化上传图片
   function _initImgUpload() {
+    if (typeof WebUploader === 'undefined') return
+
     var BASE_URL = '../../lib/webuploader-0.1.5/'
 
     var serverURL = kmseditors.options.uploadImgUrl += '&fdModelId=' + _generateId()
@@ -503,8 +505,8 @@
     })
 
     // 去掉被插件强奸的样式
-    kmseditors.$container.find('#kmseditors-uploadimg').removeClass('webuploader-container')
-    kmseditors.$container.find('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
+    // kmseditors.$container.find('#kmseditors-uploadimg').removeClass('webuploader-container')
+    // kmseditors.$container.find('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
 
 
     // 监听fileQueued事件，通过uploader.makeThumb来创建图片预览图。

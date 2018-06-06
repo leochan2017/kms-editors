@@ -5,7 +5,45 @@
 }
 
 
-/*颜色选择器*/
+
+/*webuploader组件*/
+
+.webuploader-container {
+  position: relative;
+}
+
+.webuploader-element-invisible {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+
+/*去掉被插件强奸的样式*/
+
+
+/*.webuploader-pick {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  background: #00b7ee;
+  padding: 10px 15px;
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  overflow: hidden;
+}*/
+
+
+/*.webuploader-pick-hover {
+  background: #00a2d4;
+}*/
+
+.webuploader-pick-disable {
+  opacity: 0.6;
+  pointer-events: none;
+}
 
 
 
@@ -38,6 +76,7 @@
 
 
 
+
 /*内容区域*/
 
 #kmseditors-contant {
@@ -52,6 +91,7 @@
   color: #666;
   line-height: 20px;
 }
+
 
 
 
@@ -97,11 +137,13 @@
 
 
 
+
 /*内容区*/
 
 #kmseditors-contant {
   position: relative;
 }
+
 
 
 
@@ -148,6 +190,7 @@
 }
 
 
+
 /*#kmseditors-contant .position-conrainer .map-position .delete {
   display: block;
   position: absolute;
@@ -166,7 +209,9 @@
   opacity: 1;
 }*/
 
+
 /*覆盖原来的hover强奸*/
+
 .webuploader-pick-hover {
   background-color: inherit!important;
 }
