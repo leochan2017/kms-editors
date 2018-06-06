@@ -42,9 +42,6 @@
 
     // 距离初始化等待一点时间好
     setTimeout(function() {
-      // 非编辑模式下隐藏工具栏
-      if (!options.editable) _unEditable()
-
       // 如果有传入图片 则跑初始化函数
       var data = options.data
       if (data) {
@@ -68,6 +65,9 @@
         }
 
       }
+
+      if (!options.editable) setTimeout(_unEditable, 150) // 处理非编辑模式
+
     }, 100)
 
   }
@@ -189,7 +189,24 @@
 
   // 处理非编辑模式
   function _unEditable() {
+    // 非编辑模式下隐藏工具栏
     kmseditors.$container.find('#kmseditors-title').hide()
+
+    // 给所有锚点隐藏，加上hover手势
+    setTimeout(function() {
+      var sketchList = kmseditors.$container.find('div.map-position[dtype="0"]')
+      var onRelation = kmseditors.options.onRelation || _noop
+
+      for (var i = 0; i < sketchList.length; i++) {
+        var $item = $(sketchList[i])
+        $item.css({
+          'opacity': 0,
+          'cursor': 'pointer'
+        }).on('click', function() {
+          onRelation(kmseditors.getData($(this)))
+        })
+      }
+    }, 100)
   }
 
   // 绑定事件处理函数
@@ -407,7 +424,7 @@
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
 
-    _bind_map_event()
+    if (kmseditors.options.editable) _bind_map_event()
   }
 
 

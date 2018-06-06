@@ -68,10 +68,13 @@
     kmseditors.init({
         container: 'container',
         editable: true,
-        // data: {
-        //     backgroundUrl: './src/images/wwhm.jpg',
-        //     sketchList: [{ ref: "1", top: 96, left: 539, width: 92, height: 32 }]
-        // },
+        data: {
+            backgroundUrl: './src/images/wwhm.jpg',
+            sketchList: [
+                { ref: "1", top: 70, left: 692, width: 80, height: 32 },
+                { ref: "2", top: 70, left: 428, width: 73, height: 32 }
+            ]
+        },
         onRelation: function(item) {
             console.log('index.html onRelation: ', item)
         },
