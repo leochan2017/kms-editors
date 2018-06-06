@@ -573,6 +573,11 @@
       // console.log(response)
       var raw = response._raw
       if (!raw) return console.log('_raw error', raw)
+
+      // 清除已有锚点
+      var sketchList = kmseditors.$container.find('div.map-position[dtype="0"]')
+      if (sketchList.length > 0) sketchList.remove()
+
       var imgSrc = kmseditors.options.host + raw
       _initPositionConrainer(imgSrc)
       // $('#' + file.id).addClass('upload-state-done');
