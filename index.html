@@ -68,15 +68,15 @@
     kmseditors.init({
         container: 'container',
         editable: true,
+        // data: {
+        //     backgroundUrl: './src/images/ft.jpg',
+        //     sketchList: [{ ref: "1", top: 96, left: 539, width: 92, height: 32 }]
+        // },
         onRelation: function(item) {
             console.log('index.html onRelation: ', item)
         },
         host: 'http://192.168.2.207:8080/ekp/',
-        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
-        data: {
-            backgroundUrl: './src/images/ft.jpg',
-            sketchList: [{ ref: "1", top: 96, left: 539, width: 92, height: 32 }]
-        }
+        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading'
     })
 
     $('#saveBtn').on('click', function() {
