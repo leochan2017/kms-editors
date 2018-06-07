@@ -170,14 +170,16 @@
       $contextmenu = $('#kmseditors-contextmenu')
       $contextmenu.hide()
 
-      // 右键菜单 - 关联
-      $contextmenu.find('#kmseditors-contextmenu-relation').on('click', _relationHandle)
-      // 右键菜单 - 颜色
-      $contextmenu.find('#kmseditors-contextmenu-color').on('click', _colorHandle)
-      // 右键菜单 - 编辑
-      $contextmenu.find('#kmseditors-contextmenu-edit').on('click', _editHandle)
-      // 右键菜单 - 删除
-      $contextmenu.find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
+      if (kmseditors.options.editable) {
+        // 右键菜单 - 关联
+        $contextmenu.find('#kmseditors-contextmenu-relation').on('click', _relationHandle)
+        // 右键菜单 - 颜色
+        $contextmenu.find('#kmseditors-contextmenu-color').on('click', _colorHandle)
+        // 右键菜单 - 编辑
+        $contextmenu.find('#kmseditors-contextmenu-edit').on('click', _editHandle)
+        // 右键菜单 - 删除
+        $contextmenu.find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
+      }
 
 
       // dev code - 正式上线时去掉
