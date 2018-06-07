@@ -157,7 +157,11 @@
 
       // 锚点按钮点击处理
       var $sketchbtn = $('#kmseditors-sketch')
-      $sketchbtn.on('click', _sketchHandle)
+      $sketchbtn.on('click', function(event) {
+        // 注意这里不要简写
+        // 免得_sketchHandle接收时把even当作了需要入参的obj，免除不得要的麻烦
+        _sketchHandle()
+      })
 
       // 上传图片按钮点击处理
       var $uploadImgBtn = $('#kmseditors-uploadimg')
@@ -414,13 +418,12 @@
     var heigth = '30'
     var len = kmseditors.$container.find('div.map-position[dtype="0"]').length
     var index = len + 1
-
     if (obj && typeof obj === 'object') {
-      top = obj.top
-      left = obj.left
-      width = obj.width
-      height = obj.height
-      index = obj.ref
+      if (obj.top) top = obj.top
+      if (obj.left) left = obj.left
+      if (obj.width) width = obj.width
+      if (obj.height) height = obj.height
+      if (obj.ref) index = obj.ref
     }
 
     // 在这里写style是为了初始化就有值
