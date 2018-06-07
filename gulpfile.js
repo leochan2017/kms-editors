@@ -10,8 +10,8 @@ var port = 35729;
 
 var __SRC__ = {
   file: './src/',
-  js: './src/*.js',
-  css: './src/*.css'
+  js: './src/js/*.js',
+  css: './src/css/*.css'
 }
 
 var __DST__ = './dist/';
@@ -27,8 +27,8 @@ gulp.task('css', function() {
 
 gulp.task('js', function() {
   gulp.src(__SRC__.js)
-    // .pipe(uglify())g
-    // .pipe(rename({ suffix: '.min' }))
+    .pipe(uglify())
+    .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(__DST__))
     .pipe(notify('js task is finish'));
 });
