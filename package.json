@@ -1,8 +1,17 @@
 {
   "name": "kms-editors",
   "version": "1.0.0",
-  "main": "index.html",
+  "main": "index.js",
   "repository": "https://leochan2017@github.com/leochan2017/kms-editors.git",
   "author": "Leo <leochan2017@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-notify": "^3.2.0",
+    "gulp-rename": "^1.2.3",
+    "gulp-uglify": "^3.0.0",
+    "tiny-lr": "^1.1.1"
+  }
 }
