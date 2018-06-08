@@ -108,3 +108,21 @@ $('#saveBtn').on('click', function() {
     console.log('index.html save: ', res)
 })
 ```
+
+---
+
+## kmseditors.screenshot(Object)
+Get screenshot picture
+
+name   | type   | required | description
+-----  | ------ | -------- | ---------
+width  | Number | Yes      | The screenshot picture's width
+height | Number | Yes      | The screenshot picture's height
+
+#### Usage
+
+```
+$('#screenshot').on('click', function() {
+    kmseditors.screenshot()
+})
+```
