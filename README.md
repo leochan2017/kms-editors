@@ -71,21 +71,21 @@ height | Number | Yes      | Sketch element's height
 
 ```
 kmseditors.init({
-        container: 'container',
-        editable: true,
-        data: {
-            backgroundUrl: './src/images/wwhm.jpg',
-            sketchList: [
-                { ref: "1", S: 70, left: 692, width: 80, height: 32 },
-                { ref: "2", top: 70, left: 428, width: 73, height: 32 }
-            ]
-        },
-        onRelation: function(item) {
-            console.log('index.html onRelation: ', item)
-        },
-        host: 'http://192.168.2.207:8080/ekp',
-        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading'
-    })
+    container: 'container',
+    editable: true,
+    data: {
+        backgroundUrl: './src/images/wwhm.jpg',
+        sketchList: [
+            { ref: "1", S: 70, left: 692, width: 80, height: 32 },
+            { ref: "2", top: 70, left: 428, width: 73, height: 32 }
+        ]
+    },
+    onRelation: function(item) {
+        console.log('index.html onRelation: ', item)
+    },
+    host: 'http://192.168.2.207:8080/ekp',
+    uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading'
+})
 ```
 
 ---
