@@ -79,6 +79,8 @@ kmseditors.init({
     })
 ```
 
+---
+
 ### kmseditors.getData()
 Get the kmseditors's data
 
