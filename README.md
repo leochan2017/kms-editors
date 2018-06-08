@@ -12,13 +12,22 @@
 git clone git@github.com:leochan2017/kms-jsmind.git
 ```
 
-2. Require css file.
+2. Require kmseditors css file.
 
 ```
 <link rel="stylesheet" type="text/css" href="./dist/kms-editors.min.css">
 ```
 
-3. Require js file.
+3. Require dependent files
+
+```
+<script src="./lib/jquery-1.11.0.min.js"></script>
+<script src="./lib/jquery.contextmenu.r2.js"></script>
+<script src="./lib/webuploader-0.1.5/webuploader.js"></script>
+```
+
+
+4. Require kmseditors js file.
 
 ```
 <script type="text/javascript" src="./dist/kms-editors.min.js"></script>
