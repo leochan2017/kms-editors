@@ -43,10 +43,10 @@ Initialization kmseditors
 name | type | required | description
 ---- | ---- | -------- | ---------
 container | Stirng | Yes | Container element's id
-data | Object | No | The hot spot map data
+data | Object | No | Initialize view data
 editable | Boolean | No | Is it allowed to edit content？Default: Yes
-host | String | Yes | The host url
-uploadImgUrl | String | Yes | Background image upload server path
+host | String | Yes | The host path prefix
+uploadImgUrl | String | Yes | Background image upload interface server path
 onRelation | Function | No | The related button on click callback
 
 
