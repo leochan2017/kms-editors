@@ -6,6 +6,7 @@
 
 
 
+
 /*webuploader组件*/
 
 .webuploader-container {
@@ -18,6 +19,7 @@
   /* IE6, IE7 */
   clip: rect(1px, 1px, 1px, 1px);
 }
+
 
 
 /*去掉被插件强奸的样式*/
@@ -51,6 +53,7 @@
 }
 
 
+
 /*顶部工具栏*/
 
 .kmseditors-title {
@@ -81,6 +84,7 @@
 
 
 
+
 /*内容区域*/
 
 #kmseditors-contant {
@@ -95,6 +99,7 @@
   color: #666;
   line-height: 20px;
 }
+
 
 
 
@@ -142,11 +147,13 @@
 
 
 
+
 /*内容区*/
 
 #kmseditors-contant {
   position: relative;
 }
+
 
 
 
@@ -174,13 +181,20 @@
 
 #kmseditors-contant .position-conrainer .map-position .map-position-bg {
   position: absolute;
-  background: #0F0;
+  background: rgba(156, 156, 156, 0.40);
+  border: 1px solid #9C9C9C;
   opacity: 0.5;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
+
+#kmseditors-contant .position-conrainer .map-position .map-position-bg.isLink {
+  background: rgba(66, 133, 244, 0.40);
+  border: 1px solid #4285F4;
+}
+
 
 #kmseditors-contant .position-conrainer .map-position .resize {
   display: block;
@@ -190,9 +204,14 @@
   width: 5px;
   height: 5px;
   cursor: nw-resize;
-  background: #000;
+  background: #FFFFFF;
+  border: 1px solid #979797;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.50);
 }
 
+#kmseditors-contant .position-conrainer .map-position .isLink .resize {
+  border: 1px solid #4285F4;
+}
 
 
 /*#kmseditors-contant .position-conrainer .map-position .delete {

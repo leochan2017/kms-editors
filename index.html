@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Demo</title>
     <!-- <link rel="stylesheet" href="./dist/style.min.css"> -->
-    <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="stylesheet" href="./src/css/kms-editors.css">
 </head>
 
 <body>
@@ -71,8 +71,8 @@
         data: {
             backgroundUrl: './src/images/wwhm.jpg',
             sketchList: [
-                { ref: "1", top: 70, left: 692, width: 80, height: 32 },
-                { ref: "2", top: 70, left: 428, width: 73, height: 32 }
+                { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
+                { ref: "2", top: 70, left: 428, width: 73, height: 32, isLink: false }
             ]
         },
         onRelation: function(item) {
@@ -86,6 +86,8 @@
         var res = kmseditors.getData()
         console.log('index.html save: ', res)
     })
+
+
     </script>
 </body>
 
