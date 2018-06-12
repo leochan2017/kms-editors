@@ -7,6 +7,7 @@
 
 
 
+
 /*webuploader组件*/
 
 .webuploader-container {
@@ -19,6 +20,7 @@
   /* IE6, IE7 */
   clip: rect(1px, 1px, 1px, 1px);
 }
+
 
 
 
@@ -54,20 +56,22 @@
 
 
 
+
 /*顶部工具栏*/
 
 .kmseditors-title {
-  border-bottom: 1px solid #666;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .kmseditors-title-btngroup {
-  width: 60px;
-  height: 60px;
+  width: 75px;
+  /*height: 75px;*/
   display: inline-block;
   text-align: center;
   font-size: 14px;
-  padding: 9px 2px 0;
-  border-right: 1px solid #666;
+  /*padding: 9px 2px 0;*/
+  /*border-right: 1px solid #EFF2F7;*/
   /*border: 1px solid red;*/
 }
 
@@ -75,13 +79,42 @@
   cursor: pointer;
 }
 
-.kmseditors-title-btngroup img {
-  width: 24px;
-  height: 24px;
+
+.kmseditors-title-btngroup-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #EFF2F7;
+  margin: 5px auto 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 100px;
+  background-size: 130%;
+}
+
+.kmseditors-title-btngroup-icon.b1 {
+  background-image: url("../images/b1.png");
+}
+
+.kmseditors-title-btngroup-icon.b2 {
+  background-image: url("../images/b2.png");
+}
+
+/*.kmseditors-title-btngroup-icon.b3 {
+  background-image: url("../images/b3.png");
+}
+*/
+.kmseditors-title-btngroup-icon.b4 {
+  background-image: url("../images/b4.png");
+}
+
+.kmseditors-title-btngroup-icon.b5 {
+  background-image: url("../images/b5.png");
 }
 
 
-
+.kmseditors-title-btngroup p {
+  margin-bottom: 5px;
+}
 
 
 
@@ -106,6 +139,7 @@
 
 
 
+
 /*右键菜单*/
 
 #kmseditors-contextmenu {
@@ -114,21 +148,43 @@
   left: 200px;
   /*width: 164px;*/
   /*height: 30px;*/
-  background-color: #999;
-  border: 1px solid #666;
+  background-color: #fff;
+  border: 1px solid #979797;
 }
 
 .kmseditors-contextmenu-group {
   display: inline-block;
   width: 30px;
-  height: 30px;
-  padding: 8px 3px 3px 3px;
-  border-right: 1px solid #666;
+  height: 21px;
+  /*padding: 8px 3px 3px 3px;*/
+  border-right: 1px solid #979797;
   text-align: center;
-  line-height: 30px;
+  line-height: 21px;
   vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
   /*border: 1px solid green;*/
 }
+
+.kmseditors-contextmenu-group.c1 {
+  background-image: url("../images/c1.png");
+}
+
+
+/*UI还没给图*/
+/*.kmseditors-contextmenu-group.c2 {
+  background-image: url("../images/c2.png");
+}
+
+.kmseditors-contextmenu-group.c3 {
+  background-image: url("../images/c3.png");
+}*/
+
+.kmseditors-contextmenu-group.c4 {
+  background-image: url("../images/c4.png");
+}
+
 
 .kmseditors-contextmenu-group:last-child {
   border-right: 0;
@@ -148,11 +204,14 @@
 
 
 
+
 /*内容区*/
 
 #kmseditors-contant {
   position: relative;
+  background-color: #fff;
 }
+
 
 
 
@@ -170,7 +229,7 @@
 
 #kmseditors-contant .position-conrainer .map-position {
   position: absolute;
-  border: 1px solid #000;
+  border: 1px solid #9C9C9C;
   font-weight: bold;
   /*下面几个值写到了js里，为了初始化就有值*/
   /*left: 10px;*/
@@ -212,6 +271,7 @@
 #kmseditors-contant .position-conrainer .map-position .isLink .resize {
   border: 1px solid #4285F4;
 }
+
 
 
 /*#kmseditors-contant .position-conrainer .map-position .delete {
