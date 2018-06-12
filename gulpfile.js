@@ -11,10 +11,11 @@ var port = 35729;
 var __SRC__ = {
   file: './src/',
   js: './src/js/*.js',
-  css: './src/css/*.css'
+  css: './src/style/*.css',
+  images: './src/style/**/*.png'
 }
 
-var __DST__ = './dist/';
+var __DST__ = './dist/kms-editors/';
 
 gulp.task('css', function() {
   gulp.src(__SRC__.css)
@@ -34,6 +35,13 @@ gulp.task('js', function() {
 });
 
 
+gulp.task('images', function() {
+  gulp.src(__SRC__.images)
+    .pipe(gulp.dest(__DST__))
+    .pipe(notify('images task is finish'));
+});
+
+
 gulp.task('clean', function() {
   gulp.src([__DST__], {
       read: false
@@ -44,7 +52,7 @@ gulp.task('clean', function() {
 
 
 gulp.task('default', ['clean'], function() {
-    gulp.start('css', 'js');
+    gulp.start('css', 'js', 'images');
 });
 
 
