@@ -70,6 +70,7 @@
   display: inline-block;
   text-align: center;
   font-size: 14px;
+  cursor: pointer;
   /*padding: 9px 2px 0;*/
   /*border-right: 1px solid #EFF2F7;*/
   /*border: 1px solid red;*/
@@ -92,23 +93,44 @@
 }
 
 .kmseditors-title-btngroup-icon.b1 {
-  background-image: url("../images/b1.png");
+  background-image: url("./images/b1.png");
+}
+
+.kmseditors-title-btngroup-icon.b1:hover {
+  background-image: url("./images/b1_active.png"); 
 }
 
 .kmseditors-title-btngroup-icon.b2 {
-  background-image: url("../images/b2.png");
+  background-image: url("./images/b2.png");
+}
+
+.kmseditors-title-btngroup-icon.b2:hover {
+  background-image: url("./images/b2_active.png"); 
 }
 
 /*.kmseditors-title-btngroup-icon.b3 {
-  background-image: url("../images/b3.png");
+  background-image: url("./images/b3.png");
+}
+
+.kmseditors-title-btngroup-icon.b3:hover {
+  background-image: url("./images/b3_active.png"); 
 }
 */
+
 .kmseditors-title-btngroup-icon.b4 {
-  background-image: url("../images/b4.png");
+  background-image: url("./images/b4.png");
+}
+
+.kmseditors-title-btngroup-icon.b4:hover {
+  background-image: url("./images/b4_active.png"); 
 }
 
 .kmseditors-title-btngroup-icon.b5 {
-  background-image: url("../images/b5.png");
+  background-image: url("./images/b5.png");
+}
+
+.kmseditors-title-btngroup-icon.b5:hover {
+  background-image: url("./images/b5_active.png"); 
 }
 
 
@@ -169,21 +191,21 @@
 }
 
 .kmseditors-contextmenu-group.c1 {
-  background-image: url("../images/c1.png");
+  background-image: url("./images/c1.png");
 }
 
 
 /*UI还没给图*/
 /*.kmseditors-contextmenu-group.c2 {
-  background-image: url("../images/c2.png");
+  background-image: url("./images/c2.png");
 }
 
 .kmseditors-contextmenu-group.c3 {
-  background-image: url("../images/c3.png");
+  background-image: url("./images/c3.png");
 }*/
 
 .kmseditors-contextmenu-group.c4 {
-  background-image: url("../images/c4.png");
+  background-image: url("./images/c4.png");
 }
 
 
