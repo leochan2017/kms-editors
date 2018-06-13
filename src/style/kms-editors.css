@@ -250,6 +250,13 @@
   /*border: 1px solid red;*/
 }
 
+
+#kmseditors-contant .position-conrainer img {
+  width: 100%;
+}
+
+
+
 #kmseditors-contant .position-conrainer .map-position {
   position: absolute;
   font-weight: bold;

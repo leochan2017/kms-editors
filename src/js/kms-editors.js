@@ -62,6 +62,17 @@
             }
           }, 200)
 
+          // 计算编辑器容器与图片的缩放比例
+          // 如果图片的宽大于容器的宽，则需要设置zoom比例
+          setTimeout(function() {
+            var conWidth = kmseditors.$container.width()
+            var imgWidth = kmseditors.$container.find('img[ref=imageMaps]').width()
+            // console.log('conWidth', conWidth)
+            // console.log('imgWidth', imgWidth)
+            // console.log(conWidth / imgWidth)
+            if (imgWidth > conWidth) kmseditors.setZoom(conWidth / imgWidth)
+          }, 300)
+
         }
 
       }
@@ -430,7 +441,7 @@
     var classIsLink = isLink ? ' isLink' : ''
 
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position'+ classIsLink +'" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
 
     // <span class="link-number-text">Link ' + index + '</span>
 
@@ -442,11 +453,14 @@
   function _initPositionConrainer(imgSrc) {
     if (!imgSrc) return
 
+
     var htmlStr = '<img src="' + imgSrc + '" ref="imageMaps">'
     kmseditors.$container.find('#kmseditors-contant').append(htmlStr)
 
+
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
     $images.after('<div class="position-conrainer"></div>')
+
 
     // 不延时执行的话，就取不到width和height
     setTimeout(function() {
@@ -652,6 +666,15 @@
     } else {
       $dom.removeClass('isLink')
     }
+  }
+
+
+  // 设置整体缩放比例
+  kmseditors.setZoom = function(value) {
+    var zoom = value || 1
+    // kmseditors.$container.css({ zoom: zoom })
+    kmseditors.$container.find('img[ref=imageMaps]').css({ zoom: zoom })
+    kmseditors.$position.css({ zoom: zoom })
   }
 
 

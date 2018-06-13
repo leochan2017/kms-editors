@@ -6,6 +6,11 @@
     <title>Demo</title>
     <!-- <link rel="stylesheet" href="./dist/kms-editors/kms-editors.min.css"> -->
     <link rel="stylesheet" href="./src/style/kms-editors.css">
+    <style>
+        #container {
+            /*width: 600px;*/
+        }
+    </style>
 </head>
 
 <body>
@@ -46,6 +51,10 @@
     </div>
     <button id="loginBtn">登录</button>
     <button id="saveBtn">保存</button>
+    <br />
+    设置Zoom:
+    <input type="text" id="zoomValue" value="0.5">
+    <button id="setZoomBtn">确定</button>
     <br />
     <br />
     <script src="./lib/jquery-1.11.0.min.js"></script>
@@ -98,9 +107,13 @@
         console.log('index.html save: ', res)
     })
 
-
     $('#loginBtn').on('click', function() {
         open('http://192.168.2.207:8080/ekp')
+    })
+
+    $('#setZoomBtn').on('click', function() {
+        var val = $('#zoomValue').val() || ''
+        kmseditors.setZoom(val)
     })
     </script>
 </body>

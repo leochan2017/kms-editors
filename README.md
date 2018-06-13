@@ -161,8 +161,8 @@ Set the sketch element's status
 
 name   | type    | required | description
 ------ | ------- | -------- | ---------
-ref    | String  | true     | Sketch element's unique id
-isLink | Boolean | true     | Set the sketch element's status
+ref    | String  | Yes     | Sketch element's unique id
+isLink | Boolean | Yes     | Set the sketch element's status
 
 #### Usage
 
@@ -171,4 +171,20 @@ kmseditors.setLinkStatus({
     ref: item.sketchList.ref,
     isLink: true
 })
+```
+
+
+---
+
+### kmseditors.setZoom(Number)
+The non-standard zoom CSS property can be used to control the magnification level of the container.
+
+type    | required | description
+------- | -------- | ---------
+Number  | No       | zoom value(0~1),  Default: 1
+
+#### Usage
+
+```
+kmseditors.setZoom(0.5)
 ```
