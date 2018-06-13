@@ -403,7 +403,7 @@
     }
   }
 
-  // 锚点
+  // 生成锚点
   function _sketchHandle(obj) {
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
     if ($images.length === 0) return alert('请先上传背景图片')
@@ -430,7 +430,9 @@
     var classIsLink = isLink ? ' isLink' : ''
 
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position'+ classIsLink +'" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position'+ classIsLink +'" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
+
+    // <span class="link-number-text">Link ' + index + '</span>
 
     if (kmseditors.options.editable) _bind_map_event()
   }
