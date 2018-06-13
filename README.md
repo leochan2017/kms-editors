@@ -61,33 +61,56 @@ sketchList | Array(Object) | No | Sketch list
 
 
 ##### sketchList description:
-name   | type   | required | description
------  | -----  | -------- | ---------
-ref    | String | Yes      | Unique id
-top    | Number | Yes      | Specifying the vertical position of a positioned sketch element
-left   | Number | Yes      | Specifying the vertical position of a positioned sketch element
-width  | Number | Yes      | Sketch element's width
-height | Number | Yes      | Sketch element's height
+name   | type    | required | description
+-----  | ------- | -------- | ---------
+ref    | String  | Yes      | Unique id
+top    | Number  | Yes      | Specifying the vertical position of a positioned sketch element
+left   | Number  | Yes      | Specifying the vertical position of a positioned sketch element
+width  | Number  | Yes      | Sketch element's width
+height | Number  | Yes      | Sketch element's height
+isLink | Boolean | No       | Set the sketch element's status
 
 
 #### Usage
 
 ```
-kmseditors.init({
-    container: 'container',
-    editable: true,
-    data: {
-        backgroundUrl: './src/images/wwhm.jpg',
-        sketchList: [
-            { ref: "1", S: 70, left: 692, width: 80, height: 32 },
-            { ref: "2", top: 70, left: 428, width: 73, height: 32 }
-        ]
-    },
-    onRelation: function(item) {
-        console.log('index.html onRelation: ', item)
-    },
-    host: 'http://192.168.2.207:8080/ekp',
-    uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading'
+function _generateId() {
+        var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+        var nums = ''
+
+        for (var i = 0; i < 32; i++) {
+            var id = parseInt(Math.random() * 61)
+            nums += chars[id]
+        }
+
+        return nums
+    }
+
+    var fdModelId = _generateId()
+
+    kmseditors.init({
+        container: 'container',
+        data: {
+            backgroundUrl: './src/style/images/wwhm.jpg',
+            sketchList: [
+                { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
+                { ref: "2", top: 70, left: 428, width: 73, height: 32 }
+            ]
+        },
+        editable: true,
+        fdModelId: fdModelId,
+        host: 'http://192.168.2.207:8080/ekp',
+        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
+        onRelation: function(item) {
+            console.log('index.html onRelation: ', item)
+            if (!item) return
+            kmseditors.setLinkStatus({
+                ref: item.sketchList.ref,
+                isLink: true
+            })
+        }
+    })
 })
 ```
 
@@ -127,5 +150,25 @@ height | Number | Yes      | The screenshot picture's height
 ```
 $('#screenshot').on('click', function() {
     kmseditors.screenshot()
+})
+```
+
+
+---
+
+### kmseditors.setLinkStatus(Object)
+Set the sketch element's status
+
+name   | type    | required | description
+------ | ------- | -------- | ---------
+ref    | String  | true     | Sketch element's unique id
+isLink | Boolean | true     | Set the sketch element's status
+
+#### Usage
+
+```
+kmseditors.setLinkStatus({
+    ref: item.sketchList.ref,
+    isLink: true
 })
 ```
