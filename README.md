@@ -90,28 +90,28 @@ function _generateId() {
     var fdModelId = _generateId()
 
     kmseditors.init({
-        container: 'container',
-        data: {
-            backgroundUrl: './src/style/images/wwhm.jpg',
-            sketchList: [
-                { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
-                { ref: "2", top: 70, left: 428, width: 73, height: 32 }
-            ]
-        },
-        editable: true,
-        fdModelId: fdModelId,
-        host: 'http://192.168.2.207:8080/ekp',
-        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
-        onRelation: function(item) {
-            console.log('index.html onRelation: ', item)
-            if (!item) return
-            kmseditors.setLinkStatus({
-                ref: item.sketchList.ref,
-                isLink: true
-            })
-        }
+            container: 'container',
+            data: {
+                backgroundUrl: './src/style/images/wwhm.jpg',
+                sketchList: [
+                    { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
+                    { ref: "2", top: 70, left: 428, width: 73, height: 32 }
+                ]
+            },
+            editable: true,
+            fdModelId: fdModelId,
+            host: 'http://192.168.2.207:8080/ekp',
+            uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
+            onRelation: function(item) {
+                console.log('index.html onRelation: ', item)
+                if (!item) return
+                kmseditors.setLinkStatus({
+                    ref: item.sketchList.ref,
+                    isLink: true
+                })
+            }
+        })
     })
-})
 ```
 
 ---
