@@ -520,8 +520,8 @@
     })
 
     // 去掉被插件强奸的样式
-    // kmseditors.$container.find('#kmseditors-uploadimg').removeClass('webuploader-container')
-    // kmseditors.$container.find('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
+    kmseditors.$container.find('#kmseditors-uploadimg').removeClass('webuploader-container')
+    kmseditors.$container.find('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
 
 
     // 监听fileQueued事件，通过uploader.makeThumb来创建图片预览图。
