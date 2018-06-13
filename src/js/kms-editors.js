@@ -636,7 +636,7 @@
     var ref = options.ref
     var isLink = options.isLink
     if (!ref || typeof isLink !== 'boolean') return logger.error('setLinkStatus传入参数有误')
-    var $dom = kmseditors.$container.find('div.map-position[dtype="0"][ref="'+ ref +'"]')
+    var $dom = kmseditors.$container.find('div.map-position[dtype="0"][ref="' + ref + '"]')
     if (!$dom.length === 0) return
     if (isLink) {
       $dom.addClass('isLink')
