@@ -14,7 +14,7 @@ git clone git@github.com:leochan2017/kms-jsmind.git
 
 2. Copy the "dist/kms-editors" files to your own project.
 
-2. Require kmseditors css file.
+3. Require kmseditors css file.
 
 ```
 <link rel="stylesheet" href="./kms-editors/kms-editors.min.css">
