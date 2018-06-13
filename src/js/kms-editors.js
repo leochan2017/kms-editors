@@ -416,16 +416,21 @@
     var heigth = '30'
     var len = kmseditors.$container.find('div.map-position[dtype="0"]').length
     var index = len + 1
+    var isLink = false
+
     if (obj && typeof obj === 'object') {
       if (obj.top) top = obj.top
       if (obj.left) left = obj.left
       if (obj.width) width = obj.width
       if (obj.height) height = obj.height
       if (obj.ref) index = obj.ref
+      if (obj.isLink) isLink = obj.isLink
     }
 
+    var classIsLink = isLink ? ' isLink' : ''
+
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position'+ classIsLink +'" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="link-number-text">Link ' + index + '</span><span class="resize"></span></div>')
 
     if (kmseditors.options.editable) _bind_map_event()
   }
