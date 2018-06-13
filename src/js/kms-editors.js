@@ -573,8 +573,9 @@
       var raw = response._raw
       if (!raw) return logger.error('_raw error', raw)
 
+      // 清除锚点操作区域
+      if (kmseditors.$position.length !== 0) kmseditors.$position.remove()
       // 清除已有锚点
-      kmseditors.$position.remove()
       // var sketchList = kmseditors.$container.find('div.map-position[dtype="0"]')
       // if (sketchList.length > 0) sketchList.remove()
 
