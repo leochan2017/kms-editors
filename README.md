@@ -6,16 +6,18 @@
 
 
 ## How to use
-1. Clone this repo to your own project.
+1. Clone this repo.
 
 ```
 git clone git@github.com:leochan2017/kms-jsmind.git
 ```
 
+2. Copy the "dist/kms-editors" files to your own project.
+
 2. Require kmseditors css file.
 
 ```
-<link rel="stylesheet" type="text/css" href="./dist/kms-editors.min.css">
+<link rel="stylesheet" href="./kms-editors/kms-editors.min.css">
 ```
 
 3. Require dependent files
@@ -30,7 +32,7 @@ git clone git@github.com:leochan2017/kms-jsmind.git
 4. Require kmseditors js file.
 
 ```
-<script type="text/javascript" src="./dist/kms-editors.min.js"></script>
+<script src="./kms-editors/kms-editors.min.js"></script>
 ```
 
 ---
