@@ -11,7 +11,7 @@
 
   if (typeof module === 'undefined' || !module.exports) {
     if (typeof $w[__NAME__] !== 'undefined') {
-      logger.log(__NAME__ + '已经存在啦啦啦啦~')
+      logger.error(__NAME__ + '已经存在啦啦啦啦~')
       return
     }
   }
@@ -431,21 +431,6 @@
   }
 
 
-  // 产生随机32位ID
-  function _generateId() {
-    var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-    var nums = ''
-
-    for (var i = 0; i < 32; i++) {
-      var id = parseInt(Math.random() * 61)
-      nums += chars[id]
-    }
-
-    return nums
-  }
-
-
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
     if (!imgSrc) return
@@ -483,9 +468,15 @@
   function _initImgUpload() {
     if (typeof WebUploader === 'undefined') return
 
+    var uploadImgUrl = kmseditors.options.uploadImgUrl
+    if (!uploadImgUrl) return logger.error('参数uploadImgUrl 未在init方法中传入')
+
+    var fdModelId = kmseditors.options.fdModelId
+    if (!fdModelId) return logger.error('参数fdModelId 未在init方法中传入')
+
     var BASE_URL = '../../lib/webuploader-0.1.5/'
 
-    var serverURL = kmseditors.options.uploadImgUrl += '&fdModelId=' + _generateId()
+    var serverURL = uploadImgUrl += '&fdModelId=' + fdModelId
 
     // 创建Web Uploader实例
     var uploader = WebUploader.create({
@@ -575,7 +566,7 @@
     uploader.on('uploadSuccess', function(file, response) {
       // console.log(response)
       var raw = response._raw
-      if (!raw) return console.log('_raw error', raw)
+      if (!raw) return logger.error('_raw error', raw)
 
       // 清除已有锚点
       var sketchList = kmseditors.$container.find('div.map-position[dtype="0"]')
@@ -637,6 +628,21 @@
   // 隐藏tips
   function _hideTips() {
     kmseditors.$container.find('#kmseditors-contant-tips').hide()
+  }
+
+
+  // 设置当前锚点是否为添加链接状态
+  kmseditors.setLinkStatus = function(options) {
+    var ref = options.ref
+    var isLink = options.isLink
+    if (!ref || typeof isLink !== 'boolean') return logger.error('setLinkStatus传入参数有误')
+    var $dom = kmseditors.$container.find('div.map-position[dtype="0"][ref="'+ ref +'"]')
+    if (!$dom.length === 0) return
+    if (isLink) {
+      $dom.addClass('isLink')
+    } else {
+      $dom.removeClass('isLink')
+    }
   }
 
 

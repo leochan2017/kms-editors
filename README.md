@@ -47,6 +47,7 @@ name | type | required | description
 container | Stirng | Yes | Container element's id
 data | Object | No | Initialize view data
 editable | Boolean | No | Is it allowed to edit content？Default: Yes
+fdModelId | String | Yes | fdModelId, length: 32
 host | String | Yes | The host path prefix
 uploadImgUrl | String | Yes | Background image upload interface server path
 onRelation | Function | No | The related button on click callback
