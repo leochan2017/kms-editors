@@ -44,6 +44,7 @@
             </div>
         </div> -->
     </div>
+    <button id="loginBtn">登录</button>
     <button id="saveBtn">保存</button>
     <br />
     <br />
@@ -95,6 +96,11 @@
     $('#saveBtn').on('click', function() {
         var res = kmseditors.getData()
         console.log('index.html save: ', res)
+    })
+
+
+    $('#loginBtn').on('click', function() {
+        open('http://192.168.2.207:8080/ekp')
     })
     </script>
 </body>
