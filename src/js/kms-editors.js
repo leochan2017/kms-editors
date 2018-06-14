@@ -467,8 +467,10 @@
       kmseditors.$position = kmseditors.$container.find('.position-conrainer')
       var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
       var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
-      var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
-      var left = kmseditors.$position.offset().left
+      // var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
+      // var left = kmseditors.$position.offset().left
+      var top = 0
+      var left = 0
       var width = $images.width()
       var height = $images.height()
       // console.log('top', top)
