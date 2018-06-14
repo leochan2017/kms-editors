@@ -173,6 +173,7 @@
   /*height: 30px;*/
   background-color: #fff;
   border: 1px solid #979797;
+  z-index: 9999;
 }
 
 .kmseditors-contextmenu-group {
@@ -187,6 +188,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 50%;
+  cursor: pointer;
   /*border: 1px solid green;*/
 }
 

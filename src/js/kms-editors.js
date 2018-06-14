@@ -134,10 +134,11 @@
 
   // 初始化编辑器元素 
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>锚点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>1、第一步：插入背景图</p><p>2、第二步：根据需求，添加文字 或者 锚点 或者边框</p><p>3、第三步：根据需求，可增加关联信息</p></div></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>锚点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>1、第一步：插入背景图</p><p>2、第二步：根据需求，添加文字 或者 锚点 或者边框</p><p>3、第三步：根据需求，可增加关联信息</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
+      // 啦啦啦啦啦啦啦啦啦
       kmseditors.$container.append(htmlStr)
 
       // 内容编辑区点击隐藏提示文字
@@ -255,10 +256,21 @@
           $editConBtn.show()
         }
 
+        // 取当前鼠标位置
+        var cLeft = event.pageX
+        var cTop = event.pageY
+
+        // 取当前锚点位置，目的是显示到右下角
+        var $c0 = $currSketch[0]
+        if ($c0) {
+          cTop = $c0.offsetTop + $($currSketch).height()
+          cLeft = $c0.offsetLeft + $($currSketch).width() - $contextmenu.width()
+        }
+
         // if (!kmsjsmap.editable) return;
         $contextmenu.show().css({
-          left: event.pageX,
-          top: event.pageY
+          left: cLeft,
+          top: cTop
         })
 
         map_position_bg.data('mousedown', false)
@@ -624,6 +636,7 @@
 
   // 右键菜单 - 关联
   function _relationHandle() {
+    console.log('什么鬼')
     $contextmenu.hide()
     // console.log($currSketch)
     var onRelation = kmseditors.options.onRelation || _noop
