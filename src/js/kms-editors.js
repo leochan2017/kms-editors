@@ -413,7 +413,17 @@
   // 生成锚点
   function _sketchHandle(obj) {
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
-    if ($images.length === 0) return alert('请先上传背景图片')
+    if ($images.length === 0) {
+      var txt = '请先上传图片！'
+      if (window.seajs) {
+        seajs.use('lui/dialog', function(dialog) {
+          dialog.alert(txt)
+        })
+      } else {
+        alert(txt)
+      }
+      return
+    }
 
     _hideTips()
 
