@@ -24,7 +24,6 @@ git clone git@github.com:leochan2017/kms-jsmind.git
 
 ```
 <script src="./lib/jquery-1.11.0.min.js"></script>
-<script src="./lib/jquery.contextmenu.r2.js"></script>
 <script src="./lib/webuploader-0.1.5/webuploader.js"></script>
 ```
 

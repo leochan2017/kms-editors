@@ -231,18 +231,18 @@
     // 拖动处理
     kmseditors.$position.find('.map-position-bg').each(function() {
       var map_position_bg = $(this)
-      var isContextmenu = false
-      // 右键菜单
-      map_position_bg.off('contextmenu', _noop).on('contextmenu', function(event) {
-        // console.log('右键拉拉拉拉', event)
-        isContextmenu = true
+
+      // 锚点框内
+      map_position_bg.off('click').on('click', function(event) {
+        // 鼠标单击
+        // console.log('map_position_bg click', event)
+        event.preventDefault()
+
         $currSketch = $(event.target).parent()
-        // console.log('ref', $currSketch.attr('ref'))
         $currSketch.top = event.pageY
         $currSketch.left = event.pageX
         $currSketch.width = $($currSketch).width()
         $currSketch.height = $($currSketch).height()
-        event.preventDefault()
 
         var dtype = parseInt($currSketch.attr('dtype'))
         var $colorConBtn = $('#kmseditors-contextmenu-color')
@@ -272,33 +272,17 @@
           left: cLeft,
           top: cTop
         })
-
-        map_position_bg.data('mousedown', false)
-        map_position_bg.css('cursor', 'default')
-
-        // 判断右键时间已过，flag复位
-        setTimeout(function() {
-          isContextmenu = false
-        }, 100)
-      })
-
-      // var conrainer = $(this).parent().parent()
-      // 锚点框内
-      map_position_bg.unbind('mousedown').mousedown(function(event) {
-        // console.log('map_position_bg 1 mousedown', event)
-        // 因为右键事件没mousedown那么快触发，
-        // 所以，先等一等看看用户是不是要右键，再继续处理
-        return setTimeout(function() {
-          if (isContextmenu) return false
-          // console.log('map_position_bg 2 mousedown')
-          $contextmenu.hide()
-          map_position_bg.data('mousedown', true)
-          map_position_bg.data('pageX', event.pageX)
-          map_position_bg.data('pageY', event.pageY)
-          map_position_bg.css('cursor', 'move')
-          return false
-        }, 50)
+      }).unbind('mousedown').mousedown(function(event) {
+        // 鼠标按下
+        // console.log('map_position_bg mousedown', event)
+        $contextmenu.hide()
+        map_position_bg.data('mousedown', true)
+        map_position_bg.data('pageX', event.pageX)
+        map_position_bg.data('pageY', event.pageY)
+        map_position_bg.css('cursor', 'move')
+        return false
       }).unbind('mouseup').mouseup(function(event) {
+        // 鼠标弹起
         // console.log('map_position_bg mouseup')
         map_position_bg.data('mousedown', false)
         map_position_bg.css('cursor', 'default')
