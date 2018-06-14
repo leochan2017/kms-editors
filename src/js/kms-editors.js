@@ -547,7 +547,7 @@
 
 
       // $list为容器jQuery实例
-      // $list.append($li);
+      // $list.append($li)
       kmseditors.$container.find('#kmseditors-contant').append($li)
 
       // 创建缩略图
@@ -556,13 +556,13 @@
       var thumbnailWidth = thumbnailHeight = 100
       uploader.makeThumb(file, function(error, src) {
         if (error) {
-          $img.replaceWith('<span>不能预览</span>');
-          return;
+          $img.replaceWith('<span>不能预览</span>')
+          return
         }
 
-        $img.attr('src', src);
-      }, thumbnailWidth, thumbnailHeight);
-    });
+        $img.attr('src', src)
+      }, thumbnailWidth, thumbnailHeight)
+    })
 
     // 当文件被加入队列之前触发，此事件的handler返回值为false，则此文件不会被添加进入队列。
     uploader.on('beforeFileQueued', function(file) {
@@ -579,17 +579,17 @@
     // 文件上传过程中创建进度条实时显示。
     uploader.on('uploadProgress', function(file, percentage) {
       var $li = $('#' + file.id),
-        $percent = $li.find('.progress span');
+        $percent = $li.find('.progress span')
 
       // 避免重复创建
       if (!$percent.length) {
         $percent = $('<p class="progress"><span></span></p>')
           .appendTo($li)
-          .find('span');
+          .find('span')
       }
 
-      $percent.css('width', percentage * 100 + '%');
-    });
+      $percent.css('width', percentage * 100 + '%')
+    })
 
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
     uploader.on('uploadSuccess', function(file, response) {
@@ -605,26 +605,26 @@
 
       var imgSrc = kmseditors.options.host + raw
       _initPositionConrainer(imgSrc)
-      // $('#' + file.id).addClass('upload-state-done');
-    });
+      // $('#' + file.id).addClass('upload-state-done')
+    })
 
     // 文件上传失败，显示上传出错。
     uploader.on('uploadError', function(file) {
       var $li = $('#' + file.id),
-        $error = $li.find('div.error');
+        $error = $li.find('div.error')
 
       // 避免重复创建
       if (!$error.length) {
-        $error = $('<div class="error"></div>').appendTo($li);
+        $error = $('<div class="error"></div>').appendTo($li)
       }
 
-      $error.text('上传失败');
-    });
+      $error.text('上传失败')
+    })
 
     // 完成上传完了，成功或者失败，先删除进度条。
     uploader.on('uploadComplete', function(file) {
-      $('#' + file.id).find('.progress').remove();
-    });
+      $('#' + file.id).find('.progress').remove()
+    })
   }
 
 
