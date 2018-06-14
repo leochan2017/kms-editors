@@ -630,9 +630,8 @@
 
   // 右键菜单 - 关联
   function _relationHandle() {
-    console.log('什么鬼')
-    $contextmenu.hide()
     // console.log($currSketch)
+    $contextmenu.hide()
     var onRelation = kmseditors.options.onRelation || _noop
     onRelation(kmseditors.getData($currSketch))
   }
