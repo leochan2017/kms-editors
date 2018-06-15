@@ -476,20 +476,29 @@
       // var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
       // var left = kmseditors.$position.offset().left
       var top = 0
-      var left = '50%'
+      var left = 0
       var width = $images.width()
       var height = $images.height()
-      // console.log('top', top)
-      // console.log('left', left)
-      // console.log('width', width)
-      // console.log('height', height)
+
       kmseditors.$position.css({
         top: top,
         left: left,
         width: width,
-        height: height,
-        'margin-left': -(width/2)
-      })
+        height: height
+      }) 
+
+      // 非编辑模式下，内容区域居中
+      if (!kmseditors.options.editable) {
+        kmseditors.$container.css({
+          'text-align': 'center'
+        })
+
+        kmseditors.$position.css({
+          left: '50%',
+          'text-align': 'center',
+          'margin-left': -(width / 2)
+        })
+      }
     }, 100)
   }
 
