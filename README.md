@@ -187,3 +187,20 @@ Number  | No       | zoom value(0~1),  Default: 1
 ```
 kmseditors.setZoom(0.5)
 ```
+
+
+---
+
+### kmseditors.getZoom()
+Return the container's zoom value.
+
+type    | description
+------- | ---------
+Number  | zoom value(0~1)
+
+#### Usage
+
+```
+var val = kmseditors.getZoom()
+alert(val)
+```

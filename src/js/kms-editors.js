@@ -696,6 +696,12 @@
   }
 
 
+  // 获取当前zoom的值
+  kmseditors.getZoom = function() {
+    return kmseditors.$position.css('zoom')
+  }
+
+
   if (typeof module !== 'undefined' && typeof exports === 'object') {
     module.exports = kmseditors
   } else if (typeof define === 'function' && (define.amd || define.cmd)) {

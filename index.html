@@ -58,6 +58,8 @@
     <input type="text" id="zoomValue" value="0.5">
     <button id="setZoomBtn">确定</button>
     <br />
+    <button id="getZoomBtn">获取当前zoom的值</button>
+    <br />
     <br />
     <script src="./lib/jquery-1.11.0.min.js"></script>
     <script src="./lib/webuploader-0.1.5/webuploader.js"></script>
@@ -116,6 +118,11 @@
         var val = $('#zoomValue').val() || ''
         kmseditors.setZoom(val)
     })
+
+    $('#getZoomBtn').on('click', function() {
+        var val = kmseditors.getZoom()
+        alert(val)
+    })    
     </script>
 </body>
 
