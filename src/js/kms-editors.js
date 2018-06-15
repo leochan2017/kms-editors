@@ -1,6 +1,7 @@
 (function($w) {
   var __NAME__ = 'kmseditors'
   var _noop = function() {}
+  var __INIT_ZOOM__ = ''
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
@@ -70,7 +71,9 @@
             // console.log('conWidth', conWidth)
             // console.log('imgWidth', imgWidth)
             // console.log(conWidth / imgWidth)
-            if (imgWidth > conWidth) kmseditors.setZoom(conWidth / imgWidth)
+            var zoom = 1
+            if (imgWidth > conWidth) zoom = conWidth / imgWidth
+            kmseditors.setZoom(zoom)
           }, 300)
 
         }
@@ -485,7 +488,7 @@
         left: left,
         width: width,
         height: height
-      }) 
+      })
 
       // 非编辑模式下，内容区域居中
       if (!kmseditors.options.editable) {
@@ -690,7 +693,9 @@
   // 设置整体缩放比例
   kmseditors.setZoom = function(value) {
     var zoom = value || 1
-    // kmseditors.$container.css({ zoom: zoom })
+
+    if (__INIT_ZOOM__ === '') __INIT_ZOOM__ = zoom
+
     kmseditors.$container.find('img[ref=imageMaps]').css({ zoom: zoom })
     kmseditors.$position.css({ zoom: zoom })
   }
@@ -698,7 +703,11 @@
 
   // 获取当前zoom的值
   kmseditors.getZoom = function() {
-    return kmseditors.$position.css('zoom')
+    var obj = {
+      initZoom: __INIT_ZOOM__,
+      currZoom: parseFloat(kmseditors.$position.css('zoom'))
+    }
+    return obj
   }
 
 

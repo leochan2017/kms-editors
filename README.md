@@ -194,13 +194,18 @@ kmseditors.setZoom(0.5)
 ### kmseditors.getZoom()
 Return the container's zoom value.
 
-type    | description
-------- | ---------
-Number  | zoom value(0~1)
+Name     | type    | description
+-------- | ------- | ---------
+currZoom | Number  | current zoom value(0~1)
+initZoom | Number  | init zoom value(0~1)
 
 #### Usage
 
 ```
 var val = kmseditors.getZoom()
-alert(val)
+console(val)
+// {
+//    currZoom: 0.5
+//    initZoom: 1
+// }
 ```
