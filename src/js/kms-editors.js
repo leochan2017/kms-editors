@@ -476,7 +476,7 @@
       // var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
       // var left = kmseditors.$position.offset().left
       var top = 0
-      var left = 0
+      var left = '50%'
       var width = $images.width()
       var height = $images.height()
       // console.log('top', top)
@@ -487,7 +487,8 @@
         top: top,
         left: left,
         width: width,
-        height: height
+        height: height,
+        'margin-left': -(width/2)
       })
     }, 100)
   }

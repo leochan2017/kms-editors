@@ -51,6 +51,7 @@
 
 .kmseditors {
   overflow: auto;
+  position: relative;
 }
 
 
@@ -248,12 +249,8 @@
 #kmseditors-contant {
   position: relative;
   background-color: #fff;
+  text-align: center;
 }
-
-
-
-
-
 
 
 
@@ -263,7 +260,7 @@
 
 #kmseditors-contant .position-conrainer {
   position: absolute;
-  border: 1px solid transparent;
+  /*border: 1px solid transparent;*/
   /*border: 1px solid red;*/
 }
 
