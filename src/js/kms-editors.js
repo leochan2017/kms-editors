@@ -40,7 +40,8 @@
     this.options = options
 
     _initElement()
-
+    _initSidebar()
+    
     // 距离初始化等待一点时间好
     setTimeout(function() {
       // 如果有传入图片 则跑初始化函数
@@ -204,6 +205,24 @@
       // $sketchbtn.click()
     })
 
+  }
+  
+  //初始化放大缩小的工具栏
+  function _initSidebar() {
+    if(kmseditors.options.editable) return
+    
+    var sidebar = $("#kmseditors-sidebar"),
+        barhtml = '<ul><li class="lui_icon_s lui_icon_s_icon_repeat mui mui-history_handler_back" title="还原" data-opt="zoomReset"></li>'
+          + '<li class="lui_icon_s lui_icon_s_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>'
+          + '<li class="lui_icon_s lui_icon_s_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
+          
+    sidebar.append(barhtml)
+    sidebar.on('click', function(evt) {
+      var target = $(evt.target), opt = target.attr('data-opt')
+      if(opt && kmseditors[opt]) {
+        kmseditors[opt]()
+      }
+    })
   }
 
   // 处理非编辑模式
@@ -540,7 +559,6 @@
       }
     })
 
-    // 去掉被插件强奸的样式
     kmseditors.$container.find('#kmseditors-uploadimg').removeClass('webuploader-container')
     kmseditors.$container.find('#kmseditors-uploadimg > div.webuploader-pick').removeClass('webuploader-pick')
 
@@ -696,18 +714,36 @@
 
     if (__INIT_ZOOM__ === '') __INIT_ZOOM__ = zoom
 
-    kmseditors.$container.find('img[ref=imageMaps]').css({ zoom: zoom })
+    var $image = kmseditors.$container.find('img[ref=imageMaps]')
+    $image.css({ zoom: zoom })
     kmseditors.$position.css({ zoom: zoom })
+ 
   }
 
 
-  // 获取zoom的值
+  // 获取当前zoom的值
   kmseditors.getZoom = function() {
     var obj = {
       initZoom: __INIT_ZOOM__,
       currZoom: parseFloat(kmseditors.$position.css('zoom'))
     }
     return obj
+  }
+  
+  kmseditors.zoomIn = function() {
+    var v =  kmseditors.getZoom().currZoom + 0.1, max = __INIT_ZOOM__ * 2
+    if(v >= max ) v = max
+    kmseditors.setZoom(v)
+  }
+  
+  kmseditors.zoomOut = function() {
+    var v =  kmseditors.getZoom().currZoom - 0.1, min = __INIT_ZOOM__ * 0.6
+    if(v <= min ) v = min
+    kmseditors.setZoom(v)
+  }
+  
+  kmseditors.zoomReset = function() {
+    kmseditors.setZoom(__INIT_ZOOM__)
   }
 
 
