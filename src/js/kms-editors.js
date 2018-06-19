@@ -40,7 +40,6 @@
     this.options = options
 
     _initElement()
-    _initSidebar()
     
     // 距离初始化等待一点时间好
     setTimeout(function() {
@@ -145,6 +144,8 @@
       // 啦啦啦啦啦啦啦啦啦
       kmseditors.$container.append(htmlStr)
 
+      _initSidebar()
+
       // 内容编辑区点击隐藏提示文字
       $('#kmseditors-contant').on('click', _hideTips)
 
@@ -217,6 +218,7 @@
           + '<li class="lui_icon_s lui_icon_s_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
           
     sidebar.append(barhtml)
+    console.log(sidebar)
     sidebar.on('click', function(evt) {
       var target = $(evt.target), opt = target.attr('data-opt')
       if(opt && kmseditors[opt]) {
@@ -234,11 +236,12 @@
     setTimeout(function() {
       var sketchList = kmseditors.$container.find('div.map-position[dtype="0"]')
       var onRelation = kmseditors.options.onRelation || _noop
+      var opacity = kmseditors.options.debug ? 1 : 0
 
       for (var i = 0; i < sketchList.length; i++) {
         var $item = $(sketchList[i])
         $item.css({
-          'opacity': 0,
+          'opacity': opacity,
           'cursor': 'pointer'
         }).on('click', function() {
           onRelation(kmseditors.getData($(this)))

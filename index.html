@@ -91,7 +91,7 @@
                 { ref: "2", top: 70, left: 428, width: 73, height: 32 }
             ]
         },
-        editable: true,
+        editable: !true,
         fdModelId: fdModelId,
         host: 'http://192.168.2.207:8080/ekp',
         uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
@@ -102,7 +102,8 @@
                 ref: item.sketchList.ref,
                 isLink: true
             })
-        }
+        },
+        debug: true
     })
 
     $('#saveBtn').on('click', function() {
