@@ -701,7 +701,7 @@
   }
 
 
-  // 获取当前zoom的值
+  // 获取zoom的值
   kmseditors.getZoom = function() {
     var obj = {
       initZoom: __INIT_ZOOM__,
