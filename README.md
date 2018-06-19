@@ -41,15 +41,16 @@ git clone git@github.com:leochan2017/kms-jsmind.git
 ### kmseditors.init(Object)
 Initialization kmseditors
 
-name | type | required | description
----- | ---- | -------- | ---------
-container | Stirng | Yes | Container element's id
-data | Object | No | Initialize view data
-editable | Boolean | No | Is it allowed to edit content？Default: Yes
-fdModelId | String | Yes | fdModelId, length: 32
-host | String | Yes | The host path prefix
-uploadImgUrl | String | Yes | Background image upload interface server path
-onRelation | Function | No | The related button on click callback
+name         | type     | required | description
+------------ | -------- | -------- | ---------
+container    | Stirng   | Yes | Container element's id
+data         | Object   | No  | Initialize view data
+editable     | Boolean  | No  | Is it allowed to edit content？Default: True
+fdModelId    | String   | Yes | fdModelId, length: 32
+host         | String   | Yes | The host path prefix
+uploadImgUrl | String   | Yes | Background image upload interface server path
+onRelation   | Function | No  | The related button on click callback
+debug        | Boolean  | No  | debug mode, Default: False
 
 
 #### data description:
@@ -62,12 +63,12 @@ sketchList | Array(Object) | No | Sketch list
 ##### sketchList description:
 name   | type    | required | description
 -----  | ------- | -------- | ---------
-ref    | String  | Yes      | Unique id
-top    | Number  | Yes      | Specifying the vertical position of a positioned sketch element
-left   | Number  | Yes      | Specifying the vertical position of a positioned sketch element
-width  | Number  | Yes      | Sketch element's width
-height | Number  | Yes      | Sketch element's height
-isLink | Boolean | No       | Set the sketch element's status
+ref    | String  | Yes | Unique id
+top    | Number  | Yes | Specifying the vertical position of a positioned sketch element
+left   | Number  | Yes | Specifying the vertical position of a positioned sketch element
+width  | Number  | Yes | Sketch element's width
+height | Number  | Yes | Sketch element's height
+isLink | Boolean | No  | Set the sketch element's status
 
 
 #### Usage
@@ -120,10 +121,10 @@ Get the kmseditors's data
 
 #### return
 
-name | type | required | description
----- | ---- | -------- | ---------
-backgroundUrl | String | No | Background image url
-sketchList | Array(Object) | No | Sketch list
+name          | type          | required | description
+------------- | ------------- | -------- | ---------
+backgroundUrl | String        | No       | Background image url
+sketchList    | Array(Object) | No       | Sketch list
 
 #### Usage
 
@@ -160,8 +161,8 @@ Set the sketch element's status
 
 name   | type    | required | description
 ------ | ------- | -------- | ---------
-ref    | String  | Yes     | Sketch element's unique id
-isLink | Boolean | Yes     | Set the sketch element's status
+ref    | String  | Yes      | Sketch element's unique id
+isLink | Boolean | Yes      | Set the sketch element's status
 
 #### Usage
 
