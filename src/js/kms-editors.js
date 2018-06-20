@@ -687,7 +687,7 @@
       initZoom: __INIT_ZOOM__,
       currZoom: parseFloat(currZoom)
     }
-    
+
     // console.log(obj)
 
     return obj
