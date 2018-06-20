@@ -38,7 +38,7 @@ git clone git@github.com:leochan2017/kms-jsmind.git
 ## API
 
 ### kmseditors.init(Object)
-Initialization kmseditors
+Initialize kmseditors.
 
 name         | type     | required | description
 ------------ | -------- | -------- | ---------
@@ -136,8 +136,8 @@ $('#saveBtn').on('click', function() {
 
 ---
 
-## kmseditors.screenshot(Object)
-Get screenshot picture
+## kmseditors.screenshot(Object) (Not yet started)
+Get screenshot picture.
 
 name   | type   | required | description
 -----  | ------ | -------- | ---------
@@ -156,7 +156,7 @@ $('#screenshot').on('click', function() {
 ---
 
 ### kmseditors.setLinkStatus(Object)
-Set the sketch element's status
+Set the status of the sketch element's.
 
 name   | type    | required | description
 ------ | ------- | -------- | ---------
@@ -176,7 +176,7 @@ kmseditors.setLinkStatus({
 ---
 
 ### kmseditors.setZoom(Number)
-The non-standard zoom CSS property can be used to control the magnification level of the container.
+Set the container's zoom value.
 
 type    | required | description
 ------- | -------- | ---------
@@ -192,7 +192,7 @@ kmseditors.setZoom(0.5)
 ---
 
 ### kmseditors.getZoom()
-Return the container's zoom value.
+Get the container's zoom value.
 
 Name     | type    | description
 -------- | ------- | ---------
@@ -208,4 +208,40 @@ console(val)
 //    currZoom: 0.5
 //    initZoom: 1
 // }
+```
+
+
+---
+
+### kmseditors.zoomIn()
+Magnify the container. The maximum allowable is twice the initial value.
+
+#### Usage
+
+```
+kmseditors.zoomIn()
+```
+
+
+---
+
+### kmseditors.zoomOut()
+Shrink the container. The maximum allowable value is 0.6 times the initial value.
+
+#### Usage
+
+```
+kmseditors.zoomOut()
+```
+
+
+---
+
+### kmseditors.zoomReset()
+Reset container initialization size
+
+#### Usage
+
+```
+kmseditors.zoomReset()
 ```
