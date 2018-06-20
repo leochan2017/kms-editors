@@ -40,7 +40,7 @@
     this.options = options
 
     _initElement()
-    
+
     // 距离初始化等待一点时间好
     setTimeout(function() {
       // 如果有传入图片 则跑初始化函数
@@ -146,6 +146,13 @@
 
       _initSidebar()
 
+      // 非编辑模式下，内容区域居中
+      if (!kmseditors.options.editable) {
+        kmseditors.$container.css({
+          'text-align': 'center'
+        })
+      }
+
       // 内容编辑区点击隐藏提示文字
       $('#kmseditors-contant').on('click', _hideTips)
 
@@ -207,21 +214,21 @@
     })
 
   }
-  
+
   //初始化放大缩小的工具栏
   function _initSidebar() {
-    if(kmseditors.options.editable) return
-    
+    if (kmseditors.options.editable) return
+
     var sidebar = $("#kmseditors-sidebar"),
-        barhtml = '<ul><li class="lui_icon_s lui_icon_s_icon_repeat mui mui-history_handler_back" title="还原" data-opt="zoomReset"></li>'
-          + '<li class="lui_icon_s lui_icon_s_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>'
-          + '<li class="lui_icon_s lui_icon_s_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
-          
+      barhtml = '<ul><li class="lui_icon_s lui_icon_s_icon_repeat mui mui-history_handler_back" title="还原" data-opt="zoomReset"></li>' +
+      '<li class="lui_icon_s lui_icon_s_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>' +
+      '<li class="lui_icon_s lui_icon_s_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
+
     sidebar.append(barhtml)
-    console.log(sidebar)
     sidebar.on('click', function(evt) {
-      var target = $(evt.target), opt = target.attr('data-opt')
-      if(opt && kmseditors[opt]) {
+      var target = $(evt.target),
+        opt = target.attr('data-opt')
+      if (opt && kmseditors[opt]) {
         kmseditors[opt]()
       }
     })
@@ -454,8 +461,8 @@
 
     var top = '10'
     var left = '10'
-    var width = '90'
-    var heigth = '30'
+    var width = '160'
+    var height = '160'
     var len = kmseditors.$container.find('div.map-position[dtype="0"]').length
     var index = len + 1
     var isLink = false
@@ -472,7 +479,7 @@
     var classIsLink = isLink ? ' isLink' : ''
 
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + heigth + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
+    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
 
     // <span class="link-number-text">Link ' + index + '</span>
 
@@ -484,13 +491,15 @@
   function _initPositionConrainer(imgSrc) {
     if (!imgSrc) return
 
+    var htmlStr = '<div id="kmseditors-contant-sketch-warp">' +
+      '<img src="' + imgSrc + '" ref="imageMaps">' +
+      '<div class="position-conrainer"></div>' +
+      '</div>'
 
-    var htmlStr = '<img src="' + imgSrc + '" ref="imageMaps">'
+
     kmseditors.$container.find('#kmseditors-contant').append(htmlStr)
 
-
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
-    $images.after('<div class="position-conrainer"></div>')
 
 
     // 不延时执行的话，就取不到width和height
@@ -513,17 +522,17 @@
       })
 
       // 非编辑模式下，内容区域居中
-      if (!kmseditors.options.editable) {
-        kmseditors.$container.css({
-          'text-align': 'center'
-        })
+      // if (!kmseditors.options.editable) {
+        // kmseditors.$container.css({
+        //   'text-align': 'center'
+        // })
 
-        kmseditors.$position.css({
-          left: '50%',
-          'text-align': 'center',
-          'margin-left': -(width / 2)
-        })
-      }
+        // kmseditors.$position.css({
+        //   left: '50%',
+        //   'text-align': 'center',
+        //   'margin-left': -(width / 2)
+        // })
+      // }
     }, 100)
   }
 
@@ -717,10 +726,7 @@
 
     if (__INIT_ZOOM__ === '') __INIT_ZOOM__ = zoom
 
-    var $image = kmseditors.$container.find('img[ref=imageMaps]')
-    $image.css({ zoom: zoom })
-    kmseditors.$position.css({ zoom: zoom })
- 
+    kmseditors.$container.find('#kmseditors-contant-sketch-warp').css({ zoom: zoom })
   }
 
 
@@ -728,23 +734,28 @@
   kmseditors.getZoom = function() {
     var obj = {
       initZoom: __INIT_ZOOM__,
-      currZoom: parseFloat(kmseditors.$position.css('zoom'))
+      currZoom: parseFloat(kmseditors.$container.find('#kmseditors-contant-sketch-warp').css('zoom'))
     }
     return obj
   }
-  
+
+  // 放大
   kmseditors.zoomIn = function() {
-    var v =  kmseditors.getZoom().currZoom + 0.1, max = __INIT_ZOOM__ * 2
-    if(v >= max ) v = max
+    var v = kmseditors.getZoom().currZoom + 0.1,
+      max = __INIT_ZOOM__ * 2
+    if (v >= max) v = max
     kmseditors.setZoom(v)
   }
-  
+
+  // 缩小
   kmseditors.zoomOut = function() {
-    var v =  kmseditors.getZoom().currZoom - 0.1, min = __INIT_ZOOM__ * 0.6
-    if(v <= min ) v = min
+    var v = kmseditors.getZoom().currZoom - 0.1,
+      min = __INIT_ZOOM__ * 0.6
+    if (v <= min) v = min
     kmseditors.setZoom(v)
   }
-  
+
+  // 还原
   kmseditors.zoomReset = function() {
     kmseditors.setZoom(__INIT_ZOOM__)
   }

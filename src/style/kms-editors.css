@@ -257,6 +257,13 @@
 
 /*内容区 - 背景图片区域*/
 
+#kmseditors-contant-sketch-warp {
+  /*width: 1024px;*/
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
 #kmseditors-contant .position-conrainer {
   position: absolute;
   /*border: 1px solid transparent;*/
@@ -376,3 +383,6 @@
 #kmseditors-sidebar li:LAST-CHILD {
     border-bottom: none;
 }
+
+
+
