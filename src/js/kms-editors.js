@@ -41,8 +41,11 @@
 
     _initElement()
 
-    // 距离初始化等待一点时间好
-    setTimeout(function() {
+    var tElement = setInterval(function() {
+      if (kmseditors.$container.find('.kmseditors').length === 0) return
+
+      clearInterval(tElement)
+
       // 如果有传入图片 则跑初始化函数
       var data = options.data
       if (data) {
@@ -52,8 +55,12 @@
         if (bgUrl) {
           _hideTips()
           _initPositionConrainer(bgUrl)
+          
+          var tSketch = setInterval(function() {
+            if (kmseditors.$position.length === 0) return
 
-          setTimeout(function() {
+            clearInterval(tSketch)
+
             var sLen = sketchList.length
             if (sLen > 0) {
               for (var i = 0; i < sLen; i++) {
@@ -61,28 +68,32 @@
                 _sketchHandle(item)
               }
             }
-          }, 200)
+          }, 10)
+
 
           // 计算编辑器容器与图片的缩放比例
           // 如果图片的宽大于容器的宽，则需要设置zoom比例
-          setTimeout(function() {
-            var conWidth = kmseditors.$container.width()
-            var imgWidth = kmseditors.$container.find('img[ref=imageMaps]').width()
-            // console.log('conWidth', conWidth)
-            // console.log('imgWidth', imgWidth)
-            // console.log(conWidth / imgWidth)
-            var zoom = 1
-            if (imgWidth > conWidth) zoom = conWidth / imgWidth
-            kmseditors.setZoom(zoom)
-          }, 300)
+          var conWidth = 0
+          var imgWidth = 0
 
+          var tZoom = setInterval(function() {
+            if (conWidth > 0 && imgWidth > 0) {
+              clearInterval(tZoom)
+              var zoom = 1
+              if (imgWidth > conWidth) zoom = conWidth / imgWidth
+              kmseditors.setZoom(zoom)
+            } else {
+              conWidth = kmseditors.$container.width()
+              imgWidth = kmseditors.$container.find('img[ref=imageMaps]').width()
+            }
+          }, 10)
         }
-
       }
 
-      if (!options.editable) setTimeout(_unEditable, 150) // 处理非编辑模式
+      // if (!options.editable) setTimeout(_unEditable, 150) // 处理非编辑模式
+      if (!options.editable) _unEditable()
 
-    }, 100)
+    }, 10)
 
   }
 
