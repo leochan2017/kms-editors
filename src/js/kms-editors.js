@@ -496,7 +496,6 @@
       '<div class="position-conrainer"></div>' +
       '</div>'
 
-
     kmseditors.$container.find('#kmseditors-contant').append(htmlStr)
 
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
@@ -523,15 +522,15 @@
 
       // 非编辑模式下，内容区域居中
       // if (!kmseditors.options.editable) {
-        // kmseditors.$container.css({
-        //   'text-align': 'center'
-        // })
+      // kmseditors.$container.css({
+      //   'text-align': 'center'
+      // })
 
-        // kmseditors.$position.css({
-        //   left: '50%',
-        //   'text-align': 'center',
-        //   'margin-left': -(width / 2)
-        // })
+      // kmseditors.$position.css({
+      //   left: '50%',
+      //   'text-align': 'center',
+      //   'margin-left': -(width / 2)
+      // })
       // }
     }, 100)
   }
