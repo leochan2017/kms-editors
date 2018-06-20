@@ -55,7 +55,7 @@
         if (bgUrl) {
           _hideTips()
           _initPositionConrainer(bgUrl)
-          
+
           var tSketch = setInterval(function() {
             if (kmseditors.$position.length === 0) return
 
@@ -247,10 +247,16 @@
     kmseditors.$container.find('#kmseditors-title').hide()
 
     // 给所有锚点隐藏，加上hover手势
-    setTimeout(function() {
+    var tPosition = setInterval(function() {
+      if (kmseditors.$position.length === 0) return
+
+      clearInterval(tPosition)
+
       var sketchList = kmseditors.$container.find('div.map-position[dtype="0"]')
       var onRelation = kmseditors.options.onRelation || _noop
-      var opacity = kmseditors.options.debug ? 1 : 0
+      var opacity = kmseditors.options.debug === true ? 1 : 0
+
+      if (!sketchList) return
 
       for (var i = 0; i < sketchList.length; i++) {
         var $item = $(sketchList[i])
@@ -261,7 +267,7 @@
           onRelation(kmseditors.getData($(this)))
         })
       }
-    }, 100)
+    }, 10)
   }
 
   // 绑定事件处理函数
@@ -507,26 +513,30 @@
 
     var $images = kmseditors.$container.find('img[ref=imageMaps]')
 
+    var width = 0
+    var height = 0
+    var tImage = setInterval(function() {
+      if (width > 0 && height > 0) {
+        clearInterval(tImage)
+        kmseditors.$position = kmseditors.$container.find('.position-conrainer')
+        var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
+        var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
+        // var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
+        // var left = kmseditors.$position.offset().left
+        var top = 0
+        var left = 0
 
-    // 不延时执行的话，就取不到width和height
-    setTimeout(function() {
-      kmseditors.$position = kmseditors.$container.find('.position-conrainer')
-      var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
-      var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
-      // var top = $kmseditors_contant.offset().top - $tips_div.height() - 5
-      // var left = kmseditors.$position.offset().left
-      var top = 0
-      var left = 0
-      var width = $images.width()
-      var height = $images.height()
-
-      kmseditors.$position.css({
-        top: top,
-        left: left,
-        width: width,
-        height: height
-      })
-    }, 100)
+        kmseditors.$position.css({
+          top: top,
+          left: left,
+          width: width,
+          height: height
+        })
+      } else {
+        width = $images.width()
+        height = $images.height()
+      }
+    }, 10)
   }
 
 
