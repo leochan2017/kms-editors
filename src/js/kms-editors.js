@@ -206,11 +206,6 @@
         // 右键菜单 - 删除
         $contextmenu.find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
       }
-
-
-      // dev code - 正式上线时去掉
-      // $('#kmseditors-contant').click()
-      // $sketchbtn.click()
     })
 
   }
@@ -661,31 +656,55 @@
 
     if (__INIT_ZOOM__ === '') __INIT_ZOOM__ = zoom
 
-    kmseditors.$container.find('#kmseditors-contant-sketch-warp').css({ zoom: zoom })
+    kmseditors.$container.find('#kmseditors-contant-sketch-warp').css({
+      zoom: zoom,
+      '-moz-transform': 'scale(' + zoom + ')'
+    })
   }
 
 
   // 获取当前zoom的值
   kmseditors.getZoom = function() {
+    var $warp = kmseditors.$container.find('#kmseditors-contant-sketch-warp')
+    var currZoom = $warp.css('zoom')
+
+    // 特别的浏览器取不到值,如：火狐
+    if (!currZoom) {
+      var wStr = $warp.attr('style')
+      if (wStr) {
+        var wArr = wStr.split(';')
+        for (var i = 0; i < wArr.length; i++) {
+          var item = wArr[i]
+          var index = item.indexOf('scale')
+          if (index === -1) break
+          currZoom = item.substring(index + 6, item.length - 1)
+          break
+        }
+      }
+    }
+
     var obj = {
       initZoom: __INIT_ZOOM__,
-      currZoom: parseFloat(kmseditors.$container.find('#kmseditors-contant-sketch-warp').css('zoom'))
+      currZoom: parseFloat(currZoom)
     }
+    
+    // console.log(obj)
+
     return obj
   }
 
   // 放大
   kmseditors.zoomIn = function() {
-    var v = kmseditors.getZoom().currZoom + 0.1,
-      max = __INIT_ZOOM__ * 2
+    var v = kmseditors.getZoom().currZoom + 0.1
+    var max = __INIT_ZOOM__ * 2
     if (v >= max) v = max
     kmseditors.setZoom(v)
   }
 
   // 缩小
   kmseditors.zoomOut = function() {
-    var v = kmseditors.getZoom().currZoom - 0.1,
-      min = __INIT_ZOOM__ * 0.6
+    var v = kmseditors.getZoom().currZoom - 0.1
+    var min = __INIT_ZOOM__ * 0.6
     if (v <= min) v = min
     kmseditors.setZoom(v)
   }
