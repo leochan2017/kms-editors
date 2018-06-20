@@ -137,7 +137,7 @@
 
   // 初始化编辑器元素 
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>锚点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>1、第一步：插入背景图</p><p>2、第二步：根据需求，添加文字 或者 锚点 或者边框</p><p>3、第三步：根据需求，可增加关联信息</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div><div id="kmseditors-sidebar"></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>锚点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>1、第一步：插入背景图</p><p>2、第二步：根据需求，添加文字 或者 锚点 或者边框</p><p>3、第三步：根据需求，可增加关联信息</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -214,11 +214,12 @@
   function _initSidebar() {
     if (kmseditors.options.editable) return
 
-    var sidebar = $("#kmseditors-sidebar"),
+    var sidebar = $('<div id="kmseditors-sidebar"></div>'),
       barhtml = '<ul><li class="lui_icon_s lui_icon_s_icon_repeat mui mui-history_handler_back" title="还原" data-opt="zoomReset"></li>' +
       '<li class="lui_icon_s lui_icon_s_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>' +
       '<li class="lui_icon_s lui_icon_s_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
-
+    kmseditors.$container.append(sidebar)
+    kmseditors.$container.css("position", "relative")
     sidebar.append(barhtml)
     sidebar.on('click', function(evt) {
       var target = $(evt.target),
