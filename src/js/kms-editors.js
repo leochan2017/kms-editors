@@ -474,8 +474,8 @@
 
     var top = '10'
     var left = '10'
-    var width = '160'
-    var height = '160'
+    var width = '90'
+    var height = '30'
     var len = kmseditors.$container.find('div.map-position[dtype="0"]').length
     var index = len + 1
     var isLink = false
