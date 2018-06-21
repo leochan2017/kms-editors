@@ -381,6 +381,8 @@
       var map_position_resize = $(this)
       // var conrainer = $(this).parent().parent()
       map_position_resize.unbind('mousedown').mousedown(function(event) {
+        // console.log('改变大小, mousedown')
+        $contextmenu.hide()
         map_position_resize.data('mousedown', true)
         map_position_resize.data('pageX', event.pageX)
         map_position_resize.data('pageY', event.pageY)
