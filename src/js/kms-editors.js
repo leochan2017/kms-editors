@@ -593,7 +593,7 @@
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
     uploader.on('uploadSuccess', function(file, response) {
       // console.log(response)
-       var raw = response.path
+      var raw = response.path || response._raw
       if (!raw) return logger.error('_raw error', raw)
       
       if(window.seajs) {
