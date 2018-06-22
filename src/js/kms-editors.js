@@ -593,9 +593,17 @@
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
     uploader.on('uploadSuccess', function(file, response) {
       // console.log(response)
-      var raw = response._raw
+      var raw = response.path || response._raw
       if (!raw) return logger.error('_raw error', raw)
-
+      
+      if(window.seajs) {
+        seajs.use("lui/topic", function(topic) {
+          topic.publish("kms.editor.map.img.change", {
+            fdAttId : response.fdAttId
+          })
+        })
+      }
+      
       // 清除锚点操作区域
       var $warp = kmseditors.$container.find('#kmseditors-contant-sketch-warp')
       if ($warp && $warp.length > 0) $warp.remove()
