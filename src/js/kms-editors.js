@@ -695,6 +695,11 @@
     var $warp = kmseditors.$container.find('#kmseditors-contant-sketch-warp')
     var currZoom = $warp.css('zoom')
 
+    if(currZoom) {
+      if(/%$/.test(currZoom)) {
+        currZoom = parseFloat(currZoom) / 100
+      }
+    }
     // 特别的浏览器取不到值,如：火狐
     if (!currZoom) {
       var wStr = $warp.attr('style')
