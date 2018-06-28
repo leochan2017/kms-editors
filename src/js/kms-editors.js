@@ -167,26 +167,31 @@
       // 内容编辑区点击隐藏提示文字
       $('#kmseditors-contant').on('click', _hideTips)
 
-      // 退出全屏
+      // 退出全屏按钮
       var $exitfullscreenbtn = $('#kmseditors-exitfullscreen')
-      $($exitfullscreenbtn).hide() // 隐藏退出全屏按钮
+      $exitfullscreenbtn.hide() // 隐藏退出全屏按钮
 
-      // 退出全屏按钮点击处理
-      $exitfullscreenbtn.on('click', function() {
-        _hideTips()
-        _cancelFullScreen()
-        $($exitfullscreenbtn).hide()
-        $fullscreenbtn.show()
-      })
-
-      // 全屏按钮点击处理
+      // 全屏按钮
       var $fullscreenbtn = $('#kmseditors-fullscreen')
-      $fullscreenbtn.on('click', function() {
-        _hideTips()
-        _launchFullScreen()
-        $($fullscreenbtn).hide()
-        $exitfullscreenbtn.show()
-      })
+
+      if (_checkFullScreen() === false) {
+        $fullscreenbtn.hide()
+      } else {
+        // 退出全屏按钮点击处理
+        $exitfullscreenbtn.on('click', function() {
+          _hideTips()
+          _cancelFullScreen()
+          $exitfullscreenbtn.hide()
+          $fullscreenbtn.show()
+        })
+        // 全屏按钮点击处理
+        $fullscreenbtn.on('click', function() {
+          _hideTips()
+          _launchFullScreen()
+          $fullscreenbtn.hide()
+          $exitfullscreenbtn.show()
+        })
+      }
 
       // 锚点按钮点击处理
       var $sketchbtn = $('#kmseditors-sketch')
@@ -436,17 +441,23 @@
     })
   }
 
+  // 检查是否支持全屏
+  function _checkFullScreen() {
+    var ele = document.documentElement
+    return ele.requestFullscreen || ele.msRequestFullscreen || ele.mozRequestFullScreen || ele.webkitRequestFullscreen || false
+  }
+
   // 全屏
   function _launchFullScreen() {
-    var element = document.documentElement
-    if (element.requestFullscreen) {
-      element.requestFullscreen()
-    } else if (element.msRequestFullscreen) {
-      element.msRequestFullscreen()
-    } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen()
-    } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+    var ele = document.documentElement
+    if (ele.requestFullscreen) {
+      ele.requestFullscreen()
+    } else if (ele.msRequestFullscreen) {
+      ele.msRequestFullscreen()
+    } else if (ele.mozRequestFullScreen) {
+      ele.mozRequestFullScreen()
+    } else if (ele.webkitRequestFullscreen) {
+      ele.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
     }
   }
 
