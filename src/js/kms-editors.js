@@ -601,15 +601,15 @@
       // console.log(response)
       var raw = response.path || response._raw
       if (!raw) return logger.error('_raw error', raw)
-      
-      if(window.seajs) {
+
+      if (window.seajs) {
         seajs.use("lui/topic", function(topic) {
           topic.publish("kms.editor.map.img.change", {
-            fdAttId : response.fdAttId
+            fdAttId: response.fdAttId
           })
         })
       }
-      
+
       // 清除锚点操作区域
       var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
       if ($warp && $warp.length > 0) $warp.remove()
@@ -701,8 +701,8 @@
     var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
     var currZoom = $warp.css('zoom')
 
-    if(currZoom) {
-      if(/%$/.test(currZoom)) {
+    if (currZoom) {
+      if (/%$/.test(currZoom)) {
         currZoom = parseFloat(currZoom) / 100
       }
     }
