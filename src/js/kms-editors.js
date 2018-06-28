@@ -326,57 +326,57 @@
         // 鼠标按下
         // console.log('map_position_bg mousedown', event)
         $($contextmenu).hide()
-        map_position_bg.data('mousedown', true)
-        map_position_bg.data('pageX', event.pageX)
-        map_position_bg.data('pageY', event.pageY)
-        map_position_bg.css('cursor', 'move')
+        $(map_position_bg).data('mousedown', true)
+        $(map_position_bg).data('pageX', event.pageX)
+        $(map_position_bg).data('pageY', event.pageY)
+        $(map_position_bg).css('cursor', 'move')
         return false
       }).unbind('mouseup').mouseup(function(event) {
         // 鼠标弹起
         // console.log('map_position_bg mouseup')
-        map_position_bg.data('mousedown', false)
-        map_position_bg.css('cursor', 'default')
+        $(map_position_bg).data('mousedown', false)
+        $(map_position_bg).css('cursor', 'default')
         return false
       })
 
       conrainer.mousemove(function(event) {
         // console.log('conrainer mousemove')
-        if (!map_position_bg.data('mousedown')) return false
-        var dx = event.pageX - map_position_bg.data('pageX')
-        var dy = event.pageY - map_position_bg.data('pageY')
+        if (!$(map_position_bg).data('mousedown')) return false
+        var dx = event.pageX - $(map_position_bg).data('pageX')
+        var dy = event.pageY - $(map_position_bg).data('pageY')
         if ((dx == 0) && (dy == 0)) {
           return false
         }
-        var map_position = map_position_bg.parent()
-        var p = map_position.position()
+        var map_position = $(map_position_bg).parent()
+        var p = $(map_position).position()
         var left = p.left + dx
         if (left < 0) left = 0
         var top = p.top + dy
         if (top < 0) top = 0
-        var bottom = top + map_position.height()
+        var bottom = top + $(map_position).height()
         if (bottom > conrainer.height()) {
           top = top - (bottom - conrainer.height())
         }
-        var right = left + map_position.width()
+        var right = left + $(map_position).width()
         if (right > conrainer.width()) {
           left = left - (right - conrainer.width())
         }
-        map_position.css({
+        $(map_position).css({
           left: left,
           top: top
         })
-        map_position_bg.data('pageX', event.pageX)
-        map_position_bg.data('pageY', event.pageY)
+        $(map_position_bg).data('pageX', event.pageX)
+        $(map_position_bg).data('pageY', event.pageY)
 
-        bottom = top + map_position.height()
-        right = left + map_position.width()
+        bottom = top + $(map_position).height()
+        right = left + $(map_position).width()
         // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
         // console.log('conrainer mouseup')
         $($contextmenu).hide()
-        map_position_bg.data('mousedown', false)
-        map_position_bg.css('cursor', 'default')
+        $(map_position_bg).data('mousedown', false)
+        $(map_position_bg).css('cursor', 'default')
         return false
       })
     })
@@ -385,56 +385,56 @@
     kmseditors.$position.find('.resize').each(function() {
       var map_position_resize = $(this)
       // 点下
-      map_position_resize.unbind('mousedown').mousedown(function(event) {
+      $(map_position_resize).unbind('mousedown').mousedown(function(event) {
         console.log('改变大小, mousedown, event.pageX:', event.pageX, ', event.pageY:', event.pageY)
         $($contextmenu).hide()
-        map_position_resize.data('mousedown', true)
-        map_position_resize.data('pageX', event.pageX)
-        map_position_resize.data('pageY', event.pageY)
+        $(map_position_resize).data('mousedown', true)
+        $(map_position_resize).data('pageX', event.pageX)
+        $(map_position_resize).data('pageY', event.pageY)
         return false
       }).unbind('mouseup').mouseup(function(event) {
-        map_position_resize.data('mousedown', false)
+        $(map_position_resize).data('mousedown', false)
         return false
       })
       // 移动
       conrainer.mousemove(function(event) {
-        if (!map_position_resize.data('mousedown')) return false
-        var dx = event.pageX - map_position_resize.data('pageX')
-        var dy = event.pageY - map_position_resize.data('pageY')
+        if (!$(map_position_resize).data('mousedown')) return false
+        var dx = event.pageX - $(map_position_resize).data('pageX')
+        var dy = event.pageY - $(map_position_resize).data('pageY')
         console.log('dx:', dx, ', dy:', dy)
         if ((dx == 0) && (dy == 0)) {
           return false
         }
-        var map_position = map_position_resize.parent()
-        var p = map_position.position()
+        var map_position = $(map_position_resize).parent()
+        var p = $(map_position).position()
         var left = p.left
         var top = p.top
-        var height = map_position.height() + dy
+        var height = $(map_position).height() + dy
         if ((top + height) > conrainer.height()) {
           height = height - ((top + height) - conrainer.height())
         }
         if (height < 20) height = 20
-        var width = map_position.width() + dx
+        var width = $(map_position).width() + dx
         if ((left + width) > conrainer.width()) {
           width = width - ((left + width) - conrainer.width())
         }
         if (width < 50) width = 50
-        map_position.css({
+        $(map_position).css({
           width: width,
           height: height
         })
 
         console.log('改变大小，移动，event.pageX:', event.pageX, ', event.pageY', event.pageY)
 
-        map_position_resize.data('pageX', event.pageX)
-        map_position_resize.data('pageY', event.pageY)
+        $(map_position_resize).data('pageX', event.pageX)
+        $(map_position_resize).data('pageY', event.pageY)
 
-        bottom = top + map_position.height()
-        right = left + map_position.width()
+        bottom = top + $(map_position).height()
+        right = left + $(map_position).width()
         // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
-        map_position_resize.data('mousedown', false)
+        $(map_position_resize).data('mousedown', false)
         return false
       })
     })
