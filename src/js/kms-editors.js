@@ -386,8 +386,7 @@
       var map_position_resize = $(this)
       // 点下
       map_position_resize.unbind('mousedown').mousedown(function(event) {
-        console.log('改变大小, mousedown, event.pageX', event.pageX)
-        console.log('改变大小, mousedown, event.pageY', event.pageY)
+        console.log('改变大小, mousedown, event.pageX:', event.pageX, ', event.pageY:', event.pageY)
         $($contextmenu).hide()
         map_position_resize.data('mousedown', true)
         map_position_resize.data('pageX', event.pageX)
@@ -402,6 +401,7 @@
         if (!map_position_resize.data('mousedown')) return false
         var dx = event.pageX - map_position_resize.data('pageX')
         var dy = event.pageY - map_position_resize.data('pageY')
+        console.log('dx:', dx, ', dy:', dy)
         if ((dx == 0) && (dy == 0)) {
           return false
         }
@@ -424,8 +424,7 @@
           height: height
         })
 
-        console.log('改变大小，移动，event.pageX', event.pageX)
-        console.log('改变大小，移动，event.pageY', event.pageY)
+        console.log('改变大小，移动，event.pageX:', event.pageX, ', event.pageY', event.pageY)
 
         map_position_resize.data('pageX', event.pageX)
         map_position_resize.data('pageY', event.pageY)
