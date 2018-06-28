@@ -520,31 +520,40 @@
 
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
-     if (!imgSrc) return
- 
+    if (!imgSrc) return
+
     var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
     var $img = $('<img ref="imageMaps">')
     var $container = $('<div class="position-conrainer"></div>')
-    $img.on("load" , function(evt) {
+    $img.on('load', function(evt) {
       var _$img = $(evt.target)
       kmseditors.$position = $(kmseditors.$container).find('.position-conrainer')
-        var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
-        var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
-        var top = 0
-        var left = 0
-        
-        kmseditors.$position.css({
-          top: top,
-          left: left,
-          width: _$img.width(),
-          height: _$img.height()
-        })
+      var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
+      var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
+      var top = 0
+      var left = 0
+
+      kmseditors.$position.css({
+        top: top,
+        left: left,
+        width: _$img.width(),
+        height: _$img.height()
+      })
     })
     $warp.append($img)
     $warp.append($container)
-    
+
     $(kmseditors.$container).find('#kmseditors-contant').append($warp)
-    $img.attr("src", imgSrc + "&xxx=" + new Date().getTime())
+
+    if (imgSrc.indexOf('?') !== -1) {
+      imgSrc += '&x='
+    } else {
+      imgSrc += '?x='
+    }
+    
+    imgSrc += new Date().getTime()
+
+    $img.attr('src', imgSrc)
   }
 
 
