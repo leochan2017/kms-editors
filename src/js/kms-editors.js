@@ -287,10 +287,16 @@
     }, 10)
   }
 
+
   // 绑定事件处理函数
   function _bind_map_event() {
     var conrainer = kmseditors.$position
     var map_position_resize = null
+
+    // $(document).on('mousemove', function(e) {
+    //   console.log('document.mousemove; x:', e.pageX, ', y:', e.pageY)
+    // })
+
     // 拖动处理
     kmseditors.$position.find('.map-position-bg').each(function() {
       var map_position_bg = $(this)
@@ -353,9 +359,9 @@
         return false
       })
 
-      // 区域内移动
-      conrainer.mousemove(function(event) {
-        console.log('conrainer mousemove, pageX:', event.pageX, ', pageY', event.pageY)
+      // 锚点区域内拖动
+      $(document).mousemove(function(event) {
+        console.log('锚点区域内拖动 mousemove, pageX:', event.pageX, ', pageY', event.pageY)
         if (!$(map_position_bg).data('mousedown')) return false
         var dx = event.pageX - $(map_position_bg).data('pageX')
         var dy = event.pageY - $(map_position_bg).data('pageY')
@@ -396,11 +402,6 @@
       })
     })
 
-    var resize = {
-      x: null,
-      y: null
-    }
-
     // 改变大小
     kmseditors.$position.find('.resize').each(function() {
       map_position_resize = $(this)
@@ -418,9 +419,9 @@
         return false
       })
       // 改变大小 - 移动
-      conrainer.mousemove(function(event) {
+      $(document).mousemove(function(event) {
         console.log('改变大小，mousemove, pageX:', event.pageX, ', pageY', event.pageY)
-        
+
         // 计算元素与当前鼠标XY轴误差大于mistakeNum，则不需要再改变大小了
         var rLeft = map_position_resize.offset().left
         var rTop = map_position_resize.offset().top
@@ -452,7 +453,7 @@
           width = width - ((left + width) - conrainer.width())
         }
         if (width < 50) width = 50
-          
+
         $(map_position).css({
           width: width,
           height: height
