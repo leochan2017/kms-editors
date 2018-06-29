@@ -355,7 +355,7 @@
 
       // 区域内移动
       conrainer.mousemove(function(event) {
-        // console.log('conrainer mousemove, pageX:', event.pageX, ', pageY', event.pageY)
+        console.log('conrainer mousemove, pageX:', event.pageX, ', pageY', event.pageY)
         if (!$(map_position_bg).data('mousedown')) return false
         var dx = event.pageX - $(map_position_bg).data('pageX')
         var dy = event.pageY - $(map_position_bg).data('pageY')
@@ -419,17 +419,19 @@
       })
       // 改变大小 - 移动
       conrainer.mousemove(function(event) {
+        console.log('改变大小，mousemove, pageX:', event.pageX, ', pageY', event.pageY)
+        
         // 计算元素与当前鼠标XY轴误差大于mistakeNum，则不需要再改变大小了
         var rLeft = map_position_resize.offset().left
         var rTop = map_position_resize.offset().top
         var mistakeNum = 50
         if (Math.abs(event.pageX - rLeft) > mistakeNum || Math.abs(event.pageY - rTop) > mistakeNum) {
           $(map_position_resize).data('mousedown', false)
-          return
+          return false
         }
-        // window.r = map_position_resize
-        // console.log('改变大小，mousemove, pageX:', event.pageX, ', pageY', event.pageY)
+
         if (!$(map_position_resize).data('mousedown')) return false
+
         var dx = event.pageX - $(map_position_resize).data('pageX')
         var dy = event.pageY - $(map_position_resize).data('pageY')
         // console.log('dx:', dx, ', dy:', dy)
@@ -450,6 +452,7 @@
           width = width - ((left + width) - conrainer.width())
         }
         if (width < 50) width = 50
+          
         $(map_position).css({
           width: width,
           height: height
@@ -458,8 +461,8 @@
         $(map_position_resize).data('pageX', event.pageX)
         $(map_position_resize).data('pageY', event.pageY)
 
-        bottom = top + $(map_position).height()
-        right = left + $(map_position).width()
+        // bottom = top + $(map_position).height()
+        // right = left + $(map_position).width()
         // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
