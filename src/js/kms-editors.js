@@ -10,6 +10,8 @@
     info: _noop
   } : console
 
+  if(!logger.debug) logger.debug = _noop
+
   if (typeof module === 'undefined' || !module.exports) {
     if (typeof $w[__NAME__] !== 'undefined') {
       logger.error(__NAME__ + '已经存在啦啦啦啦~')
@@ -38,6 +40,16 @@
     this.isInit = true
     this.$container = $('#' + options.container)
     this.options = options
+
+    if (!options.debug) {
+      window.console = {
+        log: _noop,
+        debug: _noop,
+        error: _noop,
+        warn: _noop,
+        info: _noop
+      }
+    }
 
     _initElement()
 
@@ -278,6 +290,7 @@
   // 绑定事件处理函数
   function _bind_map_event() {
     var conrainer = kmseditors.$position
+    var map_position_resize = null
     // 拖动处理
     kmseditors.$position.find('.map-position-bg').each(function() {
       var map_position_bg = $(this)
@@ -285,7 +298,7 @@
       // 锚点框内
       map_position_bg.off('click').on('click', function(event) {
         // 鼠标单击
-        // console.log('map_position_bg click', event)
+        console.log('map_position_bg click', event)
         event.preventDefault()
 
         $currSketch = $(event.target).parent()
@@ -324,7 +337,8 @@
         })
       }).unbind('mousedown').mousedown(function(event) {
         // 鼠标按下
-        // console.log('map_position_bg mousedown', event)
+        console.log('map_position_bg mousedown', event)
+        $(map_position_resize).data('mousedown', false) // leo
         $($contextmenu).hide()
         $(map_position_bg).data('mousedown', true)
         $(map_position_bg).data('pageX', event.pageX)
@@ -333,14 +347,15 @@
         return false
       }).unbind('mouseup').mouseup(function(event) {
         // 鼠标弹起
-        // console.log('map_position_bg mouseup')
+        console.log('map_position_bg mouseup')
         $(map_position_bg).data('mousedown', false)
         $(map_position_bg).css('cursor', 'default')
         return false
       })
 
+      // 区域内移动
       conrainer.mousemove(function(event) {
-        // console.log('conrainer mousemove')
+        // console.log('conrainer mousemove, pageX:', event.pageX, ', pageY', event.pageY)
         if (!$(map_position_bg).data('mousedown')) return false
         var dx = event.pageX - $(map_position_bg).data('pageX')
         var dy = event.pageY - $(map_position_bg).data('pageY')
@@ -373,7 +388,7 @@
         // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
-        // console.log('conrainer mouseup')
+        console.log('conrainer mouseup')
         $($contextmenu).hide()
         $(map_position_bg).data('mousedown', false)
         $(map_position_bg).css('cursor', 'default')
@@ -381,27 +396,43 @@
       })
     })
 
+    var resize = {
+      x: null,
+      y: null
+    }
+
     // 改变大小
     kmseditors.$position.find('.resize').each(function() {
-      var map_position_resize = $(this)
-      // 点下
+      map_position_resize = $(this)
+      // 改变大小 - 点下
       $(map_position_resize).unbind('mousedown').mousedown(function(event) {
-        console.log('改变大小, mousedown, event.pageX:', event.pageX, ', event.pageY:', event.pageY)
+        console.log('改变大小, mousedown, pageX:', event.pageX, ', pageY:', event.pageY)
         $($contextmenu).hide()
         $(map_position_resize).data('mousedown', true)
         $(map_position_resize).data('pageX', event.pageX)
         $(map_position_resize).data('pageY', event.pageY)
         return false
       }).unbind('mouseup').mouseup(function(event) {
+        console.log('改变大小, mouseup, pageX:', event.pageX, ', pageY', event.pageY)
         $(map_position_resize).data('mousedown', false)
         return false
       })
-      // 移动
+      // 改变大小 - 移动
       conrainer.mousemove(function(event) {
+        // 计算元素与当前鼠标XY轴误差大于mistakeNum，则不需要再改变大小了
+        var rLeft = map_position_resize.offset().left
+        var rTop = map_position_resize.offset().top
+        var mistakeNum = 50
+        if (Math.abs(event.pageX - rLeft) > mistakeNum || Math.abs(event.pageY - rTop) > mistakeNum) {
+          $(map_position_resize).data('mousedown', false)
+          return
+        }
+        // window.r = map_position_resize
+        // console.log('改变大小，mousemove, pageX:', event.pageX, ', pageY', event.pageY)
         if (!$(map_position_resize).data('mousedown')) return false
         var dx = event.pageX - $(map_position_resize).data('pageX')
         var dy = event.pageY - $(map_position_resize).data('pageY')
-        console.log('dx:', dx, ', dy:', dy)
+        // console.log('dx:', dx, ', dy:', dy)
         if ((dx == 0) && (dy == 0)) {
           return false
         }
@@ -424,8 +455,6 @@
           height: height
         })
 
-        console.log('改变大小，移动，event.pageX:', event.pageX, ', event.pageY', event.pageY)
-
         $(map_position_resize).data('pageX', event.pageX)
         $(map_position_resize).data('pageY', event.pageY)
 
@@ -434,6 +463,7 @@
         // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
         return false
       }).mouseup(function(event) {
+        console.log('改变大小，mouseup, pageX:', event.pageX, ', pageY', event.pageY)
         $(map_position_resize).data('mousedown', false)
         return false
       })
@@ -550,7 +580,7 @@
     } else {
       imgSrc += '?x='
     }
-    
+
     imgSrc += new Date().getTime()
 
     $img.attr('src', imgSrc)
