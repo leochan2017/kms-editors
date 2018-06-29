@@ -10,7 +10,7 @@
     info: _noop
   } : console
 
-  if(!logger.debug) logger.debug = _noop
+  if (!logger.debug) logger.debug = _noop
 
   if (typeof module === 'undefined' || !module.exports) {
     if (typeof $w[__NAME__] !== 'undefined') {
