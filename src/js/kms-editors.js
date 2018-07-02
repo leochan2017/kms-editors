@@ -385,7 +385,8 @@
       }
     })
 
-    $(document).on('click', function(event) {
+    // 全局点击事件
+    $(document).on('click', '#kmseditors-contant', function(event) {
       event.preventDefault()
       var dom = event.target
       var className = dom.className
