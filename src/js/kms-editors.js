@@ -601,6 +601,7 @@
 
     // 创建Web Uploader实例
     var uploader = WebUploader.create({
+       duplicate:true,
       // 选完文件后，是否自动上传。
       auto: true,
       // swf文件路径
