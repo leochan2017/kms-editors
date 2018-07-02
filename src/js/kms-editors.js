@@ -58,6 +58,8 @@
 
       clearInterval(tElement)
 
+      if (kmseditors.options.editable) _bind_map_event()
+
       // 如果有传入图片 则跑初始化函数
       var data = options.data
       if (data) {
@@ -290,26 +292,113 @@
 
   // 绑定事件处理函数
   function _bind_map_event() {
-    var conrainer = kmseditors.$position
-    var map_position_resize = null
+    var currDom = null
+    var currDomType = null
+    // 全局监听mousemove
+    $(document).on('mousemove', function(event) {
+      if (!currDomType) return
 
-    // $(document).on('mousemove', function(e) {
-    //   console.log('document.mousemove; x:', e.pageX, ', y:', e.pageY)
-    // })
+      var pageX = event.pageX
+      var pageY = event.pageY
+      var conrainer = kmseditors.$position
 
-    // 拖动处理
-    kmseditors.$position.find('.map-position-bg').each(function() {
-      var map_position_bg = $(this)
+      if (pageX > conrainer.width() || pageY > conrainer.height()) {
+        currDom = null
+        currDomType = null
+        return
+      }
 
-      // 锚点框内
-      map_position_bg.off('click').on('click', function(event) {
-        // 鼠标单击
-        console.log('map_position_bg click', event)
-        event.preventDefault()
+      // 没变化 return
+      var dx = pageX - $(currDom).data('pageX')
+      var dy = pageY - $(currDom).data('pageY')
+      // console.log('dx:', dx, ', dy:', dy)
+      if ((dx == 0) && (dy == 0)) return false
 
-        $currSketch = $(event.target).parent()
-        $currSketch.top = event.pageY
-        $currSketch.left = event.pageX
+      var map_position = $(currDom).parent()
+      var p = $(map_position).position()
+      var pLeft = p.left
+      var pTop = p.top
+
+
+      // 计算元素与当前鼠标XY轴误差大于mistakeNum，则不需要再移动，改变大小了，
+      // var mistake = 30
+      // // debugger
+      // if (Math.abs(pageX - $(currDom).data('pageX')) > mistake || Math.abs(pageY - $(currDom).data('pageY')) > mistake) {
+      //   console.log('Math.abs(pageX - $(currDom).data('pageX'))', Math.abs(pageX - $(currDom).data('pageX')))
+      //   console.log('Math.abs(pageY - pTop)', Math.abs(pageY - pTop - 73))
+      //   currDom = null
+      //   currDomType = null
+      //   return
+      // }
+
+
+      if (currDomType === 'map-position-bg') { // 锚点内移动
+        var left = pLeft + dx
+
+        if (left < 0) left = 0
+
+        var top = pTop + dy
+
+        if (top < 0) top = 0
+
+        var bottom = top + map_position.height()
+        if (bottom > conrainer.height()) {
+          top = top - (bottom - conrainer.height())
+        }
+
+        var right = left + map_position.width()
+        if (right > conrainer.width()) {
+          left = left - (right - conrainer.width())
+        }
+
+        $(map_position).css({
+          left: left,
+          top: top
+        })
+
+        $(currDom).data('pageX', pageX)
+        $(currDom).data('pageY', pageY)
+      } else if (currDomType === 'resize') { // 改变大小时鼠标移动
+        var left = pLeft
+        var top = pTop
+
+        var height = map_position.height() + dy
+        if ((top + height) > conrainer.height()) {
+          height = height - ((top + height) - conrainer.height())
+        }
+
+        var width = map_position.width() + dx
+        if ((left + width) > conrainer.width()) {
+          width = width - ((left + width) - conrainer.width())
+        }
+
+        if (height < 30) height = 30
+        if (width < 50) width = 50
+
+        $(map_position).css({
+          width: width,
+          height: height
+        })
+
+        $(currDom).data('pageX', pageX)
+        $(currDom).data('pageY', pageY)
+      }
+    })
+
+    $(document).on('click', function(event) {
+      event.preventDefault()
+      var dom = event.target
+      var className = dom.className
+
+      // 锚点点击 -> 显示菜单
+      if (className === 'map-position-bg') {
+        var pageX = event.pageX
+        var pageY = event.pageY
+        // console.log('event.target', dom)
+
+        $currSketch = $(dom).parent()
+        $currSketch.top = pageY
+        $currSketch.left = pageX
         $currSketch.width = $($currSketch).width()
         $currSketch.height = $($currSketch).height()
 
@@ -326,8 +415,8 @@
         }
 
         // 取当前鼠标位置
-        var cLeft = event.pageX
-        var cTop = event.pageY
+        var cLeft = pageX
+        var cTop = pageY
 
         // 取当前锚点位置，目的是显示到右下角
         var $c0 = $currSketch[0]
@@ -336,141 +425,49 @@
           cLeft = $c0.offsetLeft + $($currSketch).width() - $($contextmenu).width()
         }
 
-        // if (!kmsjsmap.editable) return;
         $($contextmenu).show().css({
           left: cLeft,
           top: cTop
         })
-      }).unbind('mousedown').mousedown(function(event) {
-        // 鼠标按下
-        console.log('map_position_bg mousedown', event)
-        $(map_position_resize).data('mousedown', false) // leo
+      } else {
         $($contextmenu).hide()
-        $(map_position_bg).data('mousedown', true)
-        $(map_position_bg).data('pageX', event.pageX)
-        $(map_position_bg).data('pageY', event.pageY)
-        $(map_position_bg).css('cursor', 'move')
-        return false
-      }).unbind('mouseup').mouseup(function(event) {
-        // 鼠标弹起
-        console.log('map_position_bg mouseup')
-        $(map_position_bg).data('mousedown', false)
-        $(map_position_bg).css('cursor', 'default')
-        return false
-      })
-
-      // 锚点区域内拖动
-      $(document).mousemove(function(event) {
-        console.log('锚点区域内拖动 mousemove, pageX:', event.pageX, ', pageY', event.pageY)
-        if (!$(map_position_bg).data('mousedown')) return false
-        var dx = event.pageX - $(map_position_bg).data('pageX')
-        var dy = event.pageY - $(map_position_bg).data('pageY')
-        if ((dx == 0) && (dy == 0)) {
-          return false
-        }
-        var map_position = $(map_position_bg).parent()
-        var p = $(map_position).position()
-        var left = p.left + dx
-        if (left < 0) left = 0
-        var top = p.top + dy
-        if (top < 0) top = 0
-        var bottom = top + $(map_position).height()
-        if (bottom > conrainer.height()) {
-          top = top - (bottom - conrainer.height())
-        }
-        var right = left + $(map_position).width()
-        if (right > conrainer.width()) {
-          left = left - (right - conrainer.width())
-        }
-        $(map_position).css({
-          left: left,
-          top: top
-        })
-        $(map_position_bg).data('pageX', event.pageX)
-        $(map_position_bg).data('pageY', event.pageY)
-
-        bottom = top + $(map_position).height()
-        right = left + $(map_position).width()
-        // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
-        return false
-      }).mouseup(function(event) {
-        console.log('conrainer mouseup')
-        $($contextmenu).hide()
-        $(map_position_bg).data('mousedown', false)
-        $(map_position_bg).css('cursor', 'default')
-        return false
-      })
+      }
     })
 
-    // 改变大小
-    kmseditors.$position.find('.resize').each(function() {
-      map_position_resize = $(this)
-      // 改变大小 - 点下
-      $(map_position_resize).unbind('mousedown').mousedown(function(event) {
-        console.log('改变大小, mousedown, pageX:', event.pageX, ', pageY:', event.pageY)
-        $($contextmenu).hide()
-        $(map_position_resize).data('mousedown', true)
-        $(map_position_resize).data('pageX', event.pageX)
-        $(map_position_resize).data('pageY', event.pageY)
-        return false
-      }).unbind('mouseup').mouseup(function(event) {
-        console.log('改变大小, mouseup, pageX:', event.pageX, ', pageY', event.pageY)
-        $(map_position_resize).data('mousedown', false)
-        return false
-      })
-      // 改变大小 - 移动
-      $(document).mousemove(function(event) {
-        console.log('改变大小，mousemove, pageX:', event.pageX, ', pageY', event.pageY)
+    // 锚点按下 -> flag = true
+    $(document).on('mousedown', '.map-position-bg', function(event) {
+      var dom = event.target
+      currDom = dom
+      currDomType = 'map-position-bg'
+      $(dom).data('pageX', event.pageX)
+      $(dom).data('pageY', event.pageY)
+      $(dom).css('cursor', 'move')
+      $($contextmenu).hide()
+    })
 
-        // 计算元素与当前鼠标XY轴误差大于mistakeNum，则不需要再改变大小了
-        var rLeft = map_position_resize.offset().left
-        var rTop = map_position_resize.offset().top
-        var mistakeNum = 50
-        if (Math.abs(event.pageX - rLeft) > mistakeNum || Math.abs(event.pageY - rTop) > mistakeNum) {
-          $(map_position_resize).data('mousedown', false)
-          return false
-        }
+    // 锚点弹起 -> flag = false
+    $(document).on('mouseup', '.map-position-bg', function(event) {
+      currDom = null
+      currDomType = null
+      $(event.target).css('cursor', 'default')
+      $($contextmenu).hide()
+    })
 
-        if (!$(map_position_resize).data('mousedown')) return false
+    // 改变大小按下 -> flag = true
+    $(document).on('mousedown', '.resize', function(event) {
+      var dom = event.target
+      currDom = dom
+      currDomType = 'resize'
+      $(dom).data('pageX', event.pageX)
+      $(dom).data('pageY', event.pageY)
+      $($contextmenu).hide()
+    })
 
-        var dx = event.pageX - $(map_position_resize).data('pageX')
-        var dy = event.pageY - $(map_position_resize).data('pageY')
-        // console.log('dx:', dx, ', dy:', dy)
-        if ((dx == 0) && (dy == 0)) {
-          return false
-        }
-        var map_position = $(map_position_resize).parent()
-        var p = $(map_position).position()
-        var left = p.left
-        var top = p.top
-        var height = $(map_position).height() + dy
-        if ((top + height) > conrainer.height()) {
-          height = height - ((top + height) - conrainer.height())
-        }
-        if (height < 20) height = 20
-        var width = $(map_position).width() + dx
-        if ((left + width) > conrainer.width()) {
-          width = width - ((left + width) - conrainer.width())
-        }
-        if (width < 50) width = 50
-
-        $(map_position).css({
-          width: width,
-          height: height
-        })
-
-        $(map_position_resize).data('pageX', event.pageX)
-        $(map_position_resize).data('pageY', event.pageY)
-
-        // bottom = top + $(map_position).height()
-        // right = left + $(map_position).width()
-        // $('.link-conrainer p[ref=' + map_position.attr('ref') + '] .rect-value').val(new Array(left, top, right, bottom).join(','))
-        return false
-      }).mouseup(function(event) {
-        console.log('改变大小，mouseup, pageX:', event.pageX, ', pageY', event.pageY)
-        $(map_position_resize).data('mousedown', false)
-        return false
-      })
+    // 改变大小弹起 -> flag = false
+    $(document).on('mouseup', '.resize', function(event) {
+      currDom = null
+      currDomType = null
+      $($contextmenu).hide()
     })
   }
 
@@ -547,8 +544,6 @@
     kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
 
     // <span class="link-number-text">Link ' + index + '</span>
-
-    if (kmseditors.options.editable) _bind_map_event()
   }
 
 
