@@ -302,7 +302,8 @@
       var pageY = event.pageY
       var conrainer = kmseditors.$position
 
-      if (pageX > conrainer.width() || pageY > conrainer.height()) {
+      // console.log('pageY', pageY, '|', 'conrainer.height():', conrainer.height())
+      if (pageX > conrainer.width() || pageY - 73 > conrainer.height()) {
         currDom = null
         currDomType = null
         return
@@ -446,13 +447,6 @@
       $($contextmenu).hide()
     })
 
-    // 锚点弹起 -> flag = false
-    $(document).on('mouseup', '.map-position-bg', function(event) {
-      currDom = null
-      currDomType = null
-      $(event.target).css('cursor', 'default')
-      $($contextmenu).hide()
-    })
 
     // 改变大小按下 -> flag = true
     $(document).on('mousedown', '.resize', function(event) {
@@ -464,8 +458,12 @@
       $($contextmenu).hide()
     })
 
-    // 改变大小弹起 -> flag = false
-    $(document).on('mouseup', '.resize', function(event) {
+
+    // 全局弹起
+    $(document).on('mouseup', function(event) {
+      if (currDomType === 'map-position-bg') {
+        kmseditors.$position.find('.map-position-bg').css('cursor', 'default')
+      }
       currDom = null
       currDomType = null
       $($contextmenu).hide()
