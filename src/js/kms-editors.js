@@ -1,4 +1,3 @@
-// 河蟹IE8 时 没有Object.keys方法
 if (!Object.keys) {
   Object.keys = (function() {
     'use strict';
@@ -40,7 +39,6 @@ if (!Object.keys) {
     };
   }());
 }
-
 (function($w) {
   var __NAME__ = 'kmseditors'
   var _noop = function() {}
@@ -341,7 +339,6 @@ if (!Object.keys) {
     // 全局监听mousemove
     $(document).on('mousemove', function(event) {
       if (!currDomType) return
-
       var pageX = event.pageX
       var pageY = event.pageY
       var conrainer = kmseditors.$position
@@ -598,19 +595,40 @@ if (!Object.keys) {
     var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
     var $img = $('<img ref="imageMaps">')
     var $container = $('<div class="position-conrainer"></div>')
+    var isContainerInit = false
+    
+    if(window.seajs) {
+      seajs.use('lui/topic', function(topic){
+        topic.subscribe('/kms/kmaps/edit/canvas', function() {
+          if(isContainerInit === false) {
+            var $img = $('[ref="imageMaps"]')
+            if(kmseditors.$position && kmseditors.$position.length > 0) {
+              kmseditors.$position.css({
+                 width: $img.width(),
+                   height: $img.height()
+              })
+              isContainerInit = true
+            }
+          }
+        })
+      })
+    }
+    
     $img.on('load', function(evt) {
-      var _$img = $(evt.target)
       kmseditors.$position = $(kmseditors.$container).find('.position-conrainer')
+      var _$img = $(evt.target)
       var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
       var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
       var top = 0
       var left = 0
-
+      var iw = _$img.width()
+      var ih = _$img.height()
+      if(iw > 0 && ih > 0) isContainerInit = true
       kmseditors.$position.css({
         top: top,
         left: left,
-        width: _$img.width(),
-        height: _$img.height()
+        width: iw,
+        height: ih
       })
     })
     $warp.append($img)
@@ -789,7 +807,6 @@ if (!Object.keys) {
   kmseditors.getZoom = function() {
     var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
     var currZoom = $warp.css('zoom')
-
     if (currZoom) {
       if (/%$/.test(currZoom)) {
         currZoom = parseFloat(currZoom) / 100
