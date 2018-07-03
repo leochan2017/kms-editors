@@ -286,9 +286,9 @@ if (!Object.keys) {
     if (kmseditors.options.editable) return
 
     var sidebar = $('<div id="kmseditors-sidebar"></div>'),
-      barhtml = '<ul><li class="lui_icon_s lui_icon_s_icon_repeat mui mui-history_handler_back" title="还原" data-opt="zoomReset"></li>' +
-      '<li class="lui_icon_s lui_icon_s_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>' +
-      '<li class="lui_icon_s lui_icon_s_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
+      barhtml = '<ul><li class="lui_map_icon_zoom_reset mui mui-history_handler_back" title="还原" data-opt="zoomReset"></li>' +
+      '<li class="lui_map_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>' +
+      '<li class="lui_map_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
     $(kmseditors.$container).append(sidebar)
     $(kmseditors.$container).css("position", "relative")
     sidebar.append(barhtml)
