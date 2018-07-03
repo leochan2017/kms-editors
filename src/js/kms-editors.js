@@ -323,6 +323,7 @@ if (!Object.keys) {
       for (var i = 0; i < sketchList.length; i++) {
         var $item = $(sketchList[i])
         $item.css({
+          'filter': 'alpha(opacity=' + opacity +')',
           'opacity': opacity,
           'cursor': 'pointer'
         }).on('click', function() {
@@ -591,6 +592,7 @@ if (!Object.keys) {
 
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
+    
     if (!imgSrc) return
 
     var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
@@ -641,13 +643,20 @@ if (!Object.keys) {
     var BASE_URL = '../../lib/webuploader-0.1.5/'
 
     var serverURL = uploadImgUrl += '&fdModelId=' + fdModelId
+    var swf = serverURL + 'Uploader.swf'
+    
+    if(kmseditors.options.swfUrl) {
+      swf = kmseditors.options.swfUrl
+    }
 
     // 创建Web Uploader实例
     var uploader = WebUploader.create({
+      runtimeOrder:'html5,flash',
+      duplicate:true,
       // 选完文件后，是否自动上传。
       auto: true,
       // swf文件路径
-      swf: BASE_URL + 'Uploader.swf',
+      swf: swf,
       // 文件接收服务端。
       server: serverURL,
       // 选择文件的按钮。可选。
