@@ -39,6 +39,7 @@ if (!Object.keys) {
     };
   }());
 }
+
 (function($w) {
   var __NAME__ = 'kmseditors'
   var _noop = function() {}
@@ -321,7 +322,7 @@ if (!Object.keys) {
       for (var i = 0; i < sketchList.length; i++) {
         var $item = $(sketchList[i])
         $item.css({
-          'filter': 'alpha(opacity=' + opacity +')',
+          'filter': 'alpha(opacity=' + opacity + ')',
           'opacity': opacity,
           'cursor': 'pointer'
         }).on('click', function() {
@@ -589,23 +590,23 @@ if (!Object.keys) {
 
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
-    
+
     if (!imgSrc) return
 
     var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
     var $img = $('<img ref="imageMaps">')
     var $container = $('<div class="position-conrainer"></div>')
     var isContainerInit = false
-    
-    if(window.seajs) {
-      seajs.use('lui/topic', function(topic){
+
+    if (window.seajs) {
+      seajs.use('lui/topic', function(topic) {
         topic.subscribe('/kms/kmaps/edit/canvas', function() {
-          if(isContainerInit === false) {
+          if (isContainerInit === false) {
             var $img = $('[ref="imageMaps"]')
-            if(kmseditors.$position && kmseditors.$position.length > 0) {
+            if (kmseditors.$position && kmseditors.$position.length > 0) {
               kmseditors.$position.css({
-                 width: $img.width(),
-                   height: $img.height()
+                width: $img.width(),
+                height: $img.height()
               })
               isContainerInit = true
             }
@@ -613,7 +614,7 @@ if (!Object.keys) {
         })
       })
     }
-    
+
     $img.on('load', function(evt) {
       kmseditors.$position = $(kmseditors.$container).find('.position-conrainer')
       var _$img = $(evt.target)
@@ -623,7 +624,7 @@ if (!Object.keys) {
       var left = 0
       var iw = _$img.width()
       var ih = _$img.height()
-      if(iw > 0 && ih > 0) isContainerInit = true
+      if (iw > 0 && ih > 0) isContainerInit = true
       kmseditors.$position.css({
         top: top,
         left: left,
@@ -662,15 +663,15 @@ if (!Object.keys) {
 
     var serverURL = uploadImgUrl += '&fdModelId=' + fdModelId
     var swf = serverURL + 'Uploader.swf'
-    
-    if(kmseditors.options.swfUrl) {
+
+    if (kmseditors.options.swfUrl) {
       swf = kmseditors.options.swfUrl
     }
 
     // 创建Web Uploader实例
     var uploader = WebUploader.create({
-      runtimeOrder:'html5,flash',
-      duplicate:true,
+      runtimeOrder: 'html5,flash',
+      duplicate: true,
       // 选完文件后，是否自动上传。
       auto: true,
       // swf文件路径
