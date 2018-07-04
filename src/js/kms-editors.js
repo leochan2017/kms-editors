@@ -304,6 +304,7 @@ if (!Object.keys) {
 
   // 处理非编辑模式
   function _unEditable() {
+  _hideTips();
     // 非编辑模式下隐藏工具栏
     $(kmseditors.$container).find('#kmseditors-title').hide()
 
