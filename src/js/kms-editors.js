@@ -329,6 +329,18 @@ if (!Object.keys) {
         }).on('click', function() {
           onRelation(kmseditors.getData($(this)))
         })
+
+        // 在IE8下，opacity不管用，只能这样了
+        if (opacity === 0) {
+          $item.find('div.map-position-bg').css({
+            border: 'none'
+          })
+
+          $item.find('span.resize').css({
+            border: 'none',
+            background: 'none'
+          })
+        }
       }
     }, 10)
   }
