@@ -44,6 +44,8 @@ if (!Object.keys) {
   var __NAME__ = 'kmseditors'
   var _noop = function() {}
   var __INIT_ZOOM__ = ''
+  var __SKETCH_MIN_WIDTH__ = 30 // 锚点最小宽
+  var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
@@ -428,8 +430,8 @@ if (!Object.keys) {
           width = width - ((left + width) - conrainer.width())
         }
 
-        if (height < 30) height = 30
-        if (width < 50) width = 50
+        if (width < __SKETCH_MIN_WIDTH__) width = __SKETCH_MIN_WIDTH__
+        if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
 
         $(map_position).css({
           width: width,
@@ -577,8 +579,8 @@ if (!Object.keys) {
 
     var top = '10'
     var left = '10'
-    var width = '90'
-    var height = '30'
+    var width = __SKETCH_MIN_WIDTH__
+    var height = __SKETCH_MIN_HEIGHT__
     var len = $(kmseditors.$container).find('div.map-position[dtype="0"]').length
     var index = len + 1
     var isLink = false
