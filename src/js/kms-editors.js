@@ -822,7 +822,7 @@ if (!Object.keys) {
   // 获取当前zoom的值
   kmseditors.getZoom = function() {
     var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
-    var currZoom = $warp.css('zoom')
+    var currZoom = $warp[0].style.zoom
     if (currZoom) {
       if (/%$/.test(currZoom)) {
         currZoom = parseFloat(currZoom) / 100
