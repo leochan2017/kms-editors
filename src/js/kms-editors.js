@@ -360,11 +360,6 @@ if (!Object.keys) {
       var conrainer = kmseditors.$position
 
       // console.log('pageY', pageY, '|', 'conrainer.height():', conrainer.height())
-      if (pageX > conrainer.width() || pageY - 73 > conrainer.height()) {
-        currDom = null
-        currDomType = null
-        return
-      }
 
       // 没变化 return
       var dx = pageX - $(currDom).data('pageX')
@@ -400,14 +395,8 @@ if (!Object.keys) {
         if (top < 0) top = 0
 
         var bottom = top + map_position.height()
-        if (bottom > conrainer.height()) {
-          top = top - (bottom - conrainer.height())
-        }
-
+        
         var right = left + map_position.width()
-        if (right > conrainer.width()) {
-          left = left - (right - conrainer.width())
-        }
 
         $(map_position).css({
           left: left,
@@ -421,14 +410,8 @@ if (!Object.keys) {
         var top = pTop
 
         var height = map_position.height() + dy
-        if ((top + height) > conrainer.height()) {
-          height = height - ((top + height) - conrainer.height())
-        }
 
         var width = map_position.width() + dx
-        if ((left + width) > conrainer.width()) {
-          width = width - ((left + width) - conrainer.width())
-        }
 
         if (width < __SKETCH_MIN_WIDTH__) width = __SKETCH_MIN_WIDTH__
         if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
