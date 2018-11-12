@@ -163,14 +163,17 @@ if (!Object.keys) {
       sketchList: []
     }
 
-    function _objHandle(item) {
+    // 单个锚点数据获取
+    function _getSketchItemData(item) {
       var context = item.context
+      var top = item.top || context.offsetTop
+      var left = item.left || context.offsetLeft
       var width = typeof item.width === 'number' ? item.width : context.offsetWidth
       var height = typeof item.height === 'number' ? item.height : context.offsetHeight
       return {
         ref: item.attr('ref'),
-        top: item.top || context.offsetTop,
-        left: item.left || context.offsetLeft,
+        top: top,
+        left: left,
         width: width,
         height: height
       }
@@ -182,7 +185,7 @@ if (!Object.keys) {
 
     // 获取具体的node的数据
     if (typeof node !== 'undefined') {
-      dataObj.sketchList = _objHandle(node)
+      dataObj.sketchList = _getSketchItemData(node)
       return dataObj
     }
 
@@ -195,12 +198,23 @@ if (!Object.keys) {
     if ($arr.length <= 0) return dataObj
 
     var arr = []
+    var pWidth = $p.width() // 当前操作区的宽
+    var pHeight = $p.height() // 当前操作区的高
     for (var i = 0; i < $arr.length; i++) {
-      var item = $arr[i]
-      arr.push(_objHandle($(item)))
+      var $item = $($arr[i])
+      var itemObj = _getSketchItemData($item)
+      // console.log('itemObj', itemObj)
+      // 如果当前锚点宽和高在图片内，那么还是能留下的。
+      // 溢出了图片的，那么就不要了
+      var itemX = itemObj.left + itemObj.width
+      var itemY = itemObj.top + itemObj.height
+      if (itemX < pWidth && itemY < pHeight) {
+        arr.push(itemObj)
+      }
     }
 
     dataObj.sketchList = arr
+
     return dataObj
   }
 
