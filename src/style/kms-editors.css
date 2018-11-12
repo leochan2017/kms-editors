@@ -4,8 +4,6 @@
   border: 0;
 }
 
-
-
 /*webuploader组件*/
 
 .webuploader-container {
@@ -41,19 +39,10 @@
   pointer-events: none;
 }
 
-
-
-
-
 .kmseditors {
   overflow: auto;
   position: relative;
 }
-
-
-
-
-
 
 /*顶部工具栏*/
 
@@ -139,10 +128,6 @@
   margin-bottom: 5px;
 }
 
-
-
-
-
 /*内容区域*/
 
 #kmseditors-contant {
@@ -157,15 +142,6 @@
   color: #666;
   line-height: 20px;
 }
-
-
-
-
-
-
-
-
-
 
 /*右键菜单*/
 
@@ -200,9 +176,6 @@
   background-image: url("./images/c1.png");
 }
 
-
-
-
 /*UI还没给图*/
 
 
@@ -232,24 +205,12 @@
   /*text-align: */
 }
 
-
-
-
-
-
-
-
-
 /*内容区*/
 
 #kmseditors-contant {
   position: relative;
   background-color: #fff;
 }
-
-
-
-
 
 /*内容区 - 背景图片区域*/
 
@@ -263,15 +224,13 @@
 #kmseditors-contant .position-conrainer {
   position: absolute;
   /*border: 1px solid transparent;*/
-  /*border: 1px solid red;*/
+  border: 1px solid red;
 }
 
 
 #kmseditors-contant .position-conrainer img {
   width: 100%;
 }
-
-
 
 #kmseditors-contant .position-conrainer .map-position {
   position: absolute;
@@ -294,8 +253,6 @@
   right: 0;
   bottom: 0;
 }
-
-
 
 /*链接效果*/
 
@@ -322,10 +279,6 @@
   border: 1px solid #4285F4;
 }
 
-
-
-
-
 /*#kmseditors-contant .position-conrainer .map-position .delete {
   display: block;
   position: absolute;
@@ -344,13 +297,10 @@
   opacity: 1;
 }*/
 
-
 /*覆盖原来的hover强奸*/
-
 .webuploader-pick-hover {
   background-color: inherit!important;
 }
-
 
 #kmseditors-sidebar {
   position: absolute;
@@ -377,9 +327,7 @@
     width: 16px;
     height: 16px;
 }
+
 #kmseditors-sidebar li:LAST-CHILD {
     border-bottom: none;
 }
-
-
-
