@@ -387,15 +387,12 @@ if (!Object.keys) {
 
       if (currDomType === 'map-position-bg') { // 锚点内移动
         var left = pLeft + dx
-
         if (left < 0) left = 0
 
         var top = pTop + dy
-
         if (top < 0) top = 0
 
         var bottom = top + map_position.height()
-        
         var right = left + map_position.width()
 
         $(map_position).css({
@@ -588,7 +585,6 @@ if (!Object.keys) {
 
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
-
     if (!imgSrc) return
 
     var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
@@ -716,6 +712,10 @@ if (!Object.keys) {
         })
       }
 
+      // 清除锚点前，记录下来现在有的数据，等下用于重新渲染
+      var nowData = kmseditors.getData()
+      var _sketchList = nowData.sketchList
+
       // 清除锚点操作区域
       var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
       if ($warp && $warp.length > 0) $warp.remove()
@@ -723,6 +723,17 @@ if (!Object.keys) {
       var imgSrc = kmseditors.options.host + raw
       _initPositionConrainer(imgSrc)
       // $('#' + file.id).addClass('upload-state-done')
+
+      // 还记得上面清除了锚点吗？现在重现搞回来
+      var sLen = _sketchList.length
+      if (sLen > 0) {
+        setTimeout(function() {
+          for (var i = 0; i < sLen; i++) {
+            var item = _sketchList[i]
+            _sketchHandle(item)
+          }
+        }, 300)
+      }
     })
 
     // 文件上传失败，显示上传出错。
