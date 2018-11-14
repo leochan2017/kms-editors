@@ -5,7 +5,6 @@
 }
 
 /*webuploader组件*/
-
 .webuploader-container {
   position: relative;
 }
@@ -28,12 +27,9 @@
   border-radius: 3px;
   overflow: hidden;
 }*/
-
-
 /*.webuploader-pick-hover {
   background: #00a2d4;
 }*/
-
 .webuploader-pick-disable {
   opacity: 0.6;
   pointer-events: none;
@@ -45,7 +41,6 @@
 }
 
 /*顶部工具栏*/
-
 .kmseditors-title {
   background-color: #fff;
   border-bottom: 1px solid #e8e8e8;
@@ -66,7 +61,6 @@
 .kmseditors-title-btngroup:hover {
   cursor: pointer;
 }
-
 
 .kmseditors-title-btngroup-icon {
   width: 40px;
@@ -95,17 +89,14 @@
   background-image: url("./images/b2_active.png");
 }
 
-
-
 /*.kmseditors-title-btngroup-icon.b3 {
   background-image: url("./images/b3.png");
 }
 
 .kmseditors-title-btngroup-icon.b3:hover {
-  background-image: url("./images/b3_active.png"); 
+  background-image: url("./images/b3_active.png");
 }
 */
-
 .kmseditors-title-btngroup-icon.b4 {
   background-image: url("./images/b4.png");
 }
@@ -122,14 +113,12 @@
   background-image: url("./images/b5_active.png");
 }
 
-
 .kmseditors-title-btngroup p {
   color: #666;
   margin-bottom: 5px;
 }
 
 /*内容区域*/
-
 #kmseditors-contant {
   width: 100%;
   min-height: 400px;
@@ -144,7 +133,6 @@
 }
 
 /*右键菜单*/
-
 #kmseditors-contextmenu {
   position: absolute;
   top: 300px;
@@ -177,25 +165,20 @@
 }
 
 /*UI还没给图*/
-
-
-/*.kmseditors-contextmenu-group.c2 {
-  background-image: url("./images/c2.png");
+.kmseditors-contextmenu-group.c2 {
+  background-image: url("./images/c1.png");
 }
 
 .kmseditors-contextmenu-group.c3 {
-  background-image: url("./images/c3.png");
-}*/
-
+  background-image: url("./images/c1.png");
+}
 .kmseditors-contextmenu-group.c4 {
   background-image: url("./images/c4.png");
 }
 
-
 .kmseditors-contextmenu-group:last-child {
   border-right: 0;
 }
-
 
 .kmseditors-contextmenu-group:hover {
   cursor: pointer;
@@ -205,15 +188,33 @@
   /*text-align: */
 }
 
-/*内容区*/
+.kmseditors-color-container {
+  position: absolute;
+  width: 340px;
+  padding: 2px;
+  box-shadow: 0px 0px 20px #fff;
+}
 
+.kmseditors-color-container::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.kmseditors-color-container .color_div {
+  width: 20px;
+  height: 20px;
+  float: left;
+  cursor: pointer;
+}
+
+/*内容区*/
 #kmseditors-contant {
   position: relative;
   background-color: #fff;
 }
 
 /*内容区 - 背景图片区域*/
-
 #kmseditors-contant-sketch-warp {
   /*width: 1024px;*/
   position: relative;
@@ -226,7 +227,6 @@
   /*border: 1px solid transparent;*/
   /*border: 1px solid red;*/
 }
-
 
 #kmseditors-contant .position-conrainer img {
   width: 100%;
@@ -245,22 +245,22 @@
 #kmseditors-contant .position-conrainer .map-position .map-position-bg {
   position: absolute;
   background: rgba(156, 156, 156, 0.40);
-  background-image: url('data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7'); /*为了IE8下能触发点击事件*/
+  background-image: url('data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7');
+  /*为了IE8下能触发点击事件*/
   border: 1px solid #9C9C9C;
   opacity: 0.5;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  font-size: 16px;
 }
 
 /*链接效果*/
-
 #kmseditors-contant .position-conrainer .map-position.isLink .map-position-bg {
   background: rgba(66, 133, 244, 0.40);
   border: 1px solid #4285F4;
 }
-
 
 #kmseditors-contant .position-conrainer .map-position .resize {
   display: block;
@@ -296,38 +296,37 @@
   cursor: pointer;
   opacity: 1;
 }*/
-
 /*覆盖原来的hover强奸*/
 .webuploader-pick-hover {
-  background-color: inherit!important;
+  background-color: inherit !important;
 }
 
 #kmseditors-sidebar {
   position: absolute;
-    top: 250px;
-    right: 3px;
-    width: 25px;
-    z-index: 5;
-    transform: none;
+  top: 250px;
+  right: 3px;
+  width: 25px;
+  z-index: 5;
+  transform: none;
 }
 
 #kmseditors-sidebar ul {
-    border-width: 1px;
-    border-style: solid none solid solid;
-    border-color: #d9d9d9;
-    border-right: none;
-    list-style: none;
-    background-color: #fff;
+  border-width: 1px;
+  border-style: solid none solid solid;
+  border-color: #d9d9d9;
+  border-right: none;
+  list-style: none;
+  background-color: #fff;
 }
 
 #kmseditors-sidebar ul li {
-    cursor: pointer;
-    padding: 5px;
-    border-bottom: 1px solid #d9d9d9;
-    width: 16px;
-    height: 16px;
+  cursor: pointer;
+  padding: 5px;
+  border-bottom: 1px solid #d9d9d9;
+  width: 16px;
+  height: 16px;
 }
 
 #kmseditors-sidebar li:LAST-CHILD {
-    border-bottom: none;
+  border-bottom: none;
 }

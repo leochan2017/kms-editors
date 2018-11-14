@@ -2,7 +2,9 @@ if (!Object.keys) {
   Object.keys = (function() {
     'use strict';
     var hasOwnProperty = Object.prototype.hasOwnProperty,
-      hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+      hasDontEnumBug = !({
+        toString: null
+      }).propertyIsEnumerable('toString'),
       dontEnums = [
         'toString',
         'toLocaleString',
@@ -46,6 +48,7 @@ if (!Object.keys) {
   var __INIT_ZOOM__ = ''
   var __SKETCH_MIN_WIDTH__ = 30 // 锚点最小宽
   var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
+  var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] //颜色组
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
@@ -66,7 +69,12 @@ if (!Object.keys) {
   var $contextmenu = '' // 右键菜单ele
   var $currSketch = '' // 当前操作的锚点元素(弹出了右键菜单)
 
-  var kmseditors = { options: {}, isInit: false, $container: '', $position: '' }
+  var kmseditors = {
+    options: {},
+    isInit: false,
+    $container: '',
+    $position: ''
+  }
 
   // 初始化函数
   kmseditors.init = function(options) {
@@ -109,6 +117,7 @@ if (!Object.keys) {
       if (data) {
         var bgUrl = data.backgroundUrl
         var sketchList = data.sketchList
+        var textList = data.textList
 
         if (bgUrl) {
           _hideTips()
@@ -124,6 +133,13 @@ if (!Object.keys) {
               for (var i = 0; i < sLen; i++) {
                 var item = sketchList[i]
                 _sketchHandle(item)
+              }
+            }
+            var tLen = textList.length
+            if (tLen > 0) {
+              for (var i = 0; i < tLen; i++) {
+                var item = textList[i]
+                _textHandle(item)
               }
             }
           }, 10)
@@ -160,7 +176,8 @@ if (!Object.keys) {
   kmseditors.getData = function(node) {
     var dataObj = {
       backgroundUrl: '',
-      sketchList: []
+      sketchList: [],
+      textList: []
     }
 
     // 单个锚点数据获取
@@ -170,13 +187,20 @@ if (!Object.keys) {
       var left = item.left || context.offsetLeft
       var width = typeof item.width === 'number' ? item.width : context.offsetWidth
       var height = typeof item.height === 'number' ? item.height : context.offsetHeight
-      return {
+      var text = context.innerText || ''
+      var color = item.attr('data-color') || ''
+      let obj = {
         ref: item.attr('ref'),
         top: top,
         left: left,
         width: width,
         height: height
       }
+      if (text)
+        obj.text = text
+      if (color)
+        obj.color = color
+      return obj
     }
 
     // 获取背景图片的url
@@ -194,10 +218,12 @@ if (!Object.keys) {
 
     if (!$p) return dataObj
 
-    var $arr = $p.find('.map-position[ref]')
-    if ($arr.length <= 0) return dataObj
+    var $arr = $p.find('.map-position[dtype="0"]')
+    var $textArr = $p.find('.map-position[dtype="1"]')
+    if ($arr.length <= 0 && $textArr.length <= 0) return dataObj
 
-    var arr = []
+    var arr = [],
+      textArr = []
     var pWidth = $p.width() // 当前操作区的宽
     var pHeight = $p.height() // 当前操作区的高
     for (var i = 0; i < $arr.length; i++) {
@@ -213,14 +239,28 @@ if (!Object.keys) {
       }
     }
 
+    for (var i = 0; i < $textArr.length; i++) {
+      var $item = $($textArr[i])
+      var itemObj = _getSketchItemData($item)
+      // console.log('itemObj', itemObj)
+      // 如果当前锚点宽和高在图片内，那么还是能留下的。
+      // 溢出了图片的，那么就不要了
+      var itemX = itemObj.left + itemObj.width
+      var itemY = itemObj.top + itemObj.height
+      if (itemX < pWidth && itemY < pHeight) {
+        textArr.push(itemObj)
+      }
+    }
+
     dataObj.sketchList = arr
+    dataObj.textList = textArr
 
     return dataObj
   }
 
-  // 初始化编辑器元素 
+  // 初始化编辑器元素
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传图片，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>添加文字</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传图片，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -273,6 +313,14 @@ if (!Object.keys) {
         _sketchHandle()
       })
 
+      // 添加文字
+      var $textbtn = $('#kmseditors-text')
+      $textbtn.on('click', function(event) {
+        // 注意这里不要简写
+        // 免得_sketchHandle接收时把even当作了需要入参的obj，免除不得要的麻烦
+        _textHandle()
+      })
+
       // 上传图片按钮点击处理
       var $uploadImgBtn = $('#kmseditors-uploadimg')
       $uploadImgBtn.on('click', _hideTips)
@@ -282,6 +330,7 @@ if (!Object.keys) {
 
       // 把右键菜单隐藏掉
       $contextmenu = $('#kmseditors-contextmenu')
+
       $($contextmenu).hide()
 
       if (kmseditors.options.editable) {
@@ -293,9 +342,29 @@ if (!Object.keys) {
         $($contextmenu).find('#kmseditors-contextmenu-edit').on('click', _editHandle)
         // 右键菜单 - 删除
         $($contextmenu).find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
+        // 颜色组初始化
+        _initColor(kmseditors.options.data.colors || __COLOR__)
       }
     })
 
+  }
+
+  // 初始化颜色
+  function _initColor(arr) {
+    var html = '<div class="kmseditors-color-container" style="display: none">'
+    for (var i = 0; i < arr.length; i++) {
+      html += '<div class="color_div" data-color="' + arr[i] + '" style="background-color:' + arr[i] + '"></div>'
+    }
+    html += '</div>'
+    $($contextmenu).append(html)
+    $($contextmenu).find('.color_div').on('click', function() {
+      var color = $(this).attr('data-color')
+      $($currSketch).find('.map-position-bg').css({
+        color: color
+      })
+      $($currSketch).attr('data-color', color)
+      $($contextmenu).find('.kmseditors-color-container').hide()
+    })
   }
 
   //初始化放大缩小的工具栏
@@ -360,7 +429,6 @@ if (!Object.keys) {
       }
     }, 10)
   }
-
 
   // 绑定事件处理函数
   function _bind_map_event() {
@@ -436,7 +504,6 @@ if (!Object.keys) {
         $(currDom).data('pageY', pageY)
       }
     })
-
     // 全局点击事件
     $(document).on('click', '#kmseditors-contant', function(event) {
       event.preventDefault()
@@ -444,12 +511,12 @@ if (!Object.keys) {
       var className = dom.className
 
       // 锚点点击 -> 显示菜单
-      if (className === 'map-position-bg') {
+      if (className === 'map-position-bg' || className === 'kmseditors-contextmenu-group c2') {
         var pageX = event.pageX
         var pageY = event.pageY
         // console.log('event.target', dom)
 
-        $currSketch = $(dom).parent()
+        $currSketch = className === 'kmseditors-contextmenu-group c2' ? $currSketch : $(dom).parent()
         $currSketch.top = pageY
         $currSketch.left = pageX
         $currSketch.width = $($currSketch).width()
@@ -474,6 +541,7 @@ if (!Object.keys) {
         // 取当前锚点位置，目的是显示到右下角
         var $c0 = $currSketch[0]
         if ($c0) {
+          $($c0).show()
           cTop = $c0.offsetTop + $($currSketch).height()
           cLeft = $c0.offsetLeft + $($currSketch).width() - $($contextmenu).width()
         }
@@ -483,10 +551,9 @@ if (!Object.keys) {
           top: cTop
         })
       } else {
-        $($contextmenu).hide()
+        $($contextmenu).hide().find('.kmseditors-color-container').hide()
       }
     })
-
     // 锚点按下 -> flag = true
     $(document).on('mousedown', '.map-position-bg', function(event) {
       var dom = event.target
@@ -497,8 +564,6 @@ if (!Object.keys) {
       $(dom).css('cursor', 'move')
       $($contextmenu).hide()
     })
-
-
     // 改变大小按下 -> flag = true
     $(document).on('mousedown', '.resize', function(event) {
       var dom = event.target
@@ -508,8 +573,6 @@ if (!Object.keys) {
       $(dom).data('pageY', event.pageY)
       $($contextmenu).hide()
     })
-
-
     // 全局弹起
     $(document).on('mouseup', function(event) {
       if (currDomType === 'map-position-bg') {
@@ -575,7 +638,7 @@ if (!Object.keys) {
     var left = '10'
     var width = __SKETCH_MIN_WIDTH__
     var height = __SKETCH_MIN_HEIGHT__
-    var len = $(kmseditors.$container).find('div.map-position[dtype="0"]').length
+    var len = $(kmseditors.$container).find('div.map-position[dtype]').length
     var index = len + 1
     var isLink = false
 
@@ -596,6 +659,52 @@ if (!Object.keys) {
     // <span class="link-number-text">Link ' + index + '</span>
   }
 
+  // 生成文字
+  function _textHandle(obj) {
+    var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
+    if ($images.length === 0) {
+      var txt = '请先上传图片！'
+      if (window.seajs) {
+        seajs.use('lui/dialog', function(dialog) {
+          dialog.alert(txt)
+        })
+      } else {
+        alert(txt)
+      }
+      return
+    }
+
+    _hideTips()
+
+    var top = '10'
+    var left = '10'
+    var width = __SKETCH_MIN_WIDTH__
+    var height = __SKETCH_MIN_HEIGHT__
+    var len = $(kmseditors.$container).find('div.map-position[dtype]').length
+    var index = len + 1
+    var isLink = false
+    var color = '#fff'
+    var fontSize = 16
+
+    if (obj && typeof obj === 'object') {
+      if (obj.top) top = obj.top
+      if (obj.left) left = obj.left
+      if (obj.width) width = obj.width
+      if (obj.height) height = obj.height
+      if (obj.ref) index = obj.ref
+      if (obj.isLink) isLink = obj.isLink
+      if (obj.color) color = obj.color
+      if (obj.text) text = obj.text
+    }
+
+    var classIsLink = isLink ? ' isLink' : ''
+
+    var text = '<div ref="' + index + '" dtype="1" data-color="' + color + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
+      '<div class="map-position-bg" style="color:' + color + '">' + text + '</div><span class="resize"></span>' +
+      '</div>'
+    // 在这里写style是为了初始化就有值
+    kmseditors.$position.append(text)
+  }
 
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
@@ -655,7 +764,6 @@ if (!Object.keys) {
 
     $img.attr('src', imgSrc)
   }
-
 
   // 初始化上传图片
   function _initImgUpload() {
@@ -764,7 +872,6 @@ if (!Object.keys) {
     })
   }
 
-
   // 右键菜单 - 关联
   function _relationHandle() {
     // console.log($currSketch)
@@ -773,7 +880,6 @@ if (!Object.keys) {
     onRelation(kmseditors.getData($currSketch))
   }
 
-
   // 右键菜单 - 删除
   function _deleteHandle() {
     $($contextmenu).hide()
@@ -781,23 +887,38 @@ if (!Object.keys) {
     return
   }
 
+  // div focus 光标在最后
+  function getC(that) {
+    if (document.all) {
+      that.range = document.selection.createRange();
+      that.range.select();
+      that.range.moveStart("character", -1);
+    } else {
+      that.range = window.getSelection().getRangeAt(0);
+      that.range.setStart(that.range.startContainer, that.context.innerText.length);
+    }
+  }
+
   // 右键菜单 - 编辑
   function _editHandle() {
+    var bg = $($currSketch).find('.map-position-bg')
+    $(bg).attr('contenteditable', true).focus()
+    getC($(bg))
+    $(bg).on('blur', function() {
+      $(bg).attr('contenteditable', false)
+    })
     $($contextmenu).hide()
   }
-
 
   // 右键菜单 - 颜色
-  function _colorHandle() {
-    $($contextmenu).hide()
+  function _colorHandle(e) {
+    $($contextmenu).find('.kmseditors-color-container').show()
   }
-
 
   // 隐藏tips
   function _hideTips() {
     $(kmseditors.$container).find('#kmseditors-contant-tips').hide()
   }
-
 
   // 设置当前锚点是否为添加链接状态
   kmseditors.setLinkStatus = function(options) {
@@ -812,8 +933,6 @@ if (!Object.keys) {
       $dom.removeClass('isLink')
     }
   }
-
-
   // 设置整体缩放比例
   kmseditors.setZoom = function(value) {
     var zoom = value || 1
@@ -825,8 +944,6 @@ if (!Object.keys) {
       '-moz-transform': 'scale(' + zoom + ')'
     })
   }
-
-
   // 获取当前zoom的值
   kmseditors.getZoom = function() {
     var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
@@ -860,7 +977,6 @@ if (!Object.keys) {
 
     return obj
   }
-
   // 放大
   kmseditors.zoomIn = function() {
     var v = kmseditors.getZoom().currZoom + 0.1
@@ -868,7 +984,6 @@ if (!Object.keys) {
     if (v >= max) v = max
     kmseditors.setZoom(v)
   }
-
   // 缩小
   kmseditors.zoomOut = function() {
     var v = kmseditors.getZoom().currZoom - 0.1
@@ -876,17 +991,17 @@ if (!Object.keys) {
     if (v <= min) v = min
     kmseditors.setZoom(v)
   }
-
   // 还原
   kmseditors.zoomReset = function() {
     kmseditors.setZoom(__INIT_ZOOM__)
   }
 
-
   if (typeof module !== 'undefined' && typeof exports === 'object') {
     module.exports = kmseditors
   } else if (typeof define === 'function' && (define.amd || define.cmd)) {
-    define(function() { return kmseditors })
+    define(function() {
+      return kmseditors
+    })
   } else {
     $w[__NAME__] = kmseditors
   }
