@@ -202,14 +202,10 @@ if (!Object.keys) {
         width: width,
         height: height
       }
-      if (text)
-        obj.text = text
-      if (color)
-        obj.color = color
-      if (font)
-        obj.font = font
-      if (size)
-        obj.size = size
+      if (text) obj.text = text
+      if (color) obj.color = color
+      if (font) obj.font = font
+      if (size) obj.size = size
       return obj
     }
 
@@ -232,8 +228,8 @@ if (!Object.keys) {
     var $textArr = $p.find('.map-position[dtype="1"]')
     if ($arr.length <= 0 && $textArr.length <= 0) return dataObj
 
-    var arr = [],
-      textArr = []
+    var arr = []
+    var textArr = []
     var pWidth = $p.width() // 当前操作区的宽
     var pHeight = $p.height() // 当前操作区的高
     for (var i = 0; i < $arr.length; i++) {
@@ -428,35 +424,30 @@ if (!Object.keys) {
 
       clearInterval(tPosition)
 
-      var sketchList = $(kmseditors.$container).find('div.map-position[dtype="0"]')
+      var positionList = $(kmseditors.$container).find('div.map-position[dtype]')
       var onRelation = kmseditors.options.onRelation || _noop
-      var opacity = kmseditors.options.debug === true ? 1 : 0
 
-      if (!sketchList) return
+      if (!positionList) return
 
-      for (var i = 0; i < sketchList.length; i++) {
-        var $item = $(sketchList[i])
-        $item.css({
-          'filter': 'alpha(opacity=' + opacity + ')',
-          'opacity': opacity,
-          'cursor': 'pointer'
-        }).on('click', function() {
+      for (var i = 0; i < positionList.length; i++) {
+        var $item = $(positionList[i])
+        $item.on('click', function() {
           onRelation(kmseditors.getData($(this)))
         })
 
-        // 在IE8下，opacity不管用，只能这样了
-        if (opacity === 0) {
-          $item.find('div.map-position-bg').css({
-            border: 'none'
-          })
+        // opacity 设置透明有时候不管用，只能这样了
+        console.log($item.find('div.map-position-bg'))
+        $item.find('div.map-position-bg').css({
+          border: 'none',
+          background: 'none'
+        })
 
-          $item.find('span.resize').css({
-            border: 'none',
-            background: 'none'
-          })
-        }
+        $item.find('span.resize').css({
+          border: 'none',
+          background: 'none'
+        })
       }
-    }, 10)
+    }, 50)
   }
   // 点击添加文字 点击图片 出现文字
   function _bind_add_text() {
@@ -718,8 +709,6 @@ if (!Object.keys) {
 
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
-
-    // <span class="link-number-text">Link ' + index + '</span>
   }
   // 生成文字
   function _textHandle(obj) {
