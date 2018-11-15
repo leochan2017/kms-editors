@@ -685,6 +685,7 @@ if (!Object.keys) {
     var isLink = false
     var color = '#fff'
     var fontSize = 16
+    var text = ''
 
     if (obj && typeof obj === 'object') {
       if (obj.top) top = obj.top
@@ -704,6 +705,10 @@ if (!Object.keys) {
       '</div>'
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append(text)
+
+    $('.map-position[ref=1]').dblclick(function() {
+      _editHandle()
+    })
   }
 
   // 图片上传完成后 - 初始化编辑区域
