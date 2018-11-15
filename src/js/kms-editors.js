@@ -752,16 +752,11 @@ if (!Object.keys) {
 
     var classIsLink = isLink ? ' isLink' : ''
 
-    var text = '<div ref="' + index + '" dtype="1" data-color="' + color + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
+    var strHtml = '<div ref="' + index + '" dtype="1" data-color="' + color + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
       '<div class="map-position-bg" style="color:' + color + ';font-family: ' + font + '">' + text + '</div><span class="resize"></span>' +
       '</div>'
     // 在这里写style是为了初始化就有值
-    kmseditors.$position.append(text)
-    // 新添加的文字
-    if (!obj.text) {
-      var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
-
-    }
+    kmseditors.$position.append(strHtml)
 
     $('.map-position[dtype=1]').dblclick(function() {
       _editHandle()

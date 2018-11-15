@@ -180,6 +180,10 @@
   background-image: url("./images/c4.png");
 }
 
+.kmseditors-contextmenu-group.c5 {
+  background-image: url("./images/c5.png");
+}
+
 .kmseditors-contextmenu-group:last-child {
   border-right: 0;
 }
