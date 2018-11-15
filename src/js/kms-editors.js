@@ -194,6 +194,7 @@ if (!Object.keys) {
       var text = context.innerText || ''
       var color = item.attr('data-color') || ''
       var font = item.attr('data-font') || ''
+      var size = item.attr('data-size') || ''
       let obj = {
         ref: item.attr('ref'),
         top: top,
@@ -207,6 +208,8 @@ if (!Object.keys) {
         obj.color = color
       if (font)
         obj.font = font
+      if (size)
+        obj.size = size
       return obj
     }
 
@@ -478,6 +481,20 @@ if (!Object.keys) {
     $($contextmenu).hide().find('.kmseditors-color-container').hide()
     $($contextmenu).find('.kmseditors-font-container').hide()
   }
+  // 监听字体数量大小
+  function _watchFont(map_position) {
+    var $bg = $(map_position)[0].children[0]
+    var innerText = $($bg)[0].innerText
+    var height = $($bg)[0].clientHeight
+    var width = $($bg)[0].clientWidth
+    var size = parseInt(Math.sqrt(height * width / innerText.length)) - 8
+    if (size > width) size = width - 5
+    if (size > height) size = height - 5
+    if (size < 0) size = 12
+    $(map_position).attr('data-size', size).find('.map-position-bg').css({
+      fontSize: size + 'px'
+    })
+  }
   // 绑定事件处理函数
   function _bind_map_event() {
     var currDom = null
@@ -550,13 +567,7 @@ if (!Object.keys) {
           height: height
         })
         if ($(map_position).attr('dtype') == 1) {
-          var text = $(map_position).find('.map-position-bg').innerText
-          var size = parseInt(Math.sqrt(height * width / 20))
-          if (size > width) size = width - 2
-          if (size > height) size = height - 2
-          $(map_position).attr('data-size', size).find('.map-position-bg').css({
-            fontSize: size + 'px'
-          })
+          _watchFont(map_position)
         }
         $(currDom).data('pageX', pageX)
         $(currDom).data('pageY', pageY)
@@ -583,13 +594,16 @@ if (!Object.keys) {
         var dtype = parseInt($currSketch.attr('dtype'))
         var $colorConBtn = $('#kmseditors-contextmenu-color')
         var $editConBtn = $('#kmseditors-contextmenu-edit')
+        var $fontConBtn = $('#kmseditors-contextmenu-font')
 
         if (dtype === 0) { // 锚点
           $colorConBtn.hide()
           $editConBtn.hide()
+          $fontConBtn.hide()
         } else if (dtype === 1) { // 文字
           $colorConBtn.show()
           $editConBtn.show()
+          $fontConBtn.show()
         }
 
         // 取当前鼠标位置
@@ -767,6 +781,10 @@ if (!Object.keys) {
     $('.map-position[dtype=1]').dblclick(function() {
       _editHandle()
     })
+    $('.map-position[dtype=1]').on('input', function() {
+      var position = $(this)
+      _watchFont(position)
+    })
   }
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
@@ -899,6 +917,7 @@ if (!Object.keys) {
       // 清除锚点前，记录下来现在有的数据，等下用于重新渲染
       var nowData = kmseditors.getData()
       var _sketchList = nowData.sketchList
+      var _textList = nowData.textList
 
       // 清除锚点操作区域
       var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
@@ -915,6 +934,16 @@ if (!Object.keys) {
           for (var i = 0; i < sLen; i++) {
             var item = _sketchList[i]
             _sketchHandle(item)
+          }
+        }, 300)
+      }
+
+      var tLen = _textList.length
+      if (tLen > 0) {
+        setTimeout(function() {
+          for (var i = 0; i < tLen; i++) {
+            var item = _textList[i]
+            _textHandle(item)
           }
         }, 300)
       }
