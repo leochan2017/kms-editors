@@ -48,10 +48,10 @@ if (!Object.keys) {
   var __INIT_ZOOM__ = ''
   var __SKETCH_MIN_WIDTH__ = 30 // 锚点最小宽
   var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
-  var __TEXT_MIN_WIDTH__ = 150 // 文字最少宽
-  var __TEXT_MIN_HEIGHT__ = 30 // 文字最少高
-  var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] //颜色组
-  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书'] //颜色组
+  var __TEXT_MIN_WIDTH__ = 160 // 文字最小宽
+  var __TEXT_MIN_HEIGHT__ = 30 // 文字最小高
+  var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] // 可选颜色组
+  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书'] // 可选字体组
   var __REF__ = 1 //顺序
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
@@ -236,7 +236,6 @@ if (!Object.keys) {
     for (var i = 0; i < $arr.length; i++) {
       var $item = $($arr[i])
       var itemObj = _getSketchItemData($item)
-      // console.log('itemObj', itemObj)
       // 如果当前锚点宽和高在图片内，那么还是能留下的。
       // 溢出了图片的，那么就不要了
       var itemX = itemObj.left + itemObj.width
@@ -249,9 +248,6 @@ if (!Object.keys) {
     for (var i = 0; i < $textArr.length; i++) {
       var $item = $($textArr[i])
       var itemObj = _getSketchItemData($item)
-      // console.log('itemObj', itemObj)
-      // 如果当前锚点宽和高在图片内，那么还是能留下的。
-      // 溢出了图片的，那么就不要了
       var itemX = itemObj.left + itemObj.width
       var itemY = itemObj.top + itemObj.height
       if (itemX < pWidth && itemY < pHeight) {
