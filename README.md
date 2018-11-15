@@ -57,6 +57,7 @@ name | type | required | description
 ---- | ---- | -------- | ---------
 backgroundUrl | String | No | Background image url
 sketchList | Array(Object) | No | Sketch list
+textList | Array(Object) | No | Text list
 
 
 ##### sketchList description:
@@ -68,6 +69,19 @@ left   | Number  | Yes | Specifying the vertical position of a positioned sketch
 width  | Number  | Yes | Sketch element's width
 height | Number  | Yes | Sketch element's height
 isLink | Boolean | No  | Set the sketch element's status
+
+
+##### textList description:
+name        | type        | required | description
+------------- | ------------- | -------- | ---------
+ref		 | String	| Yes | Unique id
+top		| Number  | Yes | Specifying the vertical position of a positioned sketch element
+left	   | Number  | Yes | Specifying the vertical position of a positioned sketch element
+width	 | Number  | Yes | Sketch element's width
+height	  | Number  | Yes | Sketch element's height
+text	  | String	  | No  | Set the text input value
+color	  | String	  | No | Hexadecimal color code
+
 
 
 #### Usage
@@ -95,6 +109,9 @@ kmseditors.init({
             sketchList: [
                 { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
                 { ref: "2", top: 70, left: 428, width: 73, height: 32 }
+            ],
+            textList: [
+                { ref: "3", top: 200, left: 692, width: 100, height: 100, text: 'Input you text here!', color: '#39CCCC'}
             ]
         },
         editable: true,
@@ -124,6 +141,7 @@ name          | type          | required | description
 ------------- | ------------- | -------- | ---------
 backgroundUrl | String        | No       | Background image url
 sketchList    | Array(Object) | No       | Sketch list
+textList    | Array(Object) | No       | Text list 
 
 #### Usage
 
@@ -152,7 +170,6 @@ $('#screenshot').on('click', function() {
 })
 ```
 
-
 ---
 
 ### kmseditors.setLinkStatus(Object)
@@ -172,7 +189,6 @@ kmseditors.setLinkStatus({
 })
 ```
 
-
 ---
 
 ### kmseditors.setZoom(Number)
@@ -187,7 +203,6 @@ Number  | No       | zoom value(0~1),  Default: 1
 ```
 kmseditors.setZoom(0.5)
 ```
-
 
 ---
 
@@ -210,7 +225,6 @@ console(val)
 // }
 ```
 
-
 ---
 
 ### kmseditors.zoomIn()
@@ -222,7 +236,6 @@ Magnify the container. The maximum allowable is twice the initial value.
 kmseditors.zoomIn()
 ```
 
-
 ---
 
 ### kmseditors.zoomOut()
@@ -233,7 +246,6 @@ Shrink the container. The maximum allowable value is 0.6 times the initial value
 ```
 kmseditors.zoomOut()
 ```
-
 
 ---
 
