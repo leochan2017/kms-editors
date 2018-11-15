@@ -52,6 +52,7 @@ if (!Object.keys) {
   var __TEXT_MIN_HEIGHT__ = 30 // 文字最少高
   var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] //颜色组
   var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书'] //颜色组
+  var __REF__ = 1 //顺序
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
@@ -317,6 +318,8 @@ if (!Object.keys) {
         // 注意这里不要简写
         // 免得_sketchHandle接收时把even当作了需要入参的obj，免除不得要的麻烦
         _sketchHandle()
+        isCanAddText = false
+        $('#kmseditors-text').find('.kmseditors-title-btngroup-icon').removeClass('active')
       })
 
       // 添加文字
@@ -378,7 +381,6 @@ if (!Object.keys) {
       $($contextmenu).find('.kmseditors-font-container').hide()
     })
   }
-
   // 初始化颜色
   function _initColor(arr) {
     var html = '<div class="kmseditors-color-container" style="display: none">'
@@ -396,7 +398,6 @@ if (!Object.keys) {
       $($contextmenu).find('.kmseditors-color-container').hide()
     })
   }
-
   //初始化放大缩小的工具栏
   function _initSidebar() {
     if (kmseditors.options.editable) return
@@ -416,7 +417,6 @@ if (!Object.keys) {
       }
     })
   }
-
   // 处理非编辑模式
   function _unEditable() {
     _hideTips();
@@ -459,19 +459,18 @@ if (!Object.keys) {
       }
     }, 10)
   }
-
   // 点击添加文字 点击图片 出现文字
   function _bind_add_text() {
     $(kmseditors.$position).off('click').on('click', function(e) {
       if (!isCanAddText) return
       console.log(e)
       var obj = {
-        top: e.pageX,
-        left: e.pageY
+        top: e.pageY - 72,
+        left: e.pageX
       }
-      _textHandle(obj)
       isCanAddText = false
       $('#kmseditors-text').find('.kmseditors-title-btngroup-icon').removeClass('active')
+      _textHandle(obj)
     })
   }
   // 隐藏菜单
@@ -479,7 +478,6 @@ if (!Object.keys) {
     $($contextmenu).hide().find('.kmseditors-color-container').hide()
     $($contextmenu).find('.kmseditors-font-container').hide()
   }
-
   // 绑定事件处理函数
   function _bind_map_event() {
     var currDom = null
@@ -537,19 +535,29 @@ if (!Object.keys) {
       } else if (currDomType === 'resize') { // 改变大小时鼠标移动
         var left = pLeft
         var top = pTop
-
         var height = map_position.height() + dy
-
         var width = map_position.width() + dx
 
-        if (width < __SKETCH_MIN_WIDTH__) width = __SKETCH_MIN_WIDTH__
-        if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
-
+        if ($(map_position).attr('dtype') == 1) {
+          if (width < __TEXT_MIN_WIDTH__) width = __TEXT_MIN_WIDTH__
+          if (height < __TEXT_MIN_HEIGHT__) height = __TEXT_MIN_HEIGHT__
+        } else {
+          if (width < __SKETCH_MIN_WIDTH__) width = __SKETCH_MIN_WIDTH__
+          if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
+        }
         $(map_position).css({
           width: width,
           height: height
         })
-
+        if ($(map_position).attr('dtype') == 1) {
+          var text = $(map_position).find('.map-position-bg').innerText
+          var size = parseInt(Math.sqrt(height * width / 20))
+          if (size > width) size = width - 2
+          if (size > height) size = height - 2
+          $(map_position).attr('data-size', size).find('.map-position-bg').css({
+            fontSize: size + 'px'
+          })
+        }
         $(currDom).data('pageX', pageX)
         $(currDom).data('pageY', pageY)
       }
@@ -633,13 +641,11 @@ if (!Object.keys) {
       $($contextmenu).hide()
     })
   }
-
   // 检查是否支持全屏
   function _checkFullScreen() {
     var ele = document.documentElement
     return ele.requestFullscreen || ele.msRequestFullscreen || ele.mozRequestFullScreen || ele.webkitRequestFullscreen || false
   }
-
   // 全屏
   function _launchFullScreen() {
     var ele = document.documentElement
@@ -653,7 +659,6 @@ if (!Object.keys) {
       ele.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
     }
   }
-
   // 退出全屏
   function _cancelFullScreen() {
     if (document.exitFullscreen) {
@@ -666,7 +671,6 @@ if (!Object.keys) {
       document.webkitExitFullscreen()
     }
   }
-
   // 生成锚点
   function _sketchHandle(obj) {
     var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
@@ -688,8 +692,7 @@ if (!Object.keys) {
     var left = '10'
     var width = __SKETCH_MIN_WIDTH__
     var height = __SKETCH_MIN_HEIGHT__
-    var len = $(kmseditors.$container).find('div.map-position[dtype]').length
-    var index = len + 1
+    var index = __REF__++
     var isLink = false
 
     if (obj && typeof obj === 'object') {
@@ -708,7 +711,6 @@ if (!Object.keys) {
 
     // <span class="link-number-text">Link ' + index + '</span>
   }
-
   // 生成文字
   function _textHandle(obj) {
     var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
@@ -730,11 +732,10 @@ if (!Object.keys) {
     var left = '10'
     var width = __TEXT_MIN_WIDTH__
     var height = __TEXT_MIN_HEIGHT__
-    var len = $(kmseditors.$container).find('div.map-position[dtype]').length
-    var index = len + 1
+    var index = __REF__++
     var isLink = false
     var color = '#fff'
-    var fontSize = 16
+    var size = 15
     var text = ''
     var font = ''
 
@@ -748,21 +749,25 @@ if (!Object.keys) {
       if (obj.color) color = obj.color
       if (obj.text) text = obj.text
       if (obj.font) font = obj.font
+      if (obj.size) size = obj.size
     }
 
     var classIsLink = isLink ? ' isLink' : ''
-
-    var strHtml = '<div ref="' + index + '" dtype="1" data-color="' + color + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
-      '<div class="map-position-bg" style="color:' + color + ';font-family: ' + font + '">' + text + '</div><span class="resize"></span>' +
+    var strHtml = '<div ref="' + index + '" dtype="1" data-color="' + color + '" data-font="' + font + '" data-size="' + size + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
+      '<div class="map-position-bg" style="color:' + color + ';font-family: ' + font + ';font-size: ' + size + 'px">' + text + '</div><span class="resize"></span>' +
       '</div>'
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append(strHtml)
+    // 新文字
+    if (!obj.text) {
+      $currSketch = kmseditors.$position.find('.map-position[dtype=1]').last()
+      _editHandle()
+    }
 
     $('.map-position[dtype=1]').dblclick(function() {
       _editHandle()
     })
   }
-
   // 图片上传完成后 - 初始化编辑区域
   function _initPositionConrainer(imgSrc) {
     if (!imgSrc) return
@@ -822,7 +827,6 @@ if (!Object.keys) {
 
     $img.attr('src', imgSrc)
   }
-
   // 初始化上传背景
   function _initImgUpload() {
     if (typeof WebUploader === 'undefined') return
@@ -950,7 +954,7 @@ if (!Object.keys) {
       that.range.moveStart("character", -1);
     } else {
       that.range = window.getSelection().getRangeAt(0);
-      that.range.setStart(that.range.startContainer, that.context.innerText.length);
+      that.range.setStart(that.range.startContainer, that.context.innerText && that.context.innerText.length);
     }
   }
   // 右键菜单 - 编辑
