@@ -89,14 +89,14 @@
   background-image: url("./images/b2_active.png");
 }
 
-/*.kmseditors-title-btngroup-icon.b3 {
+.kmseditors-title-btngroup-icon.b3 {
   background-image: url("./images/b3.png");
 }
 
 .kmseditors-title-btngroup-icon.b3:hover {
   background-image: url("./images/b3_active.png");
 }
-*/
+
 .kmseditors-title-btngroup-icon.b4 {
   background-image: url("./images/b4.png");
 }
@@ -164,13 +164,12 @@
   background-image: url("./images/c1.png");
 }
 
-/*UI还没给图*/
 .kmseditors-contextmenu-group.c2 {
-  background-image: url("./images/c1.png");
+  background-image: url("./images/c2.png");
 }
 
 .kmseditors-contextmenu-group.c3 {
-  background-image: url("./images/c1.png");
+  background-image: url("./images/c3.png");
 }
 .kmseditors-contextmenu-group.c4 {
   background-image: url("./images/c4.png");

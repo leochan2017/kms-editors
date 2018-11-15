@@ -48,6 +48,8 @@ if (!Object.keys) {
   var __INIT_ZOOM__ = ''
   var __SKETCH_MIN_WIDTH__ = 30 // 锚点最小宽
   var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
+  var __TEXT_MIN_WIDTH__ = 150 // 文字最少宽
+  var __TEXT_MIN_HEIGHT__ = 30 // 文字最少高
   var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] //颜色组
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
@@ -260,7 +262,7 @@ if (!Object.keys) {
 
   // 初始化编辑器元素
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传图片</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>添加文字</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传图片，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b3"></div><p>添加文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -321,11 +323,11 @@ if (!Object.keys) {
         _textHandle()
       })
 
-      // 上传图片按钮点击处理
+      // 上传背景按钮点击处理
       var $uploadImgBtn = $('#kmseditors-uploadimg')
       $uploadImgBtn.on('click', _hideTips)
 
-      // 初始化上传图片
+      // 初始化上传背景
       _initImgUpload()
 
       // 把右键菜单隐藏掉
@@ -621,7 +623,7 @@ if (!Object.keys) {
   function _sketchHandle(obj) {
     var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
     if ($images.length === 0) {
-      var txt = '请先上传图片！'
+      var txt = '请先上传背景！'
       if (window.seajs) {
         seajs.use('lui/dialog', function(dialog) {
           dialog.alert(txt)
@@ -663,7 +665,7 @@ if (!Object.keys) {
   function _textHandle(obj) {
     var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
     if ($images.length === 0) {
-      var txt = '请先上传图片！'
+      var txt = '请先上传背景！'
       if (window.seajs) {
         seajs.use('lui/dialog', function(dialog) {
           dialog.alert(txt)
@@ -678,8 +680,8 @@ if (!Object.keys) {
 
     var top = '10'
     var left = '10'
-    var width = __SKETCH_MIN_WIDTH__
-    var height = __SKETCH_MIN_HEIGHT__
+    var width = __TEXT_MIN_WIDTH__
+    var height = __TEXT_MIN_HEIGHT__
     var len = $(kmseditors.$container).find('div.map-position[dtype]').length
     var index = len + 1
     var isLink = false
@@ -765,7 +767,7 @@ if (!Object.keys) {
     $img.attr('src', imgSrc)
   }
 
-  // 初始化上传图片
+  // 初始化上传背景
   function _initImgUpload() {
     if (typeof WebUploader === 'undefined') return
 
