@@ -97,6 +97,10 @@
   background-image: url("./images/b3_active.png");
 }
 
+.kmseditors-title-btngroup-icon.b3.active {
+  background-image: url("./images/b3_active.png");
+}
+
 .kmseditors-title-btngroup-icon.b4 {
   background-image: url("./images/b4.png");
 }
@@ -171,6 +175,7 @@
 .kmseditors-contextmenu-group.c3 {
   background-image: url("./images/c3.png");
 }
+
 .kmseditors-contextmenu-group.c4 {
   background-image: url("./images/c4.png");
 }
@@ -189,9 +194,10 @@
 
 .kmseditors-color-container {
   position: absolute;
-  width: 340px;
+  width: 148px;
   padding: 2px;
-  box-shadow: 0px 0px 20px #fff;
+  box-shadow: 0px 0px 20px #5a5a5a;
+  box-sizing: border-box;
 }
 
 .kmseditors-color-container::after {
@@ -205,6 +211,39 @@
   height: 20px;
   float: left;
   cursor: pointer;
+}
+
+.kmseditors-color-container .color_div:hover {
+  border-color: #0883e6 !important;
+}
+.kmseditors-font-container {
+  position: absolute;
+  width: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0px 0px 20px #5a5a5a;
+  background-color: #fff;
+  margin-top: 5px;
+  border-radius: 2px;
+}
+
+.kmseditors-font-container .font_div {
+  height: 30px;
+  width: 100px;
+  color: #000;
+  line-height: 30px;
+  padding-left: 10px;
+  border-bottom: 1px dashed #dedede;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.kmseditors-font-container .font_div:hover {
+  background-color: #9ac3e4;
+}
+.kmseditors-font-container .font_div:last-child {
+  border-bottom: none;
 }
 
 /*内容区*/

@@ -51,6 +51,7 @@ if (!Object.keys) {
   var __TEXT_MIN_WIDTH__ = 150 // 文字最少宽
   var __TEXT_MIN_HEIGHT__ = 30 // 文字最少高
   var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] //颜色组
+  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书'] //颜色组
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
@@ -70,7 +71,7 @@ if (!Object.keys) {
 
   var $contextmenu = '' // 右键菜单ele
   var $currSketch = '' // 当前操作的锚点元素(弹出了右键菜单)
-
+  var isCanAddText = false
   var kmseditors = {
     options: {},
     isInit: false,
@@ -191,6 +192,7 @@ if (!Object.keys) {
       var height = typeof item.height === 'number' ? item.height : context.offsetHeight
       var text = context.innerText || ''
       var color = item.attr('data-color') || ''
+      var font = item.attr('data-font') || ''
       let obj = {
         ref: item.attr('ref'),
         top: top,
@@ -202,6 +204,8 @@ if (!Object.keys) {
         obj.text = text
       if (color)
         obj.color = color
+      if (font)
+        obj.font = font
       return obj
     }
 
@@ -262,7 +266,7 @@ if (!Object.keys) {
 
   // 初始化编辑器元素
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b3"></div><p>添加文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b3"></div><p>添加文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-font" class="kmseditors-contextmenu-group c5"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -320,7 +324,9 @@ if (!Object.keys) {
       $textbtn.on('click', function(event) {
         // 注意这里不要简写
         // 免得_sketchHandle接收时把even当作了需要入参的obj，免除不得要的麻烦
-        _textHandle()
+        // _textHandle()
+        isCanAddText = true
+        $textbtn.find('.kmseditors-title-btngroup-icon').addClass('active')
       })
 
       // 上传背景按钮点击处理
@@ -344,22 +350,44 @@ if (!Object.keys) {
         $($contextmenu).find('#kmseditors-contextmenu-edit').on('click', _editHandle)
         // 右键菜单 - 删除
         $($contextmenu).find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
+        // 右键菜单 - 字体
+        $($contextmenu).find('#kmseditors-contextmenu-font').on('click', _fontHandle)
         // 颜色组初始化
         _initColor(kmseditors.options.data.colors || __COLOR__)
+        // 颜色组初始化
+        _initFont(kmseditors.options.data.fonts || __FONT__)
       }
     })
 
+  }
+
+  // 初始字体
+  function _initFont(arr) {
+    var html = '<div class="kmseditors-font-container" style="display: none">'
+    for (var i = 0; i < arr.length; i++) {
+      html += '<div class="font_div" data-font="' + arr[i] + '" style="font-family:' + arr[i] + '">' + arr[i] + '</div>'
+    }
+    html += '</div>'
+    $($contextmenu).append(html)
+    $($contextmenu).find('.font_div').off('click').on('click', function() {
+      var font = $(this).attr('data-font')
+      $($currSketch).find('.map-position-bg').css({
+        fontFamily: font
+      })
+      $($currSketch).attr('data-font', font)
+      $($contextmenu).find('.kmseditors-font-container').hide()
+    })
   }
 
   // 初始化颜色
   function _initColor(arr) {
     var html = '<div class="kmseditors-color-container" style="display: none">'
     for (var i = 0; i < arr.length; i++) {
-      html += '<div class="color_div" data-color="' + arr[i] + '" style="background-color:' + arr[i] + '"></div>'
+      html += '<div class="color_div" data-color="' + arr[i] + '" style="background-color:' + arr[i] + ';border: 2px solid ' + arr[i] + '"></div>'
     }
     html += '</div>'
     $($contextmenu).append(html)
-    $($contextmenu).find('.color_div').on('click', function() {
+    $($contextmenu).find('.color_div').off('click').on('click', function() {
       var color = $(this).attr('data-color')
       $($currSketch).find('.map-position-bg').css({
         color: color
@@ -430,6 +458,26 @@ if (!Object.keys) {
         }
       }
     }, 10)
+  }
+
+  // 点击添加文字 点击图片 出现文字
+  function _bind_add_text() {
+    $(kmseditors.$position).off('click').on('click', function(e) {
+      if (!isCanAddText) return
+      console.log(e)
+      var obj = {
+        top: e.pageX,
+        left: e.pageY
+      }
+      _textHandle(obj)
+      isCanAddText = false
+      $('#kmseditors-text').find('.kmseditors-title-btngroup-icon').removeClass('active')
+    })
+  }
+  // 隐藏菜单
+  function _hideMenu() {
+    $($contextmenu).hide().find('.kmseditors-color-container').hide()
+    $($contextmenu).find('.kmseditors-font-container').hide()
   }
 
   // 绑定事件处理函数
@@ -513,12 +561,12 @@ if (!Object.keys) {
       var className = dom.className
 
       // 锚点点击 -> 显示菜单
-      if (className === 'map-position-bg' || className === 'kmseditors-contextmenu-group c2') {
+      if (className === 'map-position-bg' || className === 'kmseditors-contextmenu-group c2' || className === 'kmseditors-contextmenu-group c5') {
         var pageX = event.pageX
         var pageY = event.pageY
         // console.log('event.target', dom)
 
-        $currSketch = className === 'kmseditors-contextmenu-group c2' ? $currSketch : $(dom).parent()
+        $currSketch = className.indexOf('kmseditors-contextmenu-group') > -1 ? $currSketch : $(dom).parent()
         $currSketch.top = pageY
         $currSketch.left = pageX
         $currSketch.width = $($currSketch).width()
@@ -553,7 +601,7 @@ if (!Object.keys) {
           top: cTop
         })
       } else {
-        $($contextmenu).hide().find('.kmseditors-color-container').hide()
+        _hideMenu()
       }
     })
     // 锚点按下 -> flag = true
@@ -564,7 +612,7 @@ if (!Object.keys) {
       $(dom).data('pageX', event.pageX)
       $(dom).data('pageY', event.pageY)
       $(dom).css('cursor', 'move')
-      $($contextmenu).hide()
+      _hideMenu()
     })
     // 改变大小按下 -> flag = true
     $(document).on('mousedown', '.resize', function(event) {
@@ -573,7 +621,7 @@ if (!Object.keys) {
       currDomType = 'resize'
       $(dom).data('pageX', event.pageX)
       $(dom).data('pageY', event.pageY)
-      $($contextmenu).hide()
+      _hideMenu()
     })
     // 全局弹起
     $(document).on('mouseup', function(event) {
@@ -688,6 +736,7 @@ if (!Object.keys) {
     var color = '#fff'
     var fontSize = 16
     var text = ''
+    var font = ''
 
     if (obj && typeof obj === 'object') {
       if (obj.top) top = obj.top
@@ -698,17 +747,23 @@ if (!Object.keys) {
       if (obj.isLink) isLink = obj.isLink
       if (obj.color) color = obj.color
       if (obj.text) text = obj.text
+      if (obj.font) font = obj.font
     }
 
     var classIsLink = isLink ? ' isLink' : ''
 
     var text = '<div ref="' + index + '" dtype="1" data-color="' + color + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
-      '<div class="map-position-bg" style="color:' + color + '">' + text + '</div><span class="resize"></span>' +
+      '<div class="map-position-bg" style="color:' + color + ';font-family: ' + font + '">' + text + '</div><span class="resize"></span>' +
       '</div>'
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append(text)
+    // 新添加的文字
+    if (!obj.text) {
+      var $warp = $('<div id="kmseditors-contant-sketch-warp"></div>')
 
-    $('.map-position[ref=1]').dblclick(function() {
+    }
+
+    $('.map-position[dtype=1]').dblclick(function() {
       _editHandle()
     })
   }
@@ -741,6 +796,7 @@ if (!Object.keys) {
 
     $img.on('load', function(evt) {
       kmseditors.$position = $(kmseditors.$container).find('.position-conrainer')
+      _bind_add_text()
       var _$img = $(evt.target)
       var $kmseditors_contant = $('#kmseditors-contant') // 编辑区
       var $tips_div = $('#kmseditors-contant-tips') // 提示文字区域
@@ -878,7 +934,6 @@ if (!Object.keys) {
       $error.text('上传失败')
     })
   }
-
   // 右键菜单 - 关联
   function _relationHandle() {
     // console.log($currSketch)
@@ -886,14 +941,12 @@ if (!Object.keys) {
     var onRelation = kmseditors.options.onRelation || _noop
     onRelation(kmseditors.getData($currSketch))
   }
-
   // 右键菜单 - 删除
   function _deleteHandle() {
-    $($contextmenu).hide()
+    _hideMenu()
     $($currSketch).remove() // 最简单的写法
     return
   }
-
   // div focus 光标在最后
   function getC(that) {
     if (document.all) {
@@ -905,7 +958,6 @@ if (!Object.keys) {
       that.range.setStart(that.range.startContainer, that.context.innerText.length);
     }
   }
-
   // 右键菜单 - 编辑
   function _editHandle() {
     var bg = $($currSketch).find('.map-position-bg')
@@ -914,14 +966,18 @@ if (!Object.keys) {
     $(bg).on('blur', function() {
       $(bg).attr('contenteditable', false)
     })
-    $($contextmenu).hide()
+    _hideMenu()
   }
-
   // 右键菜单 - 颜色
-  function _colorHandle(e) {
+  function _colorHandle() {
+    $($contextmenu).find('.kmseditors-font-container').hide()
     $($contextmenu).find('.kmseditors-color-container').show()
   }
-
+  // 右键菜单 - 字体
+  function _fontHandle() {
+    $($contextmenu).find('.kmseditors-color-container').hide()
+    $($contextmenu).find('.kmseditors-font-container').show()
+  }
   // 隐藏tips
   function _hideTips() {
     $(kmseditors.$container).find('#kmseditors-contant-tips').hide()
