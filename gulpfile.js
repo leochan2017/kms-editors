@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
+var gutil = require('gulp-util');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var notify = require('gulp-notify');
@@ -29,6 +30,9 @@ gulp.task('css', function() {
 gulp.task('js', function() {
   gulp.src(__SRC__.js)
     .pipe(uglify())
+    .on('error', function (err) {
+        gutil.log(gutil.colors.red('[Error]'), err.toString());
+    })
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(__DST__))
     .pipe(notify('js task is finish'));

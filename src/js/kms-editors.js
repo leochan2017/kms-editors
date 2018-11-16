@@ -186,6 +186,7 @@ if (!Object.keys) {
     // 单个锚点数据获取
     function _getSketchItemData(item) {
       var context = item.context
+      var ref = item.attr('ref')
       var top = item.top || context.offsetTop
       var left = item.left || context.offsetLeft
       var width = typeof item.width === 'number' ? item.width : context.offsetWidth
@@ -194,8 +195,8 @@ if (!Object.keys) {
       var color = item.attr('data-color') || ''
       var font = item.attr('data-font') || ''
       var size = item.attr('data-size') || ''
-      let obj = {
-        ref: item.attr('ref'),
+      var obj = {
+        ref: ref,
         top: top,
         left: left,
         width: width,
