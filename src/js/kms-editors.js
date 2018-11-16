@@ -83,7 +83,6 @@ if (!Object.keys) {
   // 初始化函数
   kmseditors.init = function(options) {
     var errMsg = ''
-    // console.log('init:', options)
     if (!options || Object.keys(options).length === 0) {
       logger.warn('请对' + __NAME__ + '.init()传入必要的参数')
       return
@@ -262,7 +261,7 @@ if (!Object.keys) {
 
   // 初始化编辑器元素
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b3"></div><p>添加文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-font" class="kmseditors-contextmenu-group c5"></div><div id="kmseditors-contextmenu-edit" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-relation" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-color" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-delete" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b3"></div><p>添加文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" title="编辑内容" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-font" title="更换字体" class="kmseditors-contextmenu-group c5"></div><div id="kmseditors-contextmenu-color" title="选择颜色" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-relation" title="关联" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-delete" title="删除" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -402,7 +401,7 @@ if (!Object.keys) {
       '<li class="lui_map_icon_zoom_in mui mui-addition" title="放大" data-opt="zoomIn"></li>' +
       '<li class="lui_map_icon_zoom_out mui mui-delete" title="缩小" data-opt="zoomOut"></li></ul>'
     $(kmseditors.$container).append(sidebar)
-    $(kmseditors.$container).css("position", "relative")
+    $(kmseditors.$container).css('position', 'relative')
     sidebar.append(barhtml)
     sidebar.on('click', function(evt) {
       var target = $(evt.target),
@@ -436,7 +435,6 @@ if (!Object.keys) {
         })
 
         // opacity 设置透明有时候不管用，只能这样了
-        console.log($item.find('div.map-position-bg'))
         $item.find('div.map-position-bg').css({
           border: 'none',
           background: 'none'
@@ -453,7 +451,6 @@ if (!Object.keys) {
   function _bind_add_text() {
     $(kmseditors.$position).off('click').on('click', function(e) {
       if (!isCanAddText) return
-      console.log(e)
       var obj = {
         top: e.pageY - 72,
         left: e.pageX
@@ -506,19 +503,6 @@ if (!Object.keys) {
       var pLeft = p.left
       var pTop = p.top
 
-
-      // 计算元素与当前鼠标XY轴误差大于mistakeNum，则不需要再移动，改变大小了，
-      // var mistake = 30
-      // // debugger
-      // if (Math.abs(pageX - $(currDom).data('pageX')) > mistake || Math.abs(pageY - $(currDom).data('pageY')) > mistake) {
-      //   console.log('Math.abs(pageX - $(currDom).data('pageX'))', Math.abs(pageX - $(currDom).data('pageX')))
-      //   console.log('Math.abs(pageY - pTop)', Math.abs(pageY - pTop - 73))
-      //   currDom = null
-      //   currDomType = null
-      //   return
-      // }
-
-
       if (currDomType === 'map-position-bg') { // 锚点内移动
         var left = pLeft + dx
         if (left < 0) left = 0
@@ -570,7 +554,6 @@ if (!Object.keys) {
       if (className === 'map-position-bg' || className === 'kmseditors-contextmenu-group c2' || className === 'kmseditors-contextmenu-group c5') {
         var pageX = event.pageX
         var pageY = event.pageY
-        // console.log('event.target', dom)
 
         $currSketch = className.indexOf('kmseditors-contextmenu-group') > -1 ? $currSketch : $(dom).parent()
         $currSketch.top = pageY
@@ -887,13 +870,12 @@ if (!Object.keys) {
 
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
     uploader.on('uploadSuccess', function(file, response) {
-      // console.log(response)
       var raw = response.path || response._raw
       if (!raw) return logger.error('_raw error', raw)
 
       if (window.seajs) {
-        seajs.use("lui/topic", function(topic) {
-          topic.publish("kms.editor.map.img.change", {
+        seajs.use('lui/topic', function(topic) {
+          topic.publish('kms.editor.map.img.change', {
             fdAttId: response.fdAttId
           })
         })
@@ -949,7 +931,6 @@ if (!Object.keys) {
   }
   // 右键菜单 - 关联
   function _relationHandle() {
-    // console.log($currSketch)
     $($contextmenu).hide()
     var onRelation = kmseditors.options.onRelation || _noop
     onRelation(kmseditors.getData($currSketch))
@@ -965,7 +946,7 @@ if (!Object.keys) {
     if (document.all) {
       that.range = document.selection.createRange();
       that.range.select();
-      that.range.moveStart("character", -1);
+      that.range.moveStart('character', -1);
     } else {
       that.range = window.getSelection().getRangeAt(0);
       that.range.setStart(that.range.startContainer, that.context.innerText && that.context.innerText.length);
@@ -1048,8 +1029,6 @@ if (!Object.keys) {
       initZoom: __INIT_ZOOM__,
       currZoom: parseFloat(currZoom)
     }
-
-    // console.log(obj)
 
     return obj
   }
