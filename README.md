@@ -80,7 +80,10 @@ left	   | Number  | Yes | Specifying the vertical position of a positioned sketc
 width	 | Number  | Yes | Sketch element's width
 height	  | Number  | Yes | Sketch element's height
 text	  | String	  | No  | Set the text input value
-color	  | String	  | No | Hexadecimal color code
+color	  | String	  | No  | Hexadecimal color code
+font	 | String	| No  | Set the font style
+size	 | String	| No  | Set the text size 
+isLink	   | Boolean  | No  | Set the text element's status
 
 
 
@@ -111,7 +114,8 @@ kmseditors.init({
                 { ref: "2", top: 70, left: 428, width: 73, height: 32 }
             ],
             textList: [
-                { ref: "3", top: 200, left: 692, width: 100, height: 100, text: 'Input you text here!', color: '#39CCCC'}
+                { ref: '3', color: '#39CCCC', font: '仿宋', height: 43, left: 388, size: '23', text: '我們仍未知道那天所看見的花名', top: 125, width: 343 },
+                { ref: '4', color: '#39CCCC', font: '仿宋', height: 31, left: 570, size: '19', text: '這段字可以點擊', top: 200, width: 190, isLink: true }
             ]
         },
         editable: true,
