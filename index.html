@@ -55,9 +55,12 @@
                 { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
                 { ref: "2", top: 70, left: 428, width: 73, height: 32 }
             ],
-            textList: [{ ref: "3", color: "#39CCCC", font: "仿宋", height: 43, left: 388, size: "23", text: "我們仍未知道那天所看見的花名", top: 125, width: 343 }]
+            textList: [
+                { ref: "3", color: "#39CCCC", font: "仿宋", height: 43, left: 388, size: "23", text: "我們仍未知道那天所看見的花名", top: 125, width: 343 },
+                { ref: "4", color: "#39CCCC", font: "仿宋", height: 31, left: 570, size: "19", text: "这段字可以点击", top: 200, width: 190, isLink: true }
+            ]
         },
-        editable: true,
+        editable: !true,
         fdModelId: fdModelId,
         host: 'http://192.168.2.207:8080/ekp',
         uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',

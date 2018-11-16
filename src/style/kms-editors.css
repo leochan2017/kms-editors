@@ -304,6 +304,10 @@
   border: 1px solid #4285F4;
 }
 
+#kmseditors-contant .position-conrainer .map-position.isLink {
+  cursor: pointer;
+}
+
 #kmseditors-contant .position-conrainer .map-position .resize {
   display: block;
   position: absolute;
