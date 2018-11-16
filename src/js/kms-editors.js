@@ -954,6 +954,7 @@ if (!Object.keys) {
   }
   // 右键菜单 - 编辑
   function _editHandle() {
+    if (!kmseditors.options.editable) return
     var bg = $($currSketch).find('.map-position-bg')
     $(bg).attr('contenteditable', true).focus()
     getC($(bg))
