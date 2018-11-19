@@ -1,0 +1,80 @@
+language: node_js # 设置语言
+
+node_js:
+  - "8" # 设置相应的版本
+
+cache:
+    apt: true
+    directories:
+        - node_modules # 缓存不经常更改的内容
+
+before_install:
+    - export TZ='Asia/Shanghai' # 更改时区
+
+# 指定分支，只有指定的分支提交时才会运行脚本
+branches:
+  only:
+    - master
+
+install:
+  - npm install # 安装依赖
+
+script:
+  - gulp clean # 清除
+  - gulp # 生成
+
+after_script:
+  # - cd ./dist
+  # - ls
+  # # - git init
+  # - git config user.name "leochan2017"  # 修改name
+  # - git config user.email "leochan2017@gmail.com"  #修改email
+  # - git status
+  # - git add .
+  # - git commit -m "Travis CI Auto Builder" # 提交记录包含时间 跟上面更改时区配合
+  # - git push --force --quiet "https://${REPO_TOKEN}@${GH_REF}" master:master #Travis_Token是在Travis中配置环境变量的名称
+
+before_deploy:
+  - git config --local user.name "leochan2017"
+  - git config --local user.email "leochan2017@gmail.com"
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+
+
+# deploy:
+#   provider: releases
+#   api_key: "GITHUB OAUTH TOKEN"
+#   file: "FILE TO UPLOAD"
+#   skip_cleanup: true
+#   on:
+#     tags: true
+
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: aoZDgr9Qyg8nm+jXD6rBNmge7ofb5bakj6DIz4EpVyH/CKZECZsQx4TAA/kCfeCifuo1Y1Ns3CITboOpSOIUytuy9B8L+mhdImo88q2i1Hz4iSMRdCP5UQQxUUxVnAOdWlYlAgVlk9TDYP+qDwreoNn56YvWnAaivsNDREh3VLe1S9qziVxnpFrgzh4xli7CEPuPF0Fh2cN32gC1RCBv5HViF1HFSw0xbR2r67G4jr1T7KMFpo5I0V2kmTL/z2c6zcNoM1L/M0CZAMvvKZtq4AyJj4Rrr87EsSSRogA9j0RBAbR3M73VNkwJxbntXJ6RaDyo6g781ZW5JQCa/b9S3zzm8UBf+d+TayyHvcUxs6XgpLMISmTU8+rXBhDohmUTOBOJ9yDM4As93bzBxJiCjFUI4oLbJ/sKyFaxdTpJHAp9zUwucOmR6RoACIJDYdYOeswXAflI/94CXOaYhTyR8BJwVYCc3UMvDGhQ6uZY2FeBpBUvF9LSrEG6wP/9Gl72RLFTO98iWRm2WqHd4adt/dZb1lm04XP2BdR1wZw7WNCRHsVpnLgD9Wz+4s/Xywr0JaFd/V7LBYsSo/tIWyqjKy9aMQeHEnkDdmvqWQNWjSu5E3Uy9Wvn6AmXZJEcDkjXYEr/eBWtF2p6MSIzwBRPJF4IJtIfqm+k/yl+vSrM4Of8=
+#   file: 
+#     - "index.html"
+#   # file_glob: true
+#   # file: dist/*
+#   skip_cleanup: true
+#   on:
+#     repo: leochan2017/kms-editors
+
+deploy:
+  provider: releases
+  api_key:
+    secure: o0P6bDN900PNJE3r1926fQzL1/VO+GBw9UPXTPIaILs3L4H+3bpPvAlz1L9MON3MNuLSbPC4KUk6iSa6nNugl+jOHl7z2WY2Sru/s0pTNVDONMeXyO+pvG4gFREHCUL/HiK1rUpqW9/m89smN1Abbz2q4y3raXLDtLVgZnwBpJfCX9K2+n+lCQyT5yToEHpmkd+UKsjGsh/ThvXoQZintCag5j8pl9H2dPSeZtjMKbAvb7XXB8Kd+mcX7rZ5O1zQjmKyvURBqkRPDu599PsJqdhjH8H2aapqLZm6QlCDoHkgxSipZxLbjko1oC1r/t0ZfnfOs02UMqxWnQg1cD08J2CGrNGSFk+QskluoA0Pd0DjK3ne0NzYCvhR1IIRlridG/EQHtiy0STZtwIdFMxO0fRgTZpyRJe4yb+Cnzf2ClYzl06/mdsj9EWM8s001KYBj7KT5iBOVR+kcOIQ9BPDim9JFHZ91PunD0EkxTZlSU+nejTBkTBkhr4gSmfJM/aejIhfpAHIbw6ZzB8GJieviKd2W0wsLQt79dTirzy01+vUafBStYCsa09qG558IQ94heFggcwpL9ywXWTe3Ry9W0odRO6zqqpng89Nb/H389UJAnBmcnqJ7qc0iIC7TGc/PI/yS1ov6iS/0JJd1KW3GCuw7lxixb4tyCkDXuJpIY0=
+  file: index.html
+  # on:
+    # repo: leochan2017/kms-editors
+
+env:
+ global:
+   - GH_REF: github.com/leochan2017/kms-editors.git # 设置GH_REF
+
+
+# notifications:
+#   email:
+#     - leochan2017@gmail.com
+#   on_success: change
+#   on_failure: always
