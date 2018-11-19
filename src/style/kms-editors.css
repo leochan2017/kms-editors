@@ -290,7 +290,7 @@
   background-image: url('data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7');
   /*为了IE8下能触发点击事件*/
   border: 1px solid #9C9C9C;
-  opacity: 0.5;
+  /*opacity: 0.5;*/
   top: 0;
   left: 0;
   right: 0;
