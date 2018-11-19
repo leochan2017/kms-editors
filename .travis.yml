@@ -60,13 +60,21 @@ before_deploy:
 #   on:
 #     repo: leochan2017/kms-editors
 
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: JN0Ainldl0DTonKBwVq4hMLly4MZBOHVhMbXIQAJ4Zo5YnDCU4tfc/0PyeFhdkFTCl9bJbE8cXRTbfS6tViUGgi8iWt4cMYFvzxO7MZ2JFYyPoLLg0SUkFfQ8gxMBFAtFHx/vYz5OmutqXVMcVU9kb7mkGTH9upe9x9GAvvDWCBixmVxddf34HnxZrkcoB9xgR+s9tZXcM5JXQkGikiU/fZUli/7poPQrQ+Bct+R2lUmv+jbcVE74o7ujNC8AaMUPkvUFz3Xx8T4mzzaxGgSmNC9VgGi+3tEq3fgwmCP2fFIuehk8QCjWeoZuTbMfc/wPdxolPzVGyGw3nF1AKptzP4yuwFRPl/O9fhNRuIkiTdS7XZJpnZvr6NG+LOIYrTdxe3HhnTpmd6CUKxiip7MAk0AzX6HdjfMDs3uwCZJ/dLckEitYDfc63IscXmRyKcIW5T4looHsYn++PAGH/xiMoL/RbWhHvGDSKaKX3YR7jbnPcYNQg9WMcOOVXQ3Io0zU8OQ1eeV2j0Dht9uC60OoEkXLozfP1i0E9KhJFDctf9fTyQGECq9I5Qo6mzPGaEAF/LPCpgKL93q1NHV2tO29/bVxofdrIy3HK7GqjKjRGoXEmyGPdAB8CiTA+81FVGteiWGst+jNjUvSa6nowa0nt7jpsmZNclZQAxDKAEx+A0=
+#   file: index.html
+#   on:
+#     repo: leochan2017/kms-editors
+
 deploy:
   provider: releases
   api_key:
-    secure: JN0Ainldl0DTonKBwVq4hMLly4MZBOHVhMbXIQAJ4Zo5YnDCU4tfc/0PyeFhdkFTCl9bJbE8cXRTbfS6tViUGgi8iWt4cMYFvzxO7MZ2JFYyPoLLg0SUkFfQ8gxMBFAtFHx/vYz5OmutqXVMcVU9kb7mkGTH9upe9x9GAvvDWCBixmVxddf34HnxZrkcoB9xgR+s9tZXcM5JXQkGikiU/fZUli/7poPQrQ+Bct+R2lUmv+jbcVE74o7ujNC8AaMUPkvUFz3Xx8T4mzzaxGgSmNC9VgGi+3tEq3fgwmCP2fFIuehk8QCjWeoZuTbMfc/wPdxolPzVGyGw3nF1AKptzP4yuwFRPl/O9fhNRuIkiTdS7XZJpnZvr6NG+LOIYrTdxe3HhnTpmd6CUKxiip7MAk0AzX6HdjfMDs3uwCZJ/dLckEitYDfc63IscXmRyKcIW5T4looHsYn++PAGH/xiMoL/RbWhHvGDSKaKX3YR7jbnPcYNQg9WMcOOVXQ3Io0zU8OQ1eeV2j0Dht9uC60OoEkXLozfP1i0E9KhJFDctf9fTyQGECq9I5Qo6mzPGaEAF/LPCpgKL93q1NHV2tO29/bVxofdrIy3HK7GqjKjRGoXEmyGPdAB8CiTA+81FVGteiWGst+jNjUvSa6nowa0nt7jpsmZNclZQAxDKAEx+A0=
+    secure: o0P6bDN900PNJE3r1926fQzL1/VO+GBw9UPXTPIaILs3L4H+3bpPvAlz1L9MON3MNuLSbPC4KUk6iSa6nNugl+jOHl7z2WY2Sru/s0pTNVDONMeXyO+pvG4gFREHCUL/HiK1rUpqW9/m89smN1Abbz2q4y3raXLDtLVgZnwBpJfCX9K2+n+lCQyT5yToEHpmkd+UKsjGsh/ThvXoQZintCag5j8pl9H2dPSeZtjMKbAvb7XXB8Kd+mcX7rZ5O1zQjmKyvURBqkRPDu599PsJqdhjH8H2aapqLZm6QlCDoHkgxSipZxLbjko1oC1r/t0ZfnfOs02UMqxWnQg1cD08J2CGrNGSFk+QskluoA0Pd0DjK3ne0NzYCvhR1IIRlridG/EQHtiy0STZtwIdFMxO0fRgTZpyRJe4yb+Cnzf2ClYzl06/mdsj9EWM8s001KYBj7KT5iBOVR+kcOIQ9BPDim9JFHZ91PunD0EkxTZlSU+nejTBkTBkhr4gSmfJM/aejIhfpAHIbw6ZzB8GJieviKd2W0wsLQt79dTirzy01+vUafBStYCsa09qG558IQ94heFggcwpL9ywXWTe3Ry9W0odRO6zqqpng89Nb/H389UJAnBmcnqJ7qc0iIC7TGc/PI/yS1ov6iS/0JJd1KW3GCuw7lxixb4tyCkDXuJpIY0=
   file: index.html
-  on:
-    repo: leochan2017/kms-editors
+  # on:
+    # repo: leochan2017/kms-editors
 
 env:
  global:
