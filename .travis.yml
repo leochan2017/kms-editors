@@ -11,6 +11,11 @@ cache:
 before_install:
     - export TZ='Asia/Shanghai' # 更改时区
 
+# 指定分支，只有指定的分支提交时才会运行脚本
+branches:
+  only:
+    - master
+
 install:
   - npm install # 安装依赖
 
@@ -49,7 +54,6 @@ deploy:
     secure: aoZDgr9Qyg8nm+jXD6rBNmge7ofb5bakj6DIz4EpVyH/CKZECZsQx4TAA/kCfeCifuo1Y1Ns3CITboOpSOIUytuy9B8L+mhdImo88q2i1Hz4iSMRdCP5UQQxUUxVnAOdWlYlAgVlk9TDYP+qDwreoNn56YvWnAaivsNDREh3VLe1S9qziVxnpFrgzh4xli7CEPuPF0Fh2cN32gC1RCBv5HViF1HFSw0xbR2r67G4jr1T7KMFpo5I0V2kmTL/z2c6zcNoM1L/M0CZAMvvKZtq4AyJj4Rrr87EsSSRogA9j0RBAbR3M73VNkwJxbntXJ6RaDyo6g781ZW5JQCa/b9S3zzm8UBf+d+TayyHvcUxs6XgpLMISmTU8+rXBhDohmUTOBOJ9yDM4As93bzBxJiCjFUI4oLbJ/sKyFaxdTpJHAp9zUwucOmR6RoACIJDYdYOeswXAflI/94CXOaYhTyR8BJwVYCc3UMvDGhQ6uZY2FeBpBUvF9LSrEG6wP/9Gl72RLFTO98iWRm2WqHd4adt/dZb1lm04XP2BdR1wZw7WNCRHsVpnLgD9Wz+4s/Xywr0JaFd/V7LBYsSo/tIWyqjKy9aMQeHEnkDdmvqWQNWjSu5E3Uy9Wvn6AmXZJEcDkjXYEr/eBWtF2p6MSIzwBRPJF4IJtIfqm+k/yl+vSrM4Of8=
   file: 
     - "index.html"
-    - "./dist/"
   # file_glob: true
   # file: dist/*
   skip_cleanup: true
@@ -59,6 +63,7 @@ deploy:
 env:
  global:
    - GH_REF: github.com/leochan2017/kms-editors.git # 设置GH_REF
+
 
 # notifications:
 #   email:
