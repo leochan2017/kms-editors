@@ -438,12 +438,14 @@ if (!Object.keys) {
         // opacity 设置透明有时候不管用，只能这样了
         $item.find('div.map-position-bg').css({
           border: 'none',
-          background: 'none'
+          background: 'none',
+          cursor: 'pointer'
         })
 
         $item.find('span.resize').css({
           border: 'none',
-          background: 'none'
+          background: 'none',
+          display: 'none'
         })
       }
     }, 50)
