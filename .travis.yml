@@ -19,16 +19,37 @@ script:
   - gulp # 生成
 
 after_script:
-  - cd ./dist
-  - ls
-  # - git init
-  - git config user.name "leochan2017"  # 修改name
-  - git config user.email "leochan2017@gmail.com"  #修改email
-  - git status
-  - git add .
-  - git commit -m "Travis CI Auto Builder" # 提交记录包含时间 跟上面更改时区配合
-  - git push --force --quiet "https://${REPO_TOKEN}@${GH_REF}" master:master #Travis_Token是在Travis中配置环境变量的名称
+  # - cd ./dist
+  # - ls
+  # # - git init
+  # - git config user.name "leochan2017"  # 修改name
+  # - git config user.email "leochan2017@gmail.com"  #修改email
+  # - git status
+  # - git add .
+  # - git commit -m "Travis CI Auto Builder" # 提交记录包含时间 跟上面更改时区配合
+  # - git push --force --quiet "https://${REPO_TOKEN}@${GH_REF}" master:master #Travis_Token是在Travis中配置环境变量的名称
 
+before_deploy:
+  - git config --local user.name "leochan2017"
+  - git config --local user.email "leochan2017@gmail.com"
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+
+
+# deploy:
+#   provider: releases
+#   api_key: "GITHUB OAUTH TOKEN"
+#   file: "FILE TO UPLOAD"
+#   skip_cleanup: true
+#   on:
+#     tags: true
+
+deploy:
+  provider: releases
+  api_key:
+    secure: aoZDgr9Qyg8nm+jXD6rBNmge7ofb5bakj6DIz4EpVyH/CKZECZsQx4TAA/kCfeCifuo1Y1Ns3CITboOpSOIUytuy9B8L+mhdImo88q2i1Hz4iSMRdCP5UQQxUUxVnAOdWlYlAgVlk9TDYP+qDwreoNn56YvWnAaivsNDREh3VLe1S9qziVxnpFrgzh4xli7CEPuPF0Fh2cN32gC1RCBv5HViF1HFSw0xbR2r67G4jr1T7KMFpo5I0V2kmTL/z2c6zcNoM1L/M0CZAMvvKZtq4AyJj4Rrr87EsSSRogA9j0RBAbR3M73VNkwJxbntXJ6RaDyo6g781ZW5JQCa/b9S3zzm8UBf+d+TayyHvcUxs6XgpLMISmTU8+rXBhDohmUTOBOJ9yDM4As93bzBxJiCjFUI4oLbJ/sKyFaxdTpJHAp9zUwucOmR6RoACIJDYdYOeswXAflI/94CXOaYhTyRBJwVYCc3UMvDGhQ6uZY2FeBpBUvF9LSrEG6wP/9Gl72RLFTO98iWRm2WqHd4adt/dZb1lm04XP2BdR1wZw7WNCRHsVpnLgD9Wz+4s/Xywr0JaFd/V7LBYsSo/tIWyqjKy9aMQeHEnkDdmvqWQNWjSu5E3Uy9Wvn6AmXZJEcDkjXYEr/eBWtF2p6MSIzwBRPJF4IJtIfqm+k/yl+vSrM4Of8=
+  file: "./dist/"
+  on:
+    repo: leochan2017/kms-editors
 
 env:
  global:
