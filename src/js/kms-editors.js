@@ -494,7 +494,6 @@ if (!Object.keys) {
     // 全局监听mousemove
     $(document).on('mousemove', function(event) {
       if (!currDomType) return
-      console.log('呵呵2')
       var pageX = event.pageX
       var pageY = event.pageY
       var conrainer = kmseditors.$position
