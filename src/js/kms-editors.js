@@ -50,9 +50,12 @@ if (!Object.keys) {
   var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
   var __TEXT_MIN_WIDTH__ = 160 // 文字最小宽
   var __TEXT_MIN_HEIGHT__ = 30 // 文字最小高
-  var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff'] // 可选颜色组
-  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书'] // 可选字体组
-  var __REF__ = 1 //顺序
+  // 可选颜色组
+  var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff']
+  // 可选字体组
+  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书']
+  var __REF__ = 1 // 顺序
+  
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
