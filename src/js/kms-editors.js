@@ -55,7 +55,7 @@ if (!Object.keys) {
   // 可选字体组
   var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书']
   var __REF__ = 1 // 顺序
-  
+
   var logger = (typeof console === 'undefined') ? {
     log: _noop,
     debug: _noop,
@@ -455,7 +455,7 @@ if (!Object.keys) {
   }
   // 点击添加文字 点击图片 出现文字
   function _bind_add_text() {
-    $(kmseditors.$position).off('click').on('click', function(e) {
+    var func =  function(e) {
       if (!isCanAddText) return
       var obj = {
         top: e.pageY - 72,
@@ -464,7 +464,9 @@ if (!Object.keys) {
       isCanAddText = false
       $('#kmseditors-text').find('.kmseditors-title-btngroup-icon').removeClass('active')
       _textHandle(obj)
-    })
+    }
+    $(kmseditors.$position).off('click').on('click', func)
+    $(kmseditors.$position).prev().off('click').on('click', func)
   }
   // 隐藏菜单
   function _hideMenu() {
