@@ -492,6 +492,7 @@ if (!Object.keys) {
     // 全局监听mousemove
     $(document).on('mousemove', function(event) {
       if (!currDomType) return
+      console.log('呵呵2')
       var pageX = event.pageX
       var pageY = event.pageY
       var conrainer = kmseditors.$position
@@ -604,6 +605,7 @@ if (!Object.keys) {
     })
     // 锚点按下 -> flag = true
     $(document).on('mousedown', '.map-position-bg', function(event) {
+      kmseditors.$position.addClass('unselectable') // 开启禁止选择文字
       var dom = event.target
       currDom = dom
       currDomType = 'map-position-bg'
@@ -614,6 +616,7 @@ if (!Object.keys) {
     })
     // 改变大小按下 -> flag = true
     $(document).on('mousedown', '.resize', function(event) {
+      kmseditors.$position.addClass('unselectable') // 开启禁止选择文字
       var dom = event.target
       currDom = dom
       currDomType = 'resize'
@@ -623,6 +626,7 @@ if (!Object.keys) {
     })
     // 全局弹起
     $(document).on('mouseup', function(event) {
+      kmseditors.$position.removeClass('unselectable') // 关闭禁止选择文字
       if (currDomType === 'map-position-bg') {
         kmseditors.$position.find('.map-position-bg').css('cursor', 'default')
       }

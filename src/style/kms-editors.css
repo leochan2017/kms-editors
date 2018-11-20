@@ -377,3 +377,12 @@
 #kmseditors-sidebar li:LAST-CHILD {
   border-bottom: none;
 }
+
+/*禁止选择文本*/
+#kmseditors-contant .unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
