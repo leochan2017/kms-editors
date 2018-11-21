@@ -286,7 +286,7 @@
 
 #kmseditors-contant .position-conrainer .map-position .map-position-bg {
   position: absolute;
-  background: rgba(156, 156, 156, 0.40);
+  background-color: rgba(156, 156, 156, 0.40);
   background-image: url('data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7');
   /*为了IE8下能触发点击事件*/
   border: 1px solid #9C9C9C;

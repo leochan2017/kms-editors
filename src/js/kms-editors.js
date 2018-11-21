@@ -441,8 +441,8 @@ if (!Object.keys) {
         // opacity 设置透明有时候不管用，只能这样了
         $item.find('div.map-position-bg').css({
           border: 'none',
-          background: 'none',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          'background-color':'transparent'
         })
 
         $item.find('span.resize').css({
@@ -1008,10 +1008,21 @@ if (!Object.keys) {
 
     if (__INIT_ZOOM__ === '') __INIT_ZOOM__ = zoom
 
-    $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
-      zoom: zoom,
-      '-moz-transform': 'scale(' + zoom + ')'
-    })
+   
+    if(kmseditors.options.transformType == 'transform') {
+	     $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
+	      'transform': 'scale(' + zoom + ')'
+	    });
+    } else {
+    	 $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
+    	      zoom: zoom,
+    	      '-moz-transform': 'scale(' + zoom + ')'
+    	 });
+    }
+    
+    if(kmseditors.options.aftersetZoom) {
+    	kmseditors.options.aftersetZoom(value);
+    }
   }
   // 获取当前zoom的值
   kmseditors.getZoom = function() {
