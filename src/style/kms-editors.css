@@ -89,6 +89,10 @@
   background-image: url("./images/b2_active.png");
 }
 
+.kmseditors-title-btngroup-icon.b2.active {
+  background-image: url("./images/b2_active.png");
+}
+
 .kmseditors-title-btngroup-icon.b3 {
   background-image: url("./images/b3.png");
 }

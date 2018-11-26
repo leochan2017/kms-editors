@@ -48,12 +48,10 @@ if (!Object.keys) {
   var __INIT_ZOOM__ = ''
   var __SKETCH_MIN_WIDTH__ = 30 // 锚点最小宽
   var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
-  var __TEXT_MIN_WIDTH__ = 160 // 文字最小宽
-  var __TEXT_MIN_HEIGHT__ = 30 // 文字最小高
   // 可选颜色组
   var __COLOR__ = ['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#111111', '#AAAAAA', '#DDDDDD', '#ffffff']
   // 可选字体组
-  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '仿宋', '隶书']
+  var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '隶书']
   var __REF__ = 1 // 顺序
 
   var logger = (typeof console === 'undefined') ? {
@@ -123,7 +121,6 @@ if (!Object.keys) {
       if (data) {
         var bgUrl = data.backgroundUrl
         var sketchList = data.sketchList
-        var textList = data.textList
 
         if (bgUrl) {
           _hideTips()
@@ -139,13 +136,6 @@ if (!Object.keys) {
               for (var i = 0; i < sLen; i++) {
                 var item = sketchList[i]
                 _sketchHandle(item)
-              }
-            }
-            var tLen = textList.length
-            if (tLen > 0) {
-              for (var i = 0; i < tLen; i++) {
-                var item = textList[i]
-                _textHandle(item)
               }
             }
           }, 10)
@@ -265,7 +255,7 @@ if (!Object.keys) {
 
   // 初始化编辑器元素
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-text" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b3"></div><p>添加文字</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" title="编辑内容" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-font" title="更换字体" class="kmseditors-contextmenu-group c5"></div><div id="kmseditors-contextmenu-color" title="选择颜色" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-relation" title="关联" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-delete" title="删除" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" title="编辑内容" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-font" title="更换字体" class="kmseditors-contextmenu-group c5"></div><div id="kmseditors-contextmenu-color" title="选择颜色" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-relation" title="关联" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-delete" title="删除" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -310,24 +300,13 @@ if (!Object.keys) {
         })
       }
 
-      // 锚点按钮点击处理
-      var $sketchbtn = $('#kmseditors-sketch')
-      $sketchbtn.on('click', function(event) {
-        // 注意这里不要简写
-        // 免得_sketchHandle接收时把even当作了需要入参的obj，免除不得要的麻烦
-        _sketchHandle()
-        isCanAddText = false
-        $('#kmseditors-text').find('.kmseditors-title-btngroup-icon').removeClass('active')
-      })
-
-      // 添加文字
-      var $textbtn = $('#kmseditors-text')
-      $textbtn.on('click', function(event) {
-        // 注意这里不要简写
-        // 免得_sketchHandle接收时把even当作了需要入参的obj，免除不得要的麻烦
-        // _textHandle()
+      // 锚点&添加文字 按钮点击处理
+      var $sketchBtn = $('#kmseditors-sketch')
+       // 注意这里不要简写
+      // 免得接收时把even当作了需要入参的obj，免除不得要的麻烦
+      $sketchBtn.on('click', function(event) {
         isCanAddText = true
-        $textbtn.find('.kmseditors-title-btngroup-icon').addClass('active')
+        $sketchBtn.find('.kmseditors-title-btngroup-icon').addClass('active')
       })
 
       // 上传背景按钮点击处理
@@ -462,8 +441,8 @@ if (!Object.keys) {
         left: e.pageX
       }
       isCanAddText = false
-      $('#kmseditors-text').find('.kmseditors-title-btngroup-icon').removeClass('active')
-      _textHandle(obj)
+      $('#kmseditors-sketch').find('.kmseditors-title-btngroup-icon').removeClass('active')
+      _sketchHandle(obj)
     }
     $(kmseditors.$position).off('click').on('click', func)
     $(kmseditors.$position).prev().off('click').on('click', func)
@@ -535,8 +514,8 @@ if (!Object.keys) {
         var width = map_position.width() + dx
 
         if ($(map_position).attr('dtype') == 1) {
-          if (width < __TEXT_MIN_WIDTH__) width = __TEXT_MIN_WIDTH__
-          if (height < __TEXT_MIN_HEIGHT__) height = __TEXT_MIN_HEIGHT__
+          if (width < __SKETCH_MIN_WIDTH__) width = __SKETCH_MIN_WIDTH__
+          if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
         } else {
           if (width < __SKETCH_MIN_WIDTH__) width = __SKETCH_MIN_WIDTH__
           if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
@@ -666,7 +645,8 @@ if (!Object.keys) {
       document.webkitExitFullscreen()
     }
   }
-  // 生成锚点
+
+  // 生成锚点&文字
   function _sketchHandle(obj) {
     var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
     if ($images.length === 0) {
@@ -689,45 +669,7 @@ if (!Object.keys) {
     var height = __SKETCH_MIN_HEIGHT__
     var index = __REF__++
     var isLink = false
-
-    if (obj && typeof obj === 'object') {
-      if (obj.top) top = obj.top
-      if (obj.left) left = obj.left
-      if (obj.width) width = obj.width
-      if (obj.height) height = obj.height
-      if (obj.ref) index = obj.ref
-      if (obj.isLink) isLink = obj.isLink
-    }
-
-    var classIsLink = isLink ? ' isLink' : ''
-
-    // 在这里写style是为了初始化就有值
-    kmseditors.$position.append('<div ref="' + index + '" dtype="0" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;"><div class="map-position-bg"></div><span class="resize"></span></div>')
-  }
-  // 生成文字
-  function _textHandle(obj) {
-    var $images = $(kmseditors.$container).find('img[ref=imageMaps]')
-    if ($images.length === 0) {
-      var txt = '请先上传背景！'
-      if (window.seajs) {
-        seajs.use('lui/dialog', function(dialog) {
-          dialog.alert(txt)
-        })
-      } else {
-        alert(txt)
-      }
-      return
-    }
-
-    _hideTips()
-
-    var top = '10'
-    var left = '10'
-    var width = __TEXT_MIN_WIDTH__
-    var height = __TEXT_MIN_HEIGHT__
-    var index = __REF__++
-    var isLink = false
-    var color = '#fff'
+    var color = '#111111'
     var size = 15
     var text = ''
     var font = ''
@@ -895,7 +837,6 @@ if (!Object.keys) {
       // 清除锚点前，记录下来现在有的数据，等下用于重新渲染
       var nowData = kmseditors.getData()
       var _sketchList = nowData.sketchList
-      var _textList = nowData.textList
 
       // 清除锚点操作区域
       var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
@@ -912,16 +853,6 @@ if (!Object.keys) {
           for (var i = 0; i < sLen; i++) {
             var item = _sketchList[i]
             _sketchHandle(item)
-          }
-        }, 300)
-      }
-
-      var tLen = _textList.length
-      if (tLen > 0) {
-        setTimeout(function() {
-          for (var i = 0; i < tLen; i++) {
-            var item = _textList[i]
-            _textHandle(item)
           }
         }, 300)
       }
