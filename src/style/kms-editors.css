@@ -188,6 +188,10 @@
   background-image: url("./images/c5.png");
 }
 
+.kmseditors-contextmenu-group.c6 {
+  background-image: url("./images/c6.png");
+}
+
 .kmseditors-contextmenu-group:last-child {
   border-right: 0;
 }
@@ -200,6 +204,7 @@
   /*text-align: */
 }
 
+/*颜色选择*/
 .kmseditors-color-container {
   position: absolute;
   width: 148px;
@@ -224,6 +229,8 @@
 .kmseditors-color-container .color_div:hover {
   border-color: #0883e6 !important;
 }
+
+/*字体选择*/
 .kmseditors-font-container {
   position: absolute;
   width: 100px;
@@ -251,6 +258,37 @@
   background-color: #9ac3e4;
 }
 .kmseditors-font-container .font_div:last-child {
+  border-bottom: none;
+}
+
+/*字号选择*/
+.kmseditors-size-container {
+  position: absolute;
+  width: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0px 0px 20px #5a5a5a;
+  background-color: #fff;
+  margin-top: 5px;
+  border-radius: 2px;
+}
+
+.kmseditors-size-container .size_div {
+  height: 30px;
+  width: 100px;
+  color: #000;
+  line-height: 30px;
+  padding-left: 10px;
+  border-bottom: 1px dashed #dedede;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.kmseditors-size-container .size_div:hover {
+  background-color: #9ac3e4;
+}
+.kmseditors-size-container .size_div:last-child {
   border-bottom: none;
 }
 
