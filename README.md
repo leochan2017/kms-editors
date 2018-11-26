@@ -57,21 +57,9 @@ name | type | required | description
 ---- | ---- | -------- | ---------
 backgroundUrl | String | No | Background image url
 sketchList | Array(Object) | No | Sketch list
-textList | Array(Object) | No | Text list
 
 
 ##### sketchList description:
-name   | type    | required | description
------  | ------- | -------- | ---------
-ref    | String  | Yes | Unique id
-top    | Number  | Yes | Specifying the vertical position of a positioned sketch element
-left   | Number  | Yes | Specifying the vertical position of a positioned sketch element
-width  | Number  | Yes | Sketch element's width
-height | Number  | Yes | Sketch element's height
-isLink | Boolean | No  | Set the sketch element's status
-
-
-##### textList description:
 name        | type        | required | description
 ------------- | ------------- | -------- | ---------
 ref		 | String	| Yes | Unique id
@@ -84,7 +72,6 @@ color	  | String	  | No  | Hexadecimal color code
 font	 | String	| No  | Set the font style
 size	 | String	| No  | Set the text size 
 isLink	   | Boolean  | No  | Set the text element's status
-
 
 
 #### Usage
@@ -106,31 +93,28 @@ function _generateId() {
 var fdModelId = _generateId()
 
 kmseditors.init({
-        container: 'container',
-        data: {
-            backgroundUrl: './src/style/images/wwhm.jpg',
-            sketchList: [
-                { ref: "1", top: 70, left: 692, width: 80, height: 32, isLink: true },
-                { ref: "2", top: 70, left: 428, width: 73, height: 32 }
-            ],
-            textList: [
-                { ref: '3', color: '#39CCCC', font: '仿宋', height: 43, left: 388, size: '23', text: '我們仍未知道那天所看見的花名', top: 125, width: 343 },
-                { ref: '4', color: '#39CCCC', font: '仿宋', height: 31, left: 570, size: '19', text: '這段字可以點擊', top: 200, width: 190, isLink: true }
-            ]
-        },
-        editable: true,
-        fdModelId: fdModelId,
-        host: 'http://192.168.2.207:8080/ekp',
-        uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
-        onRelation: function(item) {
-            console.log('index.html onRelation: ', item)
-            if (!item) return
-            kmseditors.setLinkStatus({
-                ref: item.sketchList.ref,
-                isLink: true
-            })
-        }
-    })
+    container: 'container',
+    data: {
+    backgroundUrl: './src/style/images/wwhm.jpg',
+    sketchList: [
+        { ref: '1', top: 70, left: 692, width: 80, height: 32, isLink: true },
+        { ref: '2', top: 70, left: 428, width: 73, height: 32 },
+        { ref: '3', color: '#39CCCC', font: '仿宋', height: 43, left: 388, size: '23', text: '我們仍未知道那天所看見的花名', top: 125, width: 343 },
+        { ref: '4', color: '#39CCCC', font: '仿宋', height: 31, left: 570, size: '19', text: '這段字可以點擊', top: 200, width: 190, isLink: true }
+    ]},
+    editable: true,
+    fdModelId: fdModelId,
+    host: 'http://192.168.2.207:8080/ekp',
+    uploadImgUrl: 'http://192.168.2.207:8080/ekp/kms/kmaps/kms_kmaps_main/kmsKmapsAtt.do?method=uploading',
+    onRelation: function(item) {
+        console.log('index.html onRelation: ', item)
+        if (!item) return
+        kmseditors.setLinkStatus({
+        ref: item.sketchList.ref,
+        isLink: true
+        })
+    },
+    debug: true
 })
 ```
 
@@ -145,7 +129,6 @@ name          | type          | required | description
 ------------- | ------------- | -------- | ---------
 backgroundUrl | String        | No       | Background image url
 sketchList    | Array(Object) | No       | Sketch list
-textList    | Array(Object) | No       | Text list 
 
 #### Usage
 
