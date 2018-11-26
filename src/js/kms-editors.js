@@ -47,11 +47,12 @@ if (!Object.keys) {
   var _noop = function() {}
   var __INIT_ZOOM__ = ''
   var __SKETCH_MIN_WIDTH__ = 30 // 锚点最小宽
-  var __SKETCH_MIN_HEIGHT__ = 15 // 锚点最小高
+  var __SKETCH_MIN_HEIGHT__ = 18 // 锚点最小高
   // 可选颜色组
   var __COLOR__ = ['#111111', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#001f3f', '#AAAAAA', '#DDDDDD', '#ffffff']
   // 可选字体组
   var __FONT__ = ['系统默认', '微软雅黑', '黑体', '宋体', '新宋体', '仿宋', '华文行楷', '楷体', '方正舒体', '幼圆', '隶书']
+  // 可选字号组
   var __SIZE__ = ['12px', '14px', '16px', '18px', '20px', '22px', '28px', '36px']
   var __REF__ = 1 // 顺序
 
@@ -173,8 +174,7 @@ if (!Object.keys) {
   kmseditors.getData = function(node) {
     var dataObj = {
       backgroundUrl: '',
-      sketchList: [],
-      textList: []
+      sketchList: []
     }
 
     // 单个锚点数据获取
@@ -194,12 +194,12 @@ if (!Object.keys) {
         top: top,
         left: left,
         width: width,
-        height: height
+        height: height,
+        text: text,
+        color: color,
+        font: font,
+        size: size
       }
-      if (text) obj.text = text
-      if (color) obj.color = color
-      if (font) obj.font = font
-      if (size) obj.size = size
       return obj
     }
 
@@ -218,12 +218,10 @@ if (!Object.keys) {
 
     if (!$p) return dataObj
 
-    var $arr = $p.find('.map-position[dtype="0"]')
-    var $textArr = $p.find('.map-position[dtype="1"]')
-    if ($arr.length <= 0 && $textArr.length <= 0) return dataObj
+    var $arr = $p.find('.map-position[dtype="1"]')
+    if ($arr.length <= 0) return dataObj
 
     var arr = []
-    var textArr = []
     var pWidth = $p.width() // 当前操作区的宽
     var pHeight = $p.height() // 当前操作区的高
     for (var i = 0; i < $arr.length; i++) {
@@ -237,20 +235,7 @@ if (!Object.keys) {
         arr.push(itemObj)
       }
     }
-
-    for (var i = 0; i < $textArr.length; i++) {
-      var $item = $($textArr[i])
-      var itemObj = _getSketchItemData($item)
-      var itemX = itemObj.left + itemObj.width
-      var itemY = itemObj.top + itemObj.height
-      if (itemX < pWidth && itemY < pHeight) {
-        textArr.push(itemObj)
-      }
-    }
-
     dataObj.sketchList = arr
-    dataObj.textList = textArr
-
     return dataObj
   }
 
