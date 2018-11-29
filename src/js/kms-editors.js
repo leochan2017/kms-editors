@@ -534,9 +534,18 @@ if (!Object.keys) {
           if (height < __SKETCH_MIN_HEIGHT__) height = __SKETCH_MIN_HEIGHT__
         }
         $(map_position).css({
-          width: width,
-          height: height
+          'width': width,
+          'height': height
         })
+
+        // $(map_position).find('.map-position-bg').css({
+        //   'display': 'table-cell',
+        //   'vertical-align': 'middle',
+        //   'text-align': 'center'
+        //   // 'height': height,
+        //   // 'line-height': height + 'px'
+        // })
+
         // 监听改变锚点大小时改变字体大小
         // if ($(map_position).attr('dtype') == 1) {
         //   _watchFont(map_position)

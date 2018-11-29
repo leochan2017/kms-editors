@@ -319,6 +319,7 @@
 #kmseditors-contant .position-conrainer .map-position {
   position: absolute;
   font-weight: bold;
+  display: table;
   /*下面几个值写到了js里，为了初始化就有值*/
   /*left: 10px;*/
   /*top: 10px;*/
@@ -327,18 +328,21 @@
 }
 
 #kmseditors-contant .position-conrainer .map-position .map-position-bg {
-  position: absolute;
   background-color: rgba(156, 156, 156, 0.40);
   background-image: url('data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7');
   /*为了IE8下能触发点击事件*/
   border: 1px solid #9C9C9C;
   /*opacity: 0.5;*/
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 16px;
-  overflow: hidden;
+  /*注释这些，后果未知，先让文字垂直局中*/
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*right: 0;*/
+  /*bottom: 0;*/
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  /*overflow: hidden;*/
 }
 
 /*链接效果*/
