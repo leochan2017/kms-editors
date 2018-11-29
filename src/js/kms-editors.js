@@ -622,6 +622,7 @@ if (!Object.keys) {
     })
     // 全局弹起
     $(document).on('mouseup', function(event) {
+      if(!kmseditors.$position) return
       kmseditors.$position.removeClass('unselectable') // 关闭禁止选择文字
       if (currDomType === 'map-position-bg') {
         kmseditors.$position.find('.map-position-bg').css('cursor', 'default')
