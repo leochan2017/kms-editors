@@ -687,7 +687,7 @@ if (!Object.keys) {
     var index = __REF__++
     var isLink = false
     var color = __COLOR__[0]
-    var size = 12
+    var size = __SIZE__[0]
     var text = ''
     var font = ''
 
@@ -706,7 +706,7 @@ if (!Object.keys) {
 
     var classIsLink = isLink ? ' isLink' : ''
     var strHtml = '<div ref="' + index + '" dtype="1" data-color="' + color + '" data-font="' + font + '" data-size="' + size + '" class="map-position' + classIsLink + '" style="top:' + top + 'px;left:' + left + 'px;width:' + width + 'px;height:' + height + 'px;">' +
-      '<div class="map-position-bg" style="color:' + color + ';font-family: ' + font + ';font-size: ' + size + 'px">' + text + '</div><span class="resize"></span>' +
+      '<div class="map-position-bg" style="color:' + color + ';font-family: ' + font + ';font-size: ' + size + '">' + text + '</div><span class="resize"></span>' +
       '</div>'
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append(strHtml)
