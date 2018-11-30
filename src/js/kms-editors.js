@@ -241,7 +241,7 @@ if (!Object.keys) {
 
   // 初始化编辑器元素
   function _initElement() {
-    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" title="编辑内容" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-font" title="更换字体" class="kmseditors-contextmenu-group c5"></div><div id="kmseditors-contextmenu-size" title="字体大小" class="kmseditors-contextmenu-group c6"></div><div id="kmseditors-contextmenu-color" title="选择颜色" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-relation" title="关联" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-delete" title="删除" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
+    var htmlStr = '<div class="kmseditors"><div id="kmseditors-title" class="kmseditors-title"><div id="kmseditors-fullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b1"></div><p>全屏</p></div><div id="kmseditors-exitfullscreen" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b5"></div><p>退出全屏</p></div><div id="kmseditors-sketch" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b2"></div><p>热点</p></div><div id="kmseditors-uploadimg" class="kmseditors-title-btngroup"><div class="kmseditors-title-btngroup-icon b4"></div><p>上传背景</p></div></div><div id="kmseditors-contant"><div id="kmseditors-contant-tips"><p>地图绘制操作指引</p><p>第一步：点击上传背景，上传制作好的地图背景</p><p>第二步：根据需求，添加热点加上关联信息</p><p>第三步：绘制完成后，点击完成，填写基本信息即可</p></div><div id="kmseditors-contextmenu"><div id="kmseditors-contextmenu-edit" title="编辑内容" class="kmseditors-contextmenu-group c3"></div><div id="kmseditors-contextmenu-size" title="字体大小" class="kmseditors-contextmenu-group c6"></div><div id="kmseditors-contextmenu-color" title="选择颜色" class="kmseditors-contextmenu-group c2"></div><div id="kmseditors-contextmenu-relation" title="关联" class="kmseditors-contextmenu-group c1"></div><div id="kmseditors-contextmenu-delete" title="删除" class="kmseditors-contextmenu-group c4"></div></div></div></div>'
 
     // 初始化各种按钮绑定
     $(function() {
@@ -683,8 +683,8 @@ if (!Object.keys) {
 
     var top = '10'
     var left = '10'
-    var width = __SKETCH_MIN_WIDTH__
-    var height = __SKETCH_MIN_HEIGHT__
+    var width = __SKETCH_MIN_WIDTH__ + 80
+    var height = __SKETCH_MIN_HEIGHT__ + 10
     var index = __REF__++
     var isLink = false
     var color = __COLOR__[0]
