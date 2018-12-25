@@ -147,18 +147,19 @@ if (!Object.keys) {
           // 如果图片的宽大于容器的宽，则需要设置zoom比例
           var conWidth = 0
           var imgWidth = 0
-
-          var tZoom = setInterval(function() {
-            if (conWidth > 0 && imgWidth > 0) {
-              clearInterval(tZoom)
-              var zoom = 1
-              if (imgWidth > conWidth) zoom = conWidth / imgWidth
-              kmseditors.setZoom(zoom)
-            } else {
-              conWidth = $(kmseditors.$container).width()
-              imgWidth = $(kmseditors.$container).find('img[ref=imageMaps]').width()
-            }
-          }, 10)
+          if (!options.editable) {
+            var tZoom = setInterval(function() {
+              if (conWidth > 0 && imgWidth > 0) {
+                clearInterval(tZoom)
+                var zoom = 1
+                if (imgWidth > conWidth) zoom = conWidth / imgWidth
+                kmseditors.setZoom(zoom)
+              } else {
+                conWidth = $(kmseditors.$container).width()
+                imgWidth = $(kmseditors.$container).find('img[ref=imageMaps]').width()
+              }
+            }, 10)
+          }
         }
       }
 
@@ -313,7 +314,9 @@ if (!Object.keys) {
         // 右键菜单 - 颜色
         $($contextmenu).find('#kmseditors-contextmenu-color').on('click', _colorHandle)
         // 右键菜单 - 编辑
-        $($contextmenu).find('#kmseditors-contextmenu-edit').on('click', _editHandle)
+        $($contextmenu).find('#kmseditors-contextmenu-edit').on('click', function() {
+          _editHandle(true)
+        })
         // 右键菜单 - 删除
         $($contextmenu).find('#kmseditors-contextmenu-delete').on('click', _deleteHandle)
         // 右键菜单 - 字体
@@ -712,13 +715,14 @@ if (!Object.keys) {
     // 在这里写style是为了初始化就有值
     kmseditors.$position.append(strHtml)
     // 新文字
+    
     if (!obj.text) {
       $currSketch = kmseditors.$position.find('.map-position[dtype=1]').last()
       _editHandle()
     }
     // 双击编辑
     $('.map-position[dtype=1]').dblclick(function() {
-      _editHandle()
+      _editHandle(true)
     })
     // 监听改变锚点大小时改变字体大小
     // $('.map-position[dtype=1]').on('input', function() {
@@ -859,7 +863,10 @@ if (!Object.keys) {
 
       // 清除锚点操作区域
       var $warp = $(kmseditors.$container).find('#kmseditors-contant-sketch-warp')
-      if ($warp && $warp.length > 0) $warp.remove()
+      if ($warp && $warp.length > 0) {
+    	  $warp.remove()
+    	  kmseditors.$position.length = 0
+      }
 
       var imgSrc = kmseditors.options.host + raw
       _initPositionConrainer(imgSrc)
@@ -868,15 +875,22 @@ if (!Object.keys) {
       // 还记得上面清除了锚点吗？现在重现搞回来
       var sLen = _sketchList.length
       if (sLen > 0) {
-        setTimeout(function() {
-          for (var i = 0; i < sLen; i++) {
-            var item = _sketchList[i]
-            _sketchHandle(item)
-          }
-        }, 300)
+    	 var tSketch = setInterval(function() {
+              if (kmseditors.$position.length === 0) return
+
+              clearInterval(tSketch)
+
+              var sLen = _sketchList.length
+              if (sLen > 0) {
+                for (var i = 0; i < sLen; i++) {
+                  var item = _sketchList[i]
+                  _sketchHandle(item)
+                }
+              }
+        }, 100)  
       }
     })
-
+    
     // 文件上传失败，显示上传出错。
     uploader.on('uploadError', function(file) {
       var $li = $('#' + file.id),
@@ -909,17 +923,19 @@ if (!Object.keys) {
       that.range.select();
       that.range.moveStart('character', -1);
     } else {
-      that.range = window.getSelection().getRangeAt(0);
-      that.range.setStart(that.range.startContainer, that.context.innerText && that.context.innerText.length);
+      try {
+        that.range = window.getSelection().getRangeAt(0);
+        that.range.setStart(that.range.startContainer, that.context.innerText && that.context.innerText.length);
+      } catch (e) {}
     }
   }
 
   // 右键菜单 - 编辑
-  function _editHandle() {
+  function _editHandle(isGetC) {
     if (!kmseditors.options.editable) return
     var bg = $($currSketch).find('.map-position-bg')
     $(bg).attr('contenteditable', true).focus()
-    getC($(bg))
+    if(isGetC) getC($(bg))
     $(bg).on('blur', function() {
       $(bg).attr('contenteditable', false)
     })
@@ -971,21 +987,21 @@ if (!Object.keys) {
     var zoom = value || 1
 
     if (__INIT_ZOOM__ === '') __INIT_ZOOM__ = zoom
-
+    
    
     if(kmseditors.options.transformType == 'transform') {
-	     $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
-	      'transform': 'scale(' + zoom + ')'
-	    });
+       $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
+        'transform': 'scale(' + zoom + ')'
+      });
     } else {
-    	 $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
-    	      zoom: zoom,
-    	      '-moz-transform': 'scale(' + zoom + ')'
-    	 });
+       $(kmseditors.$container).find('#kmseditors-contant-sketch-warp').css({
+            zoom: zoom,
+            '-moz-transform': 'scale(' + zoom + ')'
+       });
     }
     
     if(kmseditors.options.aftersetZoom) {
-    	kmseditors.options.aftersetZoom(value);
+      kmseditors.options.aftersetZoom(value);
     }
   }
   // 获取当前zoom的值
