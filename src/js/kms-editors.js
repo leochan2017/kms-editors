@@ -277,6 +277,8 @@ if (!Object.keys) {
           _cancelFullScreen()
           $exitfullscreenbtn.hide()
           $fullscreenbtn.show()
+          
+          $('#kmseditors-uploadimg').show()
         })
         // 全屏按钮点击处理
         $fullscreenbtn.on('click', function() {
@@ -284,6 +286,8 @@ if (!Object.keys) {
           _launchFullScreen()
           $fullscreenbtn.hide()
           $exitfullscreenbtn.show()
+          
+          $('#kmseditors-uploadimg').hide()
         })
       }
 
