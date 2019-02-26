@@ -824,7 +824,11 @@ if (!Object.keys) {
       server: serverURL,
       // 选择文件的按钮。可选。
       // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-      pick: '#kmseditors-uploadimg',
+      pick: {
+			id:'#kmseditors-uploadimg',
+			multiple:false
+	  },
+    
       sendAsBinary: true,
       // 只允许选择图片文件。
       accept: {
