@@ -343,6 +343,10 @@
   vertical-align: middle;
   text-align: center;
   /*overflow: hidden;*/
+  white-space: pre-line;
+}
+.map-position-bg>div{
+	font-size: inherit;
 }
 
 /*链接效果*/
